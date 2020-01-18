@@ -16,6 +16,7 @@
     "express": "^4.17.1"
   },
   "scripts": {
-    "build": "tsc"
+    "build": "tsc",
+    "start:dev": "nodemon --watch ./src --exec ts-node src/index.ts"
   }
 }
