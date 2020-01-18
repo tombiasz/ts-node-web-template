@@ -1,0 +1,8 @@
+{
+  "name": "node-ts-web-template",
+  "version": "1.0.0",
+  "main": "src/index.js",
+  "repository": "git@github.com:tombiasz/ts-node-web-template.git",
+  "author": "tombiasz",
+  "license": "MIT"
+}
