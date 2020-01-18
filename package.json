@@ -18,6 +18,6 @@
   },
   "scripts": {
     "build": "tsc",
-    "start:dev": "nodemon --watch ./src --exec node --inspect -r ts-node/register src/index.ts"
+    "start:dev": "DOTENV_CONFIG_PATH=.env nodemon --watch ./src --exec node --inspect -r dotenv/config -r ts-node/register src/index.ts"
   }
 }
