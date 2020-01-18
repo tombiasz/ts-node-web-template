@@ -1,7 +1,7 @@
-import express from 'express';
+import express, { Express, Request, Response } from 'express';
 
-const app = express();
+const app: Express = express();
 
-app.get('/', (req, res) => res.send('hello, world'));
+app.get('/', (req: Request, res: Response) => res.send('hello, world'));
 
 app.listen(8000, () => console.log('server running on 8000'));
