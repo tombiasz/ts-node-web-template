@@ -17,6 +17,6 @@
   },
   "scripts": {
     "build": "tsc",
-    "start:dev": "nodemon --watch ./src --exec ts-node src/index.ts"
+    "start:dev": "nodemon --watch ./src --exec node --inspect -r ts-node/register src/index.ts"
   }
 }
