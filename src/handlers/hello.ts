@@ -1,3 +1,5 @@
 import { Request, Response } from 'express';
 
-export default (req: Request, res: Response) => res.send(`hello, world`)
+export default function createHelloHandler(name: string = 'world') {
+  return (req: Request, res: Response) => res.send(`hello, ${name}`);
+}

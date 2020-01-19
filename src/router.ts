@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { helloHandler } from "./handlers";
+import { helloHandler } from './handlers';
 
 export function registerRoutes(router: Router): void {
   router.get('/', helloHandler);

@@ -1,5 +1,3 @@
-import helloHandler from './hello';
+import createHelloHandler from './hello';
 
-export {
-  helloHandler,
-};
+export const helloHandler = createHelloHandler('fizz buzz');
