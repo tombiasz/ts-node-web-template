@@ -1,10 +1,12 @@
 import { Express, Request, Response } from 'express';
 import { Config } from './config';
+import { Logger } from './logger';
 
 export class AppServer {
   constructor(
     readonly httpServer: Express,
     readonly config: Config,
+    readonly logger: Logger,
   ) {
     httpServer.get('/', (req: Request, res: Response) => res.send('hello, world'));
   }
@@ -14,13 +16,13 @@ export class AppServer {
 
     return new Promise((resolve) => {
       this.httpServer.listen(appPort, () => {
-        console.log(`${appName} server running on ${appPort}`);
+        this.logger.info(`${appName} server running on ${appPort}`);
         resolve();
       });
     });
   }
 }
 
-export default function createAppServer(httpServer: Express, config: Config) {
-  return new AppServer(httpServer, config);
+export default function createAppServer(httpServer: Express, config: Config, logger: Logger) {
+  return new AppServer(httpServer, config, logger);
 }
