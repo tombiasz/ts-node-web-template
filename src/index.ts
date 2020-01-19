@@ -1,10 +1,10 @@
 import express, { Express, Request, Response } from 'express';
+import createConfig from './config';
 
-const appPort = process.env.APP_PORT;
-const appName = process.env.APP_NAME;
+const config = createConfig(process.env);
 
 const app: Express = express();
 
 app.get('/', (req: Request, res: Response) => res.send('hello, world'));
 
-app.listen(appPort, () => console.log(`${appName} server running on ${appPort}`));
+app.listen(config.appPort, () => console.log(`${config.appName} server running on ${config.appPort}`));
