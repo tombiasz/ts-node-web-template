@@ -7,8 +7,17 @@ export class AppServer {
     readonly config: Config,
   ) {
     httpServer.get('/', (req: Request, res: Response) => res.send('hello, world'));
-    const { appPort, appName } = config;
-    this.httpServer.listen(appPort, () => console.log(`${appName} server running on ${appPort}`));
+  }
+
+  start(): Promise<{}>{
+    const { appPort, appName } = this.config;
+
+    return new Promise((resolve) => {
+      this.httpServer.listen(appPort, () => {
+        console.log(`${appName} server running on ${appPort}`);
+        resolve();
+      });
+    });
   }
 }
 

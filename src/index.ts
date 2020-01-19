@@ -4,4 +4,5 @@ import createAppServer from './server';
 
 const config = createConfig(process.env);
 
-createAppServer(express(), config);
+createAppServer(express(), config)
+  .start();
