@@ -11,6 +11,11 @@ export class AppServer {
     httpServer.get('/', (req: Request, res: Response) => res.send('hello, world'));
   }
 
+  disableXPoweredByBanner(): this {
+    this.httpServer.disable('x-powered-by');
+    return this;
+  }
+
   start(): Promise<this>{
     const { appPort, appName } = this.config;
 
@@ -24,5 +29,6 @@ export class AppServer {
 }
 
 export default function createAppServer(config: Config, logger: Logger) {
-  return new AppServer(express(), config, logger);
+  return new AppServer(express(), config, logger)
+    .disableXPoweredByBanner();
 }
