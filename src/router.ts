@@ -1,8 +1,9 @@
 import { Router } from "express";
-import { helloHandler } from './handlers';
+import { helloHandler, healthHandler } from './handlers';
 
 export function registerRoutes(router: Router): void {
   router.get('/', helloHandler);
+  router.get('/health', healthHandler);
 }
 
 export default function createRoutes(): Router {
