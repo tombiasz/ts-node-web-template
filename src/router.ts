@@ -1,8 +1,8 @@
 import { Router } from "express";
-import { Request, Response } from 'express';
+import { helloHandler } from "./handlers";
 
 export function registerRoutes(router: Router): void {
-  router.get('/', (req: Request, res: Response) => res.send('hello, world'));
+  router.get('/', helloHandler);
 }
 
 export default function createRoutes(): Router {
