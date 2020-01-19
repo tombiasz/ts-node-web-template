@@ -11,13 +11,13 @@ export class AppServer {
     httpServer.get('/', (req: Request, res: Response) => res.send('hello, world'));
   }
 
-  start(): Promise<{}>{
+  start(): Promise<this>{
     const { appPort, appName } = this.config;
 
     return new Promise((resolve) => {
       this.httpServer.listen(appPort, () => {
         this.logger.info(`${appName} server running on ${appPort}`);
-        resolve();
+        resolve(this);
       });
     });
   }
