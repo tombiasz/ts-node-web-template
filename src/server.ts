@@ -1,18 +1,22 @@
-import express, { Express, Request, Response } from 'express';
+import express, { Express, Router } from 'express';
 import { Config } from './config';
 import { Logger } from './logger';
+import createRouter from './router';
 
 export class AppServer {
   constructor(
     readonly httpServer: Express,
     readonly config: Config,
     readonly logger: Logger,
-  ) {
-    httpServer.get('/', (req: Request, res: Response) => res.send('hello, world'));
-  }
+  ) {}
 
   disableXPoweredByBanner(): this {
     this.httpServer.disable('x-powered-by');
+    return this;
+  }
+
+  attachRouter(router: Router): this {
+    this.httpServer.use(router);
     return this;
   }
 
@@ -30,5 +34,6 @@ export class AppServer {
 
 export default function createAppServer(config: Config, logger: Logger) {
   return new AppServer(express(), config, logger)
-    .disableXPoweredByBanner();
+    .disableXPoweredByBanner()
+    .attachRouter(createRouter());
 }
