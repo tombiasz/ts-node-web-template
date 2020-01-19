@@ -1,4 +1,4 @@
-import { Express, Request, Response } from 'express';
+import express, { Express, Request, Response } from 'express';
 import { Config } from './config';
 import { Logger } from './logger';
 
@@ -23,6 +23,6 @@ export class AppServer {
   }
 }
 
-export default function createAppServer(httpServer: Express, config: Config, logger: Logger) {
-  return new AppServer(httpServer, config, logger);
+export default function createAppServer(config: Config, logger: Logger) {
+  return new AppServer(express(), config, logger);
 }
