@@ -25,7 +25,7 @@ export class AppServer {
 
     return new Promise((resolve) => {
       this.httpServer.listen(appPort, () => {
-        this.logger.info(`${appName} server running on ${appPort}`);
+        this.logger.info('App server running', { appName, appPort });
         resolve(this);
       });
     });
