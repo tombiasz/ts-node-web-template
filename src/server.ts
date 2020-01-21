@@ -1,7 +1,15 @@
-import express, { Express, Router } from 'express';
+import express, { Express, Router, Request, Response, NextFunction } from 'express';
 import { Config } from './config';
 import { Logger } from './logger';
 import createRouter from './router';
+
+declare global {
+  namespace Express {
+    interface Request {
+      logger: Logger
+    }
+  }
+}
 
 export class AppServer {
   constructor(
@@ -20,6 +28,21 @@ export class AppServer {
     return this;
   }
 
+  attachLoggerToRequest(): this {
+    const { httpServer, logger } = this;
+
+    if (httpServer._router) {
+      logger.warn('Logger should be attach before router. Otherwise it may cause unexpected behavior');
+    }
+
+    httpServer.use((req: Request, res: Response, next: NextFunction) => {
+      req.logger = logger;
+      next();
+    });
+
+    return this;
+  }
+
   start(): Promise<this>{
     const { appPort, appName } = this.config;
 
@@ -35,5 +58,6 @@ export class AppServer {
 export default function createAppServer(config: Config, logger: Logger) {
   return new AppServer(express(), config, logger)
     .disableXPoweredByBanner()
+    .attachLoggerToRequest()
     .attachRouter(createRouter());
 }
