@@ -43,7 +43,7 @@ export class AppServer {
     return this;
   }
 
-  start(): Promise<this>{
+  start(): Promise<this> {
     const { appPort, appName } = this.config;
 
     return new Promise((resolve) => {
