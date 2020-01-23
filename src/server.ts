@@ -2,6 +2,7 @@ import express, { Express, Router, Request, Response, NextFunction } from 'expre
 import { Config } from './config';
 import { Logger } from './logger';
 import createRouter from './router';
+import bodyParser from 'body-parser';
 
 declare global {
   namespace Express {
@@ -43,6 +44,13 @@ export class AppServer {
     return this;
   }
 
+  forceJSONBody(): this{
+    this.httpServer.use(bodyParser.json({
+      type: () => true,
+    }));
+    return this;
+  }
+
   start(): Promise<this> {
     const { appPort, appName } = this.config;
 
@@ -57,6 +65,7 @@ export class AppServer {
 
 export default function createAppServer(config: Config, logger: Logger) {
   return new AppServer(express(), config, logger)
+    .forceJSONBody()
     .disableXPoweredByBanner()
     .attachLoggerToRequest()
     .attachRouter(createRouter());
