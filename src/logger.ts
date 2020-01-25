@@ -1,5 +1,4 @@
 import * as winston from 'winston';
-import { Config } from "./config";
 
 interface LogMethod {
   (message: string, context?: object): void
@@ -45,6 +44,6 @@ class AppLogger implements Logger {
   }
 }
 
-export default function createLogger(): Logger {
+export function createLogger(): Logger {
   return new AppLogger();
 }

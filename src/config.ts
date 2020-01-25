@@ -17,7 +17,7 @@ const checkRequiredKeys = (env: NodeJS.ProcessEnv) : void => {
   });
 }
 
-export default function createConfig(env: NodeJS.ProcessEnv) : Readonly<Config> {
+export function createConfig(env: NodeJS.ProcessEnv) : Readonly<Config> {
   checkRequiredKeys(env);
 
   return {
