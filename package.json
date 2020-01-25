@@ -21,6 +21,7 @@
   "scripts": {
     "build": "tsc",
     "start:dev": "DOTENV_CONFIG_PATH=.env nodemon --watch ./src --exec node --inspect -r dotenv/config -r ts-node/register src/index.ts",
-    "lint": "tslint -c tslint.json ./src/**/*.ts"
+    "start:dev:brk": "DOTENV_CONFIG_PATH=.env nodemon --watch ./src --exec node --inspect-brk -r dotenv/config -r ts-node/register src/index.ts",
+    "lint": "tslint -c tslint.json"
   }
 }
