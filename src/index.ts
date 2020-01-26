@@ -4,7 +4,7 @@ import { createAppServer } from './server';
 import { createLogger, Logger } from './logger';
 import {
   createForceJSONMiddleware,
-  createHandleErrorsMiddleware,
+  createHandleHttpErrorsMiddleware,
   createAttachLoggerMiddleware,
 } from './handlers';
 import { createAppRoutes } from './routes';
@@ -23,7 +23,7 @@ const appRouter = Router()
     .use(createAttachLoggerMiddleware(logger))
     .use(createForceJSONMiddleware())
     .use(createAppRoutes())
-    .use(createHandleErrorsMiddleware());
+    .use(createHandleHttpErrorsMiddleware());
 
 createAppServer()
   .setAppName(config.appName)
