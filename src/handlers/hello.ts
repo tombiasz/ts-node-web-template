@@ -8,6 +8,6 @@ export function createHelloHandler(name: string = 'world') {
     }
 
     req.logger.info('Hello handler called')
-    res.send(`hello, ${name}`);
+    return res.json({ message: `hello, ${name}` });
   }
 }

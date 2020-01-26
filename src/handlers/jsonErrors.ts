@@ -9,6 +9,6 @@ export function createHandleJSONErrorsMiddleware() {
 
     const error = HttpError.badRequest('invalid JSON');
     req.logger.error(`${error}`, error.toJSON());
-    return res.status(error.status).send(error.toJSON());
+    return res.status(error.status).json(error);
   };
 }

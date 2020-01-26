@@ -8,6 +8,6 @@ export function createHandleHttpErrorsMiddleware() {
     }
 
     req.logger.error(`${err}`, err.toJSON());
-    res.status(err.status).send(err.toJSON());
+    return res.status(err.status).json(err);
   };
 }
