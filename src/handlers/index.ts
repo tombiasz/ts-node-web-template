@@ -5,3 +5,4 @@ export * from './health';
 export * from './hello';
 export * from './jsonErrors';
 export * from './unknownRoutes';
+export * from './unhandledErrors';
