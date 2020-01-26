@@ -20,8 +20,8 @@ declare global {
 const config = createConfig(process.env);
 const logger = createLogger();
 const appRouter = Router()
-    .use(createForceJSONMiddleware())
     .use(createAttachLoggerMiddleware(logger))
+    .use(createForceJSONMiddleware())
     .use(createAppRoutes())
     .use(createHandleErrorsMiddleware());
 
