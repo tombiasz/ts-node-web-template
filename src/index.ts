@@ -6,6 +6,7 @@ import {
   createForceJSONMiddleware,
   createHandleHttpErrorsMiddleware,
   createAttachLoggerMiddleware,
+  createHandleJSONErrorsMiddleware,
 } from './handlers';
 import { createAppRoutes } from './routes';
 
@@ -23,7 +24,8 @@ const appRouter = Router()
     .use(createAttachLoggerMiddleware(logger))
     .use(createForceJSONMiddleware())
     .use(createAppRoutes())
-    .use(createHandleHttpErrorsMiddleware());
+    .use(createHandleHttpErrorsMiddleware())
+    .use(createHandleJSONErrorsMiddleware());
 
 createAppServer()
   .setAppName(config.appName)
