@@ -1,32 +1,32 @@
 import { Request, Response, NextFunction } from "express";
 
-export class Handler<TContext> {
-  protected context: TContext
+export abstract class Handler<TContext extends object = {}> {
+	constructor(
+		protected context: TContext = {} as TContext,
+	) {}
 
-  constructor(context: TContext) {
-    this.context = context;
-  }
+  abstract async handle(req: Request, res: Response): Promise<Response | void>
+}
 
-  handle(req: Request, res: Response) {
-    throw new Error('not implemented');
-  }
+export function createHandler<TContext extends object, THandler extends Handler<TContext>>(
+	cls: new (context?: TContext) => THandler,
+): (
+  context?: TContext
+) => (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => Promise<Response | void> {
+	return (context?: TContext) => {
+    const handler = new cls(context);
 
-  public static asHandler<TContext>(
-    this: new (context: TContext) => Handler<TContext>,
-    context: TContext,
-  ): (req: Request, res: Response, next: NextFunction) => void {
-    const handler = new this(context);
-
-    return (req: Request, res: Response, next: NextFunction): void => {
+    return async (req: Request, res: Response, next: NextFunction) => {
       try {
-        handler.handle(req, res);
+        const result = await handler.handle(req, res);
+        return result;
       } catch(error) {
-        const handlerName = this.name;
-        req.logger.error(`Error in handler ${handlerName}`, {
-          handlerName,
-          error,
-        });
-        next(error);
+        req.logger.error(`Error handler in ${cls.name}`, { handler: cls.name, error });
+        return next(error);
       }
     }
   }

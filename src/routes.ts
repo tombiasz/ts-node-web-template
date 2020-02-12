@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import {
   createHealthHandler,
-  HelloHandler
+  createHelloHandler
 } from './handlers';
 
 const healthHandler = createHealthHandler();
@@ -9,8 +9,8 @@ const healthHandler = createHealthHandler();
 export function createAppRoutes(): Router | Router[] {
   return [
     Router()
-      .get('/', HelloHandler.asHandler({ name: 'Fizz Buzz' }))
-      .post('/', HelloHandler.asHandler({ name: 'Foo Bar' })),
+      .get('/', createHelloHandler({ name: 'Fizz Buzz' }))
+      .post('/', createHelloHandler({ name: 'Foo Bar' })),
     Router()
       .get('/health', healthHandler),
   ];

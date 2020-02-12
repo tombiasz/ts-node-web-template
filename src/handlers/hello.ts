@@ -1,13 +1,13 @@
 import { Request, Response, NextFunction } from 'express';
 import { HttpError } from '../errors';
-import { Handler } from './shared/handler';
+import { Handler, createHandler} from './shared/handler';
 
 type HelloHandlerContext = {
-  name: string;
-};
+	name: string
+}
 
-export class HelloHandler extends Handler<HelloHandlerContext> {
-  handle(req: Request, res: Response) {
+class HelloHandler extends Handler<HelloHandlerContext> {
+  async handle(req: Request, res: Response): Promise<Response | void> {
     if (req.query.error !== undefined) {
       throw HttpError.notFound();
     }
@@ -16,5 +16,7 @@ export class HelloHandler extends Handler<HelloHandlerContext> {
     const { name } = this.context;
 
     return res.json({ message: `hello, ${name}` });
-  }
+	}
 }
+
+export const createHelloHandler = createHandler(HelloHandler);
