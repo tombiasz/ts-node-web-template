@@ -20,6 +20,22 @@ declare global {
   }
 }
 
+enum Signal {
+  SIGINT = 'SIGINT',
+  SIGTERM = 'SIGTERM',
+}
+
+const shutdown = async (signal: Signal): Promise<void> => {
+  try {
+    await app.stop();
+    logger.info(`Received ${signal}. Shutting down server`);
+    process.exit(0);
+  } catch (error) {
+     logger.error('Error occurred executing shutdown', { error });
+     process.exit(1);
+  }
+}
+
 const config = createConfig(process.env);
 const logger = createLogger();
 const appRouter = Router()
@@ -31,9 +47,13 @@ const appRouter = Router()
     .use(createHandleJSONErrorsMiddleware())
     .use(createHandleUnhandledErrorsMiddleware());
 
-createAppServer()
+const app = createAppServer()
   .setAppName(config.appName)
   .disableXPoweredByBanner()
   .attachLogger(logger)
-  .attachRouter(appRouter)
-  .start(config.appPort);
+  .attachRouter(appRouter);
+
+app.start(config.appPort);
+
+process.on(Signal.SIGTERM, () => shutdown(Signal.SIGTERM));
+process.on(Signal.SIGINT, () => shutdown(Signal.SIGINT));

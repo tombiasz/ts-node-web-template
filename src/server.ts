@@ -1,21 +1,23 @@
 import express, { Express, Router } from 'express';
 import { Logger } from './logger';
+import { Server } from 'http';
 
 export class AppServer {
   private appName: string = 'App';
   private logger: Logger = console;
+  private server: Server | null = null;
 
   constructor(
-    readonly httpServer: Express,
+    readonly express: Express,
   ) {}
 
-  setAppName(name: string) : this {
+  setAppName(name: string): this {
     this.appName = name;
     return this;
   }
 
   disableXPoweredByBanner(): this {
-    this.httpServer.disable('x-powered-by');
+    this.express.disable('x-powered-by');
     return this;
   }
 
@@ -25,7 +27,7 @@ export class AppServer {
   }
 
   attachRouter(router: Router): this {
-    this.httpServer.use('/', router);
+    this.express.use('/', router);
     return this;
   }
 
@@ -33,14 +35,27 @@ export class AppServer {
     const { appName } = this;
 
     return new Promise((resolve) => {
-      this.httpServer.listen(appPort, () => {
+      this.server = this.express.listen(appPort, () => {
         this.logger.info('App server running', { appName, appPort });
         resolve(this);
-      });
+      })
     });
+  }
+
+  stop(): Promise<void> {
+    const { server, logger } = this;
+
+    if(server) {
+      return new Promise((resolve) => server.close(() => {
+        logger.info('Server stopped');
+        resolve();
+      }));
+    }
+
+    return Promise.resolve();
   }
 }
 
-export function createAppServer(httpServer: Express = express()) {
-  return new AppServer(httpServer);
+export function createAppServer(_express: Express = express()) {
+  return new AppServer(_express);
 }
