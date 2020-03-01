@@ -1,17 +1,12 @@
 import { Router } from 'express';
 import {
-  createHealthHandler,
   createHelloHandler
-} from './handlers';
+} from './hello';
 
-const healthHandler = createHealthHandler();
-
-export function createAppRoutes(): Router | Router[] {
+export function createApiRoutes(): Router | Router[] {
   return [
     Router()
       .get('/', createHelloHandler({ name: 'Fizz Buzz' }))
       .post('/', createHelloHandler({ name: 'Foo Bar' })),
-    Router()
-      .get('/health', healthHandler),
   ];
 }

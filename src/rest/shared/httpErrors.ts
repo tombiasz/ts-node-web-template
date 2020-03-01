@@ -44,4 +44,11 @@ export class HttpError extends Error {
   ) {
     return new this(500, message, context);
   }
+
+  static serviceUnavailable(
+    message: string = 'service unavailable',
+    context?: object,
+  ) {
+    return new this(503, message, context);
+  }
 }

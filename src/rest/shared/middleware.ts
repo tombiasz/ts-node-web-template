@@ -3,7 +3,7 @@ import { Request, Response, NextFunction } from "express";
 export abstract class Middleware<TContext extends object = {}> {
   constructor(protected context: TContext = {} as TContext) {}
 
-  abstract async handle(req: Request, res: Response): Promise<Response | void>;
+  abstract async handle(req: Request, res: Response, next: NextFunction): Promise<Response | void>;
 }
 
 export function createMiddleware<
@@ -23,11 +23,13 @@ export function createMiddleware<
 
     return async (req: Request, res: Response, next: NextFunction) => {
       try {
-        const result = await middleware.handle(req, res);
+        const result = await middleware.handle(req, res, next);
 
         return result;
       } catch (error) {
-        req.logger.error(`Error in middleware ${cls.name}`, {
+        const { logger } = req.app.locals;
+
+        logger.error(`Error in middleware ${cls.name}`, {
           middleware: cls.name,
           error
         });

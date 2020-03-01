@@ -27,7 +27,9 @@ export function createHandler<
 
         return result;
       } catch (error) {
-        req.logger.error(`Error in handler ${cls.name}`, {
+        const { logger } = req.app.locals;
+
+        logger.error(`Error in handler ${cls.name}`, {
           handler: cls.name,
           error
         });

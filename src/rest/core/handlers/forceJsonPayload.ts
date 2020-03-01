@@ -1,6 +1,6 @@
 import bodyParser from 'body-parser';
 
-export function createForceJSONMiddleware() {
+export function createForceJSONPayloadHandler() {
   return bodyParser.json({
       type: () => true,
   });
