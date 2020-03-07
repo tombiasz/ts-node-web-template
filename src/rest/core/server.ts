@@ -16,7 +16,7 @@ export type Context = {
 }
 
 interface RestServer {
-  start: () => Promise<void>
+  start: () => Promise<number>
   stop: () => Promise<void>
 }
 
@@ -37,40 +37,33 @@ export const createServer: AppFactory = ({ logger, config }) => {
   app.locals = { logger, config }
 
   return {
-    async start(): Promise<void> {
+    start(): Promise<number> {
       const { appPort: port } = config;
 
-      if (!server) {
-        return new Promise((resolve, reject) => {
-          server = app.listen(port, (error) => {
-            if (error) {
-              logger.error('Error starting app server', { port, error });
-              reject(error);
-            }
-
-            logger.info('App server running', { port });
-            resolve();
-          });
-        })
+      if (server) {
+        return Promise.resolve(port);
       }
+
+      return new Promise((resolve, reject) => {
+        server = app
+          .listen(port, () => resolve(port))
+          .on('error', error => reject(error));
+      })
     },
 
-    async stop(): Promise<void> {
-      if (server) {
-        isShuttingDown = true;
+    stop(): Promise<void> {
+      isShuttingDown = true;
 
-        return new Promise((resolve, reject) => {
-          server!.close((error) => {
-            if (error) {
-              logger.error('Error stopping server', { error })
-              reject(error);
-            }
-
-            logger.info('Server stopped');
-            resolve();
-          })
-        });
+      if (!server) {
+        return Promise.resolve();
       }
+
+      return new Promise((resolve, reject) => {
+        server!.close(error => error
+            ? reject(error)
+            : resolve()
+        )
+      });
     }
   }
 }

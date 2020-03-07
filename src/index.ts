@@ -9,15 +9,20 @@ enum Signal {
 
 const config = createConfig(process.env);
 const logger = createLogger();
-const app = createServer({ logger, config });
+const server = createServer({ logger, config });
 
 const shutdown = async (signal: Signal): Promise<void> => {
   try {
     logger.info(`Received ${signal}. Shutting down server`);
-    await app.stop();
+
+    await server.stop();
+
+    logger.info('Server stopped');
+
     process.exit(0);
   } catch (error) {
-     logger.error('Error occurred executing shutdown', { error });
+     logger.error('Error occurred stopping server', { error });
+
      process.exit(1);
   }
 }
@@ -25,4 +30,11 @@ const shutdown = async (signal: Signal): Promise<void> => {
 process.on(Signal.SIGTERM, () => shutdown(Signal.SIGTERM));
 process.on(Signal.SIGINT, () => shutdown(Signal.SIGINT));
 
-app.start();
+server
+  .start()
+  .then((port) => logger.info('Server running', { port }))
+  .catch((error) => {
+    logger.error('Error occurred starting server', { error });
+
+    process.exit(1);
+  });
