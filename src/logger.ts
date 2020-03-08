@@ -1,8 +1,6 @@
-import * as winston from 'winston';
+import pino from 'pino';
 
-interface LogMethod {
-  (message: string, context?: object): void
-}
+type LogMethod = (message: string, context?: object) => void
 
 export interface Logger {
   info: LogMethod
@@ -12,35 +10,26 @@ export interface Logger {
 }
 
 class AppLogger implements Logger {
-  private logger: winston.Logger;
+  private logger: pino.Logger;
 
   constructor() {
-    this.logger = winston.createLogger({
-      level: 'info',
-      format: winston.format.combine(
-        winston.format.colorize({ all: true }),
-        winston.format.simple(),
-      ),
-      transports: [
-        new winston.transports.Console(),
-      ],
-    });
+    this.logger = pino();
   }
 
-  debug(message: string, context?: object) {
-    this.logger.debug(message, context);
+  debug(message: string, context: object = {}) {
+    this.logger.debug(context, message);
   }
 
-  error(message: string, context?: object) {
-    this.logger.error(message, context);
+  error(message: string, context: object = {}) {
+    this.logger.error(context, message);
   }
 
-  warn(message: string, context?: object) {
-    this.logger.warn(message, context);
+  warn(message: string, context: object = {}) {
+    this.logger.warn(context, message);
   }
 
-  info(message: string, context?: object) {
-    this.logger.info(message, context);
+  info(message: string, context: object = {}) {
+    this.logger.info(context, message);
   }
 }
 
