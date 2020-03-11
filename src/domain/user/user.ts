@@ -1,7 +1,21 @@
-export class User {
-  constructor(
-    readonly id: string,
-    readonly username: string,
-    readonly password: string,
-  ) {}
+import { Entity } from '../core/entity';
+
+interface UserProps {
+  id: string;
+  username: string;
+  password: string;
+}
+
+export class User extends Entity<UserProps> {
+  get id() {
+    return this.props.id;
+  }
+
+  get username() {
+    return this.props.username;
+  }
+
+  get password() {
+    return this.props.password;
+  }
 }
