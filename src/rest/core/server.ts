@@ -1,28 +1,30 @@
-import express from "express";
-import { Logger } from "../../logger";
+import express from 'express';
+import { Logger } from '../../logger';
 import {
   createErrorsHandler,
   createForceJSONPayloadHandler,
   createHealthCheckHandler,
   createRouteNotFoundHandler,
 } from './handlers';
-import { Config } from "../../config";
-import { Server } from "http";
+import { Config } from '../../config';
+import { Server } from 'http';
 import { createApiRoutes } from '../api/routes';
+import { Repositories } from '../../database';
 
 export type Context = {
   logger: Logger;
   config: Config;
-}
+  repositories: Repositories;
+};
 
 interface RestServer {
-  start: () => Promise<number>
-  stop: () => Promise<void>
+  start: () => Promise<number>;
+  stop: () => Promise<void>;
 }
 
 type AppFactory = (context: Context) => RestServer;
 
-export const createServer: AppFactory = ({ logger, config }) => {
+export const createServer: AppFactory = ({ logger, config, repositories }) => {
   let server: Server | null = null;
   let isShuttingDown = false;
 
@@ -30,11 +32,15 @@ export const createServer: AppFactory = ({ logger, config }) => {
     .disable('x-powered-by')
     .use(createForceJSONPayloadHandler())
     .use('/api', createApiRoutes())
-    .use('/health', createHealthCheckHandler(() => !isShuttingDown))
+    .use(
+      '/health',
+      createHealthCheckHandler(() => !isShuttingDown),
+    )
     .use(createErrorsHandler())
     .use(createRouteNotFoundHandler());
 
-  app.locals = { logger, config }
+  // TODO: set types for app.locals
+  app.locals = { logger, config, repositories };
 
   return {
     start(): Promise<number> {
@@ -48,7 +54,7 @@ export const createServer: AppFactory = ({ logger, config }) => {
         server = app
           .listen(port, () => resolve(port))
           .on('error', error => reject(error));
-      })
+      });
     },
 
     stop(): Promise<void> {
@@ -59,11 +65,8 @@ export const createServer: AppFactory = ({ logger, config }) => {
       }
 
       return new Promise((resolve, reject) => {
-        server!.close(error => error
-            ? reject(error)
-            : resolve()
-        )
+        server!.close(error => (error ? reject(error) : resolve()));
       });
-    }
-  }
-}
+    },
+  };
+};
