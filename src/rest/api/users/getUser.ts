@@ -10,11 +10,6 @@ class GetUserHandler extends Handler<GetUserContext> {
     const { logger, repositories } = req.app.locals;
     const { id } = req.params;
 
-    // TODO: validator
-    if (!id) {
-      throw HttpError.badRequest('user id is required');
-    }
-
     const userRepo = repositories.userRepository;
 
     try {

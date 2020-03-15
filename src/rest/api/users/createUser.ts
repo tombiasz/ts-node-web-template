@@ -9,7 +9,6 @@ type CreateUserContext = {};
 class CreateUserHandler extends Handler<CreateUserContext> {
   async handle(req: Request, res: Response): Promise<Response | void> {
     const { logger, repositories } = req.app.locals;
-    // TODO: validator
     const { id, username, password } = req.body;
 
     const user = new User({

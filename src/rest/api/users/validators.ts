@@ -1,0 +1,33 @@
+import Joi = require('@hapi/joi');
+import {
+  createBodyValidatorMiddleware,
+  createParamsValidatorMiddleware,
+} from '../../shared/validator';
+
+export const getUserSchema = Joi.object({
+  id: Joi.number().required(),
+});
+
+export const createUserSchema = Joi.object({
+  id: Joi.number().required(),
+
+  username: Joi.string()
+    .alphanum()
+    .min(3)
+    .max(50)
+    .required(),
+
+  password: Joi.string()
+    .pattern(new RegExp('^[a-zA-Z0-9]{3,30}$'))
+    .required(),
+});
+
+export const createGetUserValidator = () =>
+  createParamsValidatorMiddleware({
+    schema: getUserSchema,
+  });
+
+export const createCreateUserValidator = () =>
+  createBodyValidatorMiddleware({
+    schema: createUserSchema,
+  });
