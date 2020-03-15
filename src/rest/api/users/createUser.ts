@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import { HttpError } from '../../shared/httpErrors';
 import { Handler, createHandler } from '../../shared/handler';
 import { User } from '../../../domain/user/user';
+import { UserSerializer } from './serializers';
 
 type CreateUserContext = {};
 
@@ -22,8 +23,7 @@ class CreateUserHandler extends Handler<CreateUserContext> {
 
     logger.info('new user created', { id: user.id });
 
-    // TODO: serializer
-    return res.json({ user });
+    return res.json(UserSerializer.one(user));
   }
 }
 

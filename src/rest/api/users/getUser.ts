@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import { HttpError } from '../../shared/httpErrors';
 import { Handler, createHandler } from '../../shared/handler';
+import { UserSerializer } from './serializers';
 
 type GetUserContext = {};
 
@@ -19,8 +20,7 @@ class GetUserHandler extends Handler<GetUserContext> {
     try {
       const user = userRepo.getById(id);
 
-      // TODO: serializer
-      return res.json({ user });
+      return res.json(UserSerializer.one(user));
     } catch (error) {
       logger.error('user not found', {
         filename: __filename,
