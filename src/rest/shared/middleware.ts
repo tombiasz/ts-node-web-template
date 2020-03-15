@@ -1,22 +1,26 @@
-import { Request, Response, NextFunction } from "express";
+import { Request, Response, NextFunction } from 'express';
 
 export abstract class Middleware<TContext extends object = {}> {
   constructor(protected context: TContext = {} as TContext) {}
 
-  abstract async handle(req: Request, res: Response, next: NextFunction): Promise<Response | void>;
+  abstract async handle(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ): Promise<Response | void>;
 }
 
 export function createMiddleware<
   TContext extends object,
   TMiddleware extends Middleware<TContext>
 >(
-  cls: new (context?: TContext) => TMiddleware
+  cls: new (context?: TContext) => TMiddleware,
 ): (
-  context?: TContext
+  context?: TContext,
 ) => (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => Promise<Response | void> {
   return (context?: TContext) => {
     const middleware = new cls(context);
@@ -31,7 +35,7 @@ export function createMiddleware<
 
         logger.error(`Error in middleware ${cls.name}`, {
           middleware: cls.name,
-          error
+          error,
         });
 
         return next(error);
