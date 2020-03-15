@@ -1,6 +1,7 @@
 import { JsonDB } from 'node-json-db';
 import { UserRepository } from '../domain/user/userRepository';
 import { User } from '../domain/user/user';
+import { UserMapper } from './mappers/users';
 
 const USERS_KEY = '/users';
 
@@ -21,13 +22,13 @@ export class UserJsonDBRepository implements UserRepository {
   }
 
   getById(id: string): User {
-    // TODO: db to User mapper
-    return this.db.getData(this.createKey(id));
+    const data = this.db.getData(this.createKey(id));
+    return UserMapper.toEntity(data);
   }
 
   save(user: User): void {
-    // TODO: User to db mapper
-    this.db.push(this.createKey(user.id), user);
+    const data = UserMapper.toDb(user);
+    this.db.push(this.createKey(data.id), data);
   }
 
   delete(user: User): void {}
