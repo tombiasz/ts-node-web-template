@@ -3,18 +3,18 @@ import { JsonDB } from 'node-json-db';
 import { Config as JsonDBConfig } from 'node-json-db/dist/lib/JsonDBConfig';
 import { Config } from '../config';
 
-export type Repositories = {
-  userRepository: UserJsonDBRepository;
+export type DB = {
+  users: UserJsonDBRepository;
 };
 
-type RepositoriesFactory = ({ config }: { config: Config }) => Repositories;
+type DBFactory = ({ config }: { config: Config }) => DB;
 
-export const createRepositories: RepositoriesFactory = ({ config }) => {
+export const createDB: DBFactory = ({ config }) => {
   const db = new JsonDB(
     new JsonDBConfig(config.databaseName, true, false, '/'),
   );
 
   return {
-    userRepository: new UserJsonDBRepository({ db }),
+    users: new UserJsonDBRepository({ db }),
   };
 };

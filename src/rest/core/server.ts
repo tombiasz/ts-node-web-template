@@ -9,12 +9,12 @@ import {
 import { Config } from '../../config';
 import { Server } from 'http';
 import { createApiRoutes } from '../api/routes';
-import { Repositories } from '../../database';
+import { DB } from '../../database';
 
 export type Context = {
   logger: Logger;
   config: Config;
-  repositories: Repositories;
+  db: DB;
 };
 
 interface RestServer {
@@ -24,7 +24,7 @@ interface RestServer {
 
 type AppFactory = (context: Context) => RestServer;
 
-export const createServer: AppFactory = ({ logger, config, repositories }) => {
+export const createServer: AppFactory = ({ logger, config, db }) => {
   let server: Server | null = null;
   let isShuttingDown = false;
 
@@ -40,7 +40,7 @@ export const createServer: AppFactory = ({ logger, config, repositories }) => {
     .use(createRouteNotFoundHandler());
 
   // TODO: set types for app.locals
-  app.locals = { logger, config, repositories };
+  app.locals = { logger, config, db };
 
   return {
     start(): Promise<number> {

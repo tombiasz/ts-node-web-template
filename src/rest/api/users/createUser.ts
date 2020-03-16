@@ -8,7 +8,7 @@ type CreateUserContext = {};
 
 class CreateUserHandler extends Handler<CreateUserContext> {
   async handle(req: Request, res: Response): Promise<Response | void> {
-    const { logger, repositories } = req.app.locals;
+    const { logger, db } = req.app.locals;
     const { id, username, password } = req.body;
 
     const user = new User({
@@ -17,8 +17,7 @@ class CreateUserHandler extends Handler<CreateUserContext> {
       password, // TODO: password hashing
     });
 
-    const userRepo = repositories.userRepository;
-    userRepo.save(user);
+    db.users.save(user);
 
     logger.info('new user created', { id: user.id });
 

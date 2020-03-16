@@ -1,7 +1,7 @@
 import { createConfig } from './config';
 import { createLogger } from './logger';
 import { createServer } from './rest';
-import { createRepositories } from './database';
+import { createDB } from './database';
 
 enum Signal {
   SIGINT = 'SIGINT',
@@ -10,8 +10,8 @@ enum Signal {
 
 const config = createConfig(process.env);
 const logger = createLogger();
-const repositories = createRepositories({ config });
-const server = createServer({ logger, config, repositories });
+const db = createDB({ config });
+const server = createServer({ logger, config, db });
 
 const shutdown = async (signal: Signal): Promise<void> => {
   try {

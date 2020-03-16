@@ -7,13 +7,11 @@ type GetUserContext = {};
 
 class GetUserHandler extends Handler<GetUserContext> {
   async handle(req: Request, res: Response): Promise<Response | void> {
-    const { logger, repositories } = req.app.locals;
+    const { logger, db } = req.app.locals;
     const { id } = req.params;
 
-    const userRepo = repositories.userRepository;
-
     try {
-      const user = userRepo.getById(id);
+      const user = db.users.getById(id);
 
       return res.json(UserSerializer.one(user));
     } catch (error) {
