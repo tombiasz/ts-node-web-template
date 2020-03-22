@@ -31,7 +31,7 @@ export const createServer: AppFactory = ({ logger, config, db }) => {
   const app = express()
     .disable('x-powered-by')
     .use(createForceJSONPayloadHandler())
-    .use('/api', createApiRoutes())
+    .use('/api', createApiRoutes({ logger, db }))
     .use(
       '/health',
       createHealthCheckHandler(() => !isShuttingDown),
@@ -40,6 +40,7 @@ export const createServer: AppFactory = ({ logger, config, db }) => {
     .use(createRouteNotFoundHandler());
 
   // TODO: set types for app.locals
+  // cannot type local so move to req context
   app.locals = { logger, config, db };
 
   return {

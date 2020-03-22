@@ -1,24 +1,22 @@
 import { Request, Response, NextFunction } from 'express';
 import { HttpError } from '../shared/httpErrors';
-import { Handler, createHandler} from '../shared/handler';
+import { Handler, createHandler, BaseProps } from '../shared/handler';
 
-type HelloHandlerContext = {
-	name: string
+interface HelloProps extends BaseProps {
+  name: string;
 }
 
-class HelloHandler extends Handler<HelloHandlerContext> {
-  async handle(req: Request, res: Response): Promise<Response | void> {
-    const { logger } = req.app.locals;
-
+class HelloHandler extends Handler<HelloProps> {
+  protected async _handle(req: Request) {
     if (req.query.error !== undefined) {
-      throw HttpError.badRequest('test', { file: __filename });
+      return this.fail(HttpError.badRequest('test', { file: __filename }));
     }
 
-    logger.info('Hello handler called')
-    const { name } = this.context;
+    this.logger.info('Hello handler called');
+    const { name } = this.props;
 
-    return res.json({ message: `hello, ${name}` });
-	}
+    return this.ok({ message: `hello, ${name}` });
+  }
 }
 
 export const createHelloHandler = createHandler(HelloHandler);

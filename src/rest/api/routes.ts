@@ -1,12 +1,22 @@
 import { Router } from 'express';
 import { createHelloHandler } from './hello';
-import { createUsersRoutes } from './users/routes';
+import { createUserRoutes } from './users/routes';
+import { Logger } from '../../logger';
+import { DB } from '../../database';
 
-export function createApiRoutes(): Router | Router[] {
+interface ApiRoutesProps {
+  logger: Logger;
+  db: DB;
+}
+
+export function createApiRoutes({
+  logger,
+  db,
+}: ApiRoutesProps): Router | Router[] {
   return [
     Router()
-      .get('/', createHelloHandler({ name: 'Fizz Buzz' }))
-      .post('/', createHelloHandler({ name: 'Foo Bar' })),
-    createUsersRoutes(),
+      .get('/', createHelloHandler({ name: 'Fizz Buzz', logger }))
+      .post('/', createHelloHandler({ name: 'Foo Bar', logger })),
+    createUserRoutes({ logger, db }),
   ];
 }

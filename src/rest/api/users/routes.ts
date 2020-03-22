@@ -5,9 +5,24 @@ import {
   createCreateUserValidator,
   createGetUserValidator,
 } from './validators';
+import { Logger } from '../../../logger';
+import { DB } from '../../../database';
 
-export function createUsersRoutes(): Router {
+interface UserRoutesProps {
+  logger: Logger;
+  db: DB;
+}
+
+export function createUserRoutes({ logger, db }: UserRoutesProps): Router {
   return Router()
-    .get('/users/:id', createGetUserValidator(), createGetUserHandler())
-    .post('/users', createCreateUserValidator(), createCreateUserHandler());
+    .get(
+      '/users/:id',
+      createGetUserValidator(),
+      createGetUserHandler({ logger, db }),
+    )
+    .post(
+      '/users',
+      createCreateUserValidator(),
+      createCreateUserHandler({ logger, db }),
+    );
 }

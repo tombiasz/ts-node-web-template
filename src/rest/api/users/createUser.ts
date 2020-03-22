@@ -1,14 +1,23 @@
-import { Request, Response, NextFunction } from 'express';
-import { HttpError } from '../../shared/httpErrors';
-import { Handler, createHandler } from '../../shared/handler';
+import { Request } from 'express';
+import { BaseProps, Handler, createHandler } from '../../shared/handler';
 import { User } from '../../../domain/user/user';
 import { UserSerializer } from './serializers';
+import { DB } from '../../../database';
 
-type CreateUserContext = {};
+interface CreateUserProps extends BaseProps {
+  db: DB;
+}
 
-class CreateUserHandler extends Handler<CreateUserContext> {
-  async handle(req: Request, res: Response): Promise<Response | void> {
-    const { logger, db } = req.app.locals;
+class CreateUserHandler extends Handler<CreateUserProps> {
+  private db: DB;
+
+  constructor(props: CreateUserProps) {
+    super(props);
+
+    this.db = props.db;
+  }
+
+  protected async _handle(req: Request) {
     const { id, username, password } = req.body;
 
     const user = new User({
@@ -17,11 +26,11 @@ class CreateUserHandler extends Handler<CreateUserContext> {
       password, // TODO: password hashing
     });
 
-    db.users.save(user);
+    this.db.users.save(user);
 
-    logger.info('new user created', { id: user.id });
+    this.logger.info('new user created', { id: user.id });
 
-    return res.json(UserSerializer.one(user));
+    return this.ok(UserSerializer.one(user));
   }
 }
 

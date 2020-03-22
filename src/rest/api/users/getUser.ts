@@ -1,26 +1,37 @@
 import { Request, Response, NextFunction } from 'express';
 import { HttpError } from '../../shared/httpErrors';
-import { Handler, createHandler } from '../../shared/handler';
+import { Handler, createHandler, BaseProps } from '../../shared/handler';
 import { UserSerializer } from './serializers';
+import { DB } from '../../../database';
 
-type GetUserContext = {};
+interface GetUserProps extends BaseProps {
+  db: DB;
+}
 
-class GetUserHandler extends Handler<GetUserContext> {
-  async handle(req: Request, res: Response): Promise<Response | void> {
-    const { logger, db } = req.app.locals;
+class GetUserHandler extends Handler<GetUserProps> {
+  private db: DB;
+
+  constructor(props: GetUserProps) {
+    super(props);
+
+    this.db = props.db;
+  }
+
+  protected async _handle(req: Request) {
     const { id } = req.params;
 
     try {
-      const user = db.users.getById(id);
+      const user = this.db.users.getById(id);
 
-      return res.json(UserSerializer.one(user));
+      return this.ok(UserSerializer.one(user));
     } catch (error) {
-      logger.error('user not found', {
+      this.logger.error('user not found', {
         filename: __filename,
         userId: id,
         error,
       });
-      throw HttpError.notFound('user not found');
+
+      return this.fail(HttpError.notFound('user not found'));
     }
   }
 }
