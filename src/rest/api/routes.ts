@@ -17,6 +17,6 @@ export function createApiRoutes({
     Router()
       .get('/', createHelloHandler({ name: 'Fizz Buzz', logger }))
       .post('/', createHelloHandler({ name: 'Foo Bar', logger })),
-    createUserRoutes({ logger, db }),
+    Router().use('/users', createUserRoutes({ logger, db })),
   ];
 }

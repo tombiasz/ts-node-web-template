@@ -15,13 +15,9 @@ interface UserRoutesProps {
 
 export function createUserRoutes({ logger, db }: UserRoutesProps): Router {
   return Router()
-    .get(
-      '/users/:id',
-      createGetUserValidator(),
-      createGetUserHandler({ logger, db }),
-    )
+    .get('/:id', createGetUserValidator(), createGetUserHandler({ logger, db }))
     .post(
-      '/users',
+      '/',
       createCreateUserValidator(),
       createCreateUserHandler({ logger, db }),
     );
