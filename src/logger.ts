@@ -1,4 +1,5 @@
 import pino from 'pino';
+import { Config } from './config';
 
 type LogMethod = (message: string, context?: object) => void;
 
@@ -13,7 +14,7 @@ export interface Logger {
 class AppLogger implements Logger {
   private logger: pino.Logger;
 
-  constructor(logger: pino.Logger) {
+  private constructor(logger: pino.Logger) {
     this.logger = logger;
   }
 
@@ -36,6 +37,20 @@ class AppLogger implements Logger {
   setContext(context: object) {
     return new AppLogger(this.logger.child(context));
   }
+
+  static fromConfig(config: Config) {
+    console.log({
+      enabled: config.loggerEnabled,
+      level: config.loggerLevel,
+    });
+    return new this(
+      pino({
+        enabled: config.loggerEnabled,
+        level: config.loggerLevel,
+      }),
+    );
+  }
 }
 
-export const createLogger = () => new AppLogger(pino());
+export const createLogger = ({ config }: { config: Config }) =>
+  AppLogger.fromConfig(config);

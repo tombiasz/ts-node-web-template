@@ -9,7 +9,7 @@ enum Signal {
 }
 
 const config = createConfig(process.env);
-const logger = createLogger();
+const logger = createLogger({ config });
 const db = createDB({ config });
 const server = createServer({ logger, config, db });
 
