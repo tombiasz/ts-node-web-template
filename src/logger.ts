@@ -1,19 +1,20 @@
 import pino from 'pino';
 
-type LogMethod = (message: string, context?: object) => void
+type LogMethod = (message: string, context?: object) => void;
 
 export interface Logger {
-  info: LogMethod
-  error: LogMethod
-  warn: LogMethod
-  debug: LogMethod
+  info: LogMethod;
+  error: LogMethod;
+  warn: LogMethod;
+  debug: LogMethod;
+  setContext(context: object): Logger;
 }
 
 class AppLogger implements Logger {
   private logger: pino.Logger;
 
-  constructor() {
-    this.logger = pino();
+  constructor(logger: pino.Logger) {
+    this.logger = logger;
   }
 
   debug(message: string, context: object = {}) {
@@ -31,8 +32,10 @@ class AppLogger implements Logger {
   info(message: string, context: object = {}) {
     this.logger.info(context, message);
   }
+
+  setContext(context: object) {
+    return new AppLogger(this.logger.child(context));
+  }
 }
 
-export function createLogger(): Logger {
-  return new AppLogger();
-}
+export const createLogger = () => new AppLogger(pino());
