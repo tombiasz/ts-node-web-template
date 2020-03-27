@@ -10,7 +10,6 @@ export abstract class Handler<TProps extends BaseProps> {
   private _req: Request | null = null;
   private _res: Response | null = null;
   private _next: NextFunction | null = null;
-  protected logger: Logger;
 
   protected get req() {
     if (!this._req) {
@@ -36,9 +35,11 @@ export abstract class Handler<TProps extends BaseProps> {
     return this._next;
   }
 
-  constructor(protected props: TProps) {
-    this.logger = props.logger;
+  protected get logger() {
+    return this.req.logger;
   }
+
+  constructor(protected props: TProps) {}
 
   protected abstract async _handle(
     req: Request,

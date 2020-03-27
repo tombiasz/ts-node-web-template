@@ -5,11 +5,20 @@ import {
   createForceJSONPayloadHandler,
   createHealthCheckHandler,
   createRouteNotFoundHandler,
+  createRequestContext,
 } from './handlers';
 import { Config } from '../../config';
 import { Server } from 'http';
 import { createApiRoutes } from '../api/routes';
 import { DB } from '../../database';
+
+declare global {
+  namespace Express {
+    interface Request {
+      logger: Logger;
+    }
+  }
+}
 
 export type Context = {
   logger: Logger;
@@ -31,6 +40,7 @@ export const createServer: AppFactory = ({ logger, config, db }) => {
   const app = express()
     .disable('x-powered-by')
     .use(createForceJSONPayloadHandler())
+    .use(createRequestContext({ logger }))
     .use('/api', createApiRoutes({ logger, db }))
     .use(
       '/health',
