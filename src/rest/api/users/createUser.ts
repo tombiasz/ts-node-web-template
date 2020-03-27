@@ -1,18 +1,18 @@
 import { Request } from 'express';
-import { BaseProps, Handler, createHandler } from '../../shared/handler';
+import { Handler, createHandler } from '../../shared/handler';
 import { User } from '../../../domain/user/user';
 import { UserSerializer } from './serializers';
 import { DB } from '../../../database';
 
-interface CreateUserProps extends BaseProps {
+type CreateUserProps = {
   db: DB;
-}
+};
 
-class CreateUserHandler extends Handler<CreateUserProps> {
+class CreateUserHandler extends Handler {
   private db: DB;
 
   constructor(props: CreateUserProps) {
-    super(props);
+    super();
 
     this.db = props.db;
   }

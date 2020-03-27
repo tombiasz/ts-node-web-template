@@ -1,18 +1,18 @@
-import { Request, Response, NextFunction } from 'express';
+import { Request } from 'express';
 import { HttpError } from '../../shared/httpErrors';
-import { Handler, createHandler, BaseProps } from '../../shared/handler';
+import { Handler, createHandler } from '../../shared/handler';
 import { UserSerializer } from './serializers';
 import { DB } from '../../../database';
 
-interface GetUserProps extends BaseProps {
+type GetUserProps = {
   db: DB;
-}
+};
 
-class GetUserHandler extends Handler<GetUserProps> {
+class GetUserHandler extends Handler {
   private db: DB;
 
   constructor(props: GetUserProps) {
-    super(props);
+    super();
 
     this.db = props.db;
   }

@@ -15,8 +15,8 @@ export function createApiRoutes({
 }: ApiRoutesProps): Router | Router[] {
   return [
     Router()
-      .get('/', createHelloHandler({ name: 'Fizz Buzz', logger }))
-      .post('/', createHelloHandler({ name: 'Foo Bar', logger })),
-    Router().use('/users', createUserRoutes({ logger, db })),
+      .get('/', createHelloHandler({ name: 'Fizz Buzz' }))
+      .post('/', createHelloHandler({ name: 'Foo Bar' })),
+    Router().use('/users', createUserRoutes({ db })),
   ];
 }

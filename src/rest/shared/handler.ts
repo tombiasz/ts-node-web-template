@@ -2,11 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import { Logger } from '../../logger';
 import { HttpError } from './httpErrors';
 
-export interface BaseProps {
-  logger: Logger;
-}
-
-export abstract class Handler<TProps extends BaseProps> {
+export abstract class Handler {
   private _req: Request | null = null;
   private _res: Response | null = null;
   private _next: NextFunction | null = null;
@@ -38,8 +34,6 @@ export abstract class Handler<TProps extends BaseProps> {
   protected get logger() {
     return this.req.logger;
   }
-
-  constructor(protected props: TProps) {}
 
   protected abstract async _handle(
     req: Request,
@@ -77,10 +71,7 @@ export abstract class Handler<TProps extends BaseProps> {
   }
 }
 
-export function createHandler<
-  TProps extends BaseProps,
-  THandler extends Handler<TProps>
->(
+export function createHandler<TProps, THandler extends Handler>(
   cls: new (props: TProps) => THandler,
 ): (
   props: TProps,
