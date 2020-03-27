@@ -6,10 +6,11 @@ export abstract class Handler {
   private _req: Request | null = null;
   private _res: Response | null = null;
   private _next: NextFunction | null = null;
+  private _logger: Logger | null = null;
 
   protected get req() {
     if (!this._req) {
-      throw new Error('Request is null');
+      throw new Error('Request is null. Did you call `handle`?');
     }
 
     return this._req;
@@ -17,7 +18,7 @@ export abstract class Handler {
 
   protected get res() {
     if (!this._res) {
-      throw new Error('Response is null');
+      throw new Error('Response is null. Did you call `handle`?');
     }
 
     return this._res;
@@ -25,14 +26,18 @@ export abstract class Handler {
 
   protected get next() {
     if (!this._next) {
-      throw new Error('NextFunction is null');
+      throw new Error('NextFunction is null. Did you call `handle`?');
     }
 
     return this._next;
   }
 
   protected get logger() {
-    return this.req.logger;
+    if (!this._logger) {
+      throw new Error('Logger is null. Did you call `handle`?');
+    }
+
+    return this._logger;
   }
 
   protected abstract async _handle(
@@ -46,27 +51,37 @@ export abstract class Handler {
     res: Response,
     next: NextFunction,
   ): Promise<Response | void> {
+    const clsName = this.constructor.name;
+
     this._req = req;
     this._res = res;
     this._next = next;
-
-    return this._handle(req, res, next).catch(error => {
-      const clsName = this.constructor.name;
-
-      this.logger.error(`Error in handler ${clsName}`, {
-        handler: clsName,
-        error,
-      });
-
-      return next(error);
+    this._logger = req.logger.setContext({
+      handler: clsName,
     });
+
+    this.logger.debug(`Calling handler ${clsName}`);
+
+    return this._handle(req, res, next)
+      .then(response => {
+        this.logger.debug(`Returning from handler ${clsName}`);
+
+        return response;
+      })
+      .catch(error => {
+        this.logger.error(`Catching unhandled error in handler ${clsName}`, {
+          error,
+        });
+
+        return next(error);
+      });
   }
 
-  ok(body?: object) {
+  protected ok(body?: object) {
     return body ? this.res.status(200).send(body) : this.res.status(200);
   }
 
-  fail(error: HttpError) {
+  protected fail(error: HttpError) {
     return this.next(error);
   }
 }
