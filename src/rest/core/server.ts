@@ -49,10 +49,6 @@ export const createServer: AppFactory = ({ logger, config, db }) => {
     .use(createErrorsHandler())
     .use(createRouteNotFoundHandler());
 
-  // TODO: set types for app.locals
-  // cannot type local so move to req context
-  app.locals = { logger, config, db };
-
   return {
     start(): Promise<number> {
       const { appPort: port } = config;
