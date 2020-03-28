@@ -8,7 +8,7 @@ import {
   createRequestContext,
 } from './handlers';
 import { Config } from '../../config';
-import { Server } from 'http';
+import { Server as HttpServer } from 'http';
 import { createApiRoutes } from '../api/routes';
 import { DB } from '../../database';
 
@@ -20,21 +20,21 @@ declare global {
   }
 }
 
-export type Context = {
+export type ServerProps = {
   logger: Logger;
   config: Config;
   db: DB;
 };
 
-interface RestServer {
+interface Server {
   start: () => Promise<number>;
   stop: () => Promise<void>;
 }
 
-type AppFactory = (context: Context) => RestServer;
+type ServerFactory = (context: ServerProps) => Server;
 
-export const createServer: AppFactory = ({ logger, config, db }) => {
-  let server: Server | null = null;
+export const createServer: ServerFactory = ({ logger, config, db }) => {
+  let server: HttpServer | null = null;
   let isShuttingDown = false;
 
   const app = express()
