@@ -5,17 +5,20 @@ import {
   createForceJSONPayloadHandler,
   createHealthCheckHandler,
   createRouteNotFoundHandler,
-  createRequestContext,
+  createRequestLogger,
+  createRequestDbSession,
 } from './handlers';
 import { Config } from '../../config';
 import { Server as HttpServer } from 'http';
 import { createApiRoutes } from '../api/routes';
 import { DB } from '../../database';
+import { DbSession } from '../../dbSession';
 
 declare global {
   namespace Express {
     interface Request {
       logger: Logger;
+      db: DbSession;
     }
   }
 }
@@ -40,7 +43,8 @@ export const createServer: ServerFactory = ({ logger, config, db }) => {
   const app = express()
     .disable('x-powered-by')
     .use(createForceJSONPayloadHandler())
-    .use(createRequestContext({ logger }))
+    .use(createRequestLogger({ logger }))
+    .use(createRequestDbSession({ config }))
     .use('/api', createApiRoutes({ logger, db }))
     .use(
       '/health',
