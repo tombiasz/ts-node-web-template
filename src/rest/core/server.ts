@@ -45,7 +45,7 @@ export const createServer: ServerFactory = ({ logger, config, db }) => {
     .use(createForceJSONPayloadHandler())
     .use(createRequestLogger({ logger }))
     .use(createRequestDbSession({ config }))
-    .use('/api', createApiRoutes({ logger, db }))
+    .use('/api', createApiRoutes())
     .use(
       '/health',
       createHealthCheckHandler(() => !isShuttingDown),

@@ -1,18 +1,26 @@
 import { Router } from 'express';
-import { createCreateUserHandler } from './createUser';
-import { createGetUserHandler } from './getUser';
+import { CreateUserHandler } from './createUser';
+import { GetUserHandler } from './getUser';
 import {
   createCreateUserValidator,
   createGetUserValidator,
 } from './validators';
-import { DB } from '../../../database';
+import { UserJsonDBRepository } from './userRepository';
 
-interface UserRoutesProps {
-  db: DB;
-}
-
-export function createUserRoutes({ db }: UserRoutesProps): Router {
+export function createUserRoutes(): Router {
   return Router()
-    .get('/:id', createGetUserValidator(), createGetUserHandler({ db }))
-    .post('/', createCreateUserValidator(), createCreateUserHandler({ db }));
+    .get('/:id', createGetUserValidator(), (req, res, next) => {
+      const logger = req.logger;
+      const db = req.db;
+      const userRepo = new UserJsonDBRepository({ logger, db });
+
+      new GetUserHandler({ userRepo }).handle(req, res, next);
+    })
+    .post('/', createCreateUserValidator(), (req, res, next) => {
+      const logger = req.logger;
+      const db = req.db;
+      const userRepo = new UserJsonDBRepository({ logger, db });
+
+      new CreateUserHandler({ db, userRepo }).handle(req, res, next);
+    });
 }

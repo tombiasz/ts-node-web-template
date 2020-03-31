@@ -2,26 +2,26 @@ import { Request } from 'express';
 import { HttpError } from '../../shared/httpErrors';
 import { Handler, createHandler } from '../../shared/handler';
 import { UserSerializer } from './serializers';
-import { DB } from '../../../database';
+import { UserRepository } from '../../../domain/user/userRepository';
 
 type GetUserProps = {
-  db: DB;
+  userRepo: UserRepository;
 };
 
-class GetUserHandler extends Handler {
-  private db: DB;
+export class GetUserHandler extends Handler {
+  private userRepo: UserRepository;
 
   constructor(props: GetUserProps) {
     super();
 
-    this.db = props.db;
+    this.userRepo = props.userRepo;
   }
 
   protected async _handle(req: Request) {
     const { id } = req.params;
 
     try {
-      const user = this.db.users.getById(id);
+      const user = this.userRepo.getById(id);
 
       return this.ok(UserSerializer.one(user));
     } catch (error) {

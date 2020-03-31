@@ -3,18 +3,24 @@ import { Handler, createHandler } from '../../shared/handler';
 import { User } from '../../../domain/user/user';
 import { UserSerializer } from './serializers';
 import { DB } from '../../../database';
+import { Logger } from '../../../logger';
+import { DbSession } from '../../../dbSession';
+import { UserRepository } from '../../../domain/user/userRepository';
 
 type CreateUserProps = {
-  db: DB;
+  db: DbSession;
+  userRepo: UserRepository;
 };
 
-class CreateUserHandler extends Handler {
-  private db: DB;
+export class CreateUserHandler extends Handler {
+  private db: DbSession;
+  private userRepo: UserRepository;
 
   constructor(props: CreateUserProps) {
     super();
 
     this.db = props.db;
+    this.userRepo = props.userRepo;
   }
 
   protected async _handle(req: Request) {
@@ -26,7 +32,8 @@ class CreateUserHandler extends Handler {
       password, // TODO: password hashing
     });
 
-    this.db.users.save(user);
+    this.userRepo.save(user);
+    this.db.save();
 
     this.logger.info('new user created', { id: user.id });
 
