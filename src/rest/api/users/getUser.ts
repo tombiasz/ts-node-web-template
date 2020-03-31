@@ -2,37 +2,23 @@ import { Request } from 'express';
 import { HttpError } from '../../shared/httpErrors';
 import { Handler, createHandler } from '../../shared/handler';
 import { UserSerializer } from './serializers';
-import { UserRepository } from '../../../domain/user/userRepository';
-
-type GetUserProps = {
-  userRepo: UserRepository;
-};
+import { UserJsonDBRepository } from './userRepository';
+import { GetUser } from '../../../domain/user/getUser';
 
 export class GetUserHandler extends Handler {
-  private userRepo: UserRepository;
-
-  constructor(props: GetUserProps) {
-    super();
-
-    this.userRepo = props.userRepo;
-  }
-
   protected async _handle(req: Request) {
-    const { id } = req.params;
+    const logger = req.logger;
+    const db = req.db;
 
-    try {
-      const user = this.userRepo.getById(id);
+    const userRepo = new UserJsonDBRepository({ logger, db });
 
-      return this.ok(UserSerializer.one(user));
-    } catch (error) {
-      this.logger.error('user not found', {
-        filename: __filename,
-        userId: id,
-        error,
-      });
+    const result = await new GetUser({ userRepo, logger }).execute({
+      id: req.params.id,
+    });
 
-      return this.fail(HttpError.notFound('user not found'));
-    }
+    return result
+      ? this.ok(UserSerializer.one(result))
+      : this.fail(HttpError.notFound('user not found'));
   }
 }
 
