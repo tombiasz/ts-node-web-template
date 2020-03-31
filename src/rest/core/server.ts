@@ -11,7 +11,6 @@ import {
 import { Config } from '../../config';
 import { Server as HttpServer } from 'http';
 import { createApiRoutes } from '../api/routes';
-import { DB } from '../../database';
 import { DbSession } from '../../dbSession';
 
 declare global {
@@ -26,7 +25,6 @@ declare global {
 export type ServerProps = {
   logger: Logger;
   config: Config;
-  db: DB;
 };
 
 interface Server {
@@ -36,7 +34,7 @@ interface Server {
 
 type ServerFactory = (context: ServerProps) => Server;
 
-export const createServer: ServerFactory = ({ logger, config, db }) => {
+export const createServer: ServerFactory = ({ logger, config }) => {
   let server: HttpServer | null = null;
   let isShuttingDown = false;
 

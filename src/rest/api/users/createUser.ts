@@ -2,7 +2,6 @@ import { Request } from 'express';
 import { Handler, createHandler } from '../../shared/handler';
 import { User } from '../../../domain/user/user';
 import { UserSerializer } from './serializers';
-import { DB } from '../../../database';
 import { Logger } from '../../../logger';
 import { DbSession } from '../../../dbSession';
 import { UserRepository } from '../../../domain/user/userRepository';
