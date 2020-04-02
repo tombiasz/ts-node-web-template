@@ -1,6 +1,6 @@
 import { Router } from 'express';
-import { createCreateUserHandler } from './createUser';
-import { createGetUserHandler } from './getUser';
+import { createCreateUserHandler } from './createUserHandler';
+import { createGetUserHandler } from './getUserHandler';
 import {
   createCreateUserValidator,
   createGetUserValidator,
