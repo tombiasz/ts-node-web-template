@@ -16,16 +16,17 @@ type CreateUserData = {
   password: string;
 };
 
-export class CreateUser implements UseCase<CreateUserData, User> {
+export class CreateUser extends UseCase<CreateUserData, User> {
   private db: DbSession;
   private userRepo: UserRepository;
   private logger: Logger;
 
   constructor(props: CreateUserProps) {
+    super();
+
     this.db = props.db;
     this.userRepo = props.userRepo;
-    // TODO: set logger context
-    this.logger = props.logger;
+    this.logger = UseCase.extendLoggerWithContext(props.logger);
   }
 
   public async execute(data: CreateUserData) {

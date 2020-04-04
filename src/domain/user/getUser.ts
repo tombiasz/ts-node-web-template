@@ -12,13 +12,15 @@ type GetUserData = {
   id: string;
 };
 
-export class GetUser implements UseCase<GetUserData, User | null> {
+export class GetUser extends UseCase<GetUserData, User | null> {
   private userRepo: UserRepository;
   private logger: Logger;
 
   constructor(props: GetUserProps) {
+    super();
+
     this.userRepo = props.userRepo;
-    this.logger = props.logger;
+    this.logger = UseCase.extendLoggerWithContext(props.logger);
   }
 
   public async execute({ id }: GetUserData) {
