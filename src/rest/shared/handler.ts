@@ -56,9 +56,7 @@ export abstract class Handler {
     this._req = req;
     this._res = res;
     this._next = next;
-    this._logger = req.logger.withContext({
-      handler: clsName,
-    });
+    this._logger = Handler.extendLoggerWithContext(req.logger);
 
     this.logger.debug(`Calling handler ${clsName}`);
 
@@ -83,6 +81,12 @@ export abstract class Handler {
 
   protected fail(error: HttpError) {
     return this.next(error);
+  }
+
+  static extendLoggerWithContext(logger: Logger) {
+    return logger.withContext({
+      handler: this.name,
+    });
   }
 }
 
