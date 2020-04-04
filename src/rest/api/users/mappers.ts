@@ -1,4 +1,4 @@
-import { User } from '../../../../domain/user/user';
+import { User } from '../../../domain/user/user';
 
 type UserModel = {
   id: string;

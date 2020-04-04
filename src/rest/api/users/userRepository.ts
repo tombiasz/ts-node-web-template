@@ -1,7 +1,6 @@
-import { JsonDB } from 'node-json-db';
 import { UserRepository } from '../../../domain/user/userRepository';
 import { User } from '../../../domain/user/user';
-import { UserMapper } from './mappers/users';
+import { UserMapper } from './mappers';
 import { DbSession } from '../../../dbSession';
 import { Logger } from '../../../logger';
 
