@@ -2,6 +2,7 @@ import { DbSession } from '../../dbSession';
 import { Logger } from '../../logger';
 import { User } from './user';
 import { UserRepository } from './userRepository';
+import { UseCase } from '../core/useCase';
 
 type CreateUserProps = {
   db: DbSession;
@@ -15,7 +16,7 @@ type CreateUserData = {
   password: string;
 };
 
-export class CreateUser {
+export class CreateUser implements UseCase<CreateUserData, User> {
   private db: DbSession;
   private userRepo: UserRepository;
   private logger: Logger;
@@ -27,7 +28,6 @@ export class CreateUser {
     this.logger = props.logger;
   }
 
-  // TODO: UseCase/Interactor interface
   public async execute(data: CreateUserData) {
     const { id, username, password } = data;
 

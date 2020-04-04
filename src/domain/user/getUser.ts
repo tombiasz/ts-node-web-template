@@ -1,6 +1,7 @@
 import { UserRepository } from './userRepository';
 import { Logger } from '../../logger';
 import { User } from './user';
+import { UseCase } from '../core/useCase';
 
 type GetUserProps = {
   userRepo: UserRepository;
@@ -11,7 +12,7 @@ type GetUserData = {
   id: string;
 };
 
-export class GetUser {
+export class GetUser implements UseCase<GetUserData, User | null> {
   private userRepo: UserRepository;
   private logger: Logger;
 
@@ -20,7 +21,7 @@ export class GetUser {
     this.logger = props.logger;
   }
 
-  public async execute({ id }: GetUserData): Promise<User | null> {
+  public async execute({ id }: GetUserData) {
     this.logger.info(`Getting user ${id}`);
 
     try {
