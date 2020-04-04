@@ -8,7 +8,7 @@ export interface Logger {
   error: LogMethod;
   warn: LogMethod;
   debug: LogMethod;
-  setContext(context: object): Logger;
+  withContext(context: object): Logger;
 }
 
 class AppLogger implements Logger {
@@ -34,7 +34,7 @@ class AppLogger implements Logger {
     this.logger.info(context, message);
   }
 
-  setContext(context: object) {
+  withContext(context: object) {
     return new AppLogger(this.logger.child(context));
   }
 
