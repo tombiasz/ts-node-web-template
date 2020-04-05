@@ -2,6 +2,7 @@ import { UserRepository } from './userRepository';
 import { Logger } from '../../logger';
 import { User } from './user';
 import { UseCase } from '../core/useCase';
+import { DomainError } from '../core/domainError';
 
 type GetUserProps = {
   userRepo: UserRepository;
@@ -12,7 +13,11 @@ type GetUserData = {
   id: string;
 };
 
-export class GetUser extends UseCase<GetUserData, User | null> {
+export class UserNotFoundError extends DomainError {
+  message = 'user not found';
+}
+
+export class GetUser extends UseCase<GetUserData, User> {
   private userRepo: UserRepository;
   private logger: Logger;
 
@@ -29,8 +34,7 @@ export class GetUser extends UseCase<GetUserData, User | null> {
     try {
       return this.userRepo.getById(id);
     } catch (error) {
-      // TODO: domain error if not found?
-      return null;
+      throw new UserNotFoundError();
     }
   }
 }

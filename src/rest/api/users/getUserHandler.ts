@@ -3,7 +3,7 @@ import { HttpError } from '../../shared/httpErrors';
 import { Handler, createHandler } from '../../shared/handler';
 import { UserSerializer } from './serializers';
 import { UserJsonDBRepository } from './userRepository';
-import { GetUser } from '../../../domain/user/getUser';
+import { GetUser, UserNotFoundError } from '../../../domain/user/getUser';
 
 export class GetUserHandler extends Handler {
   protected async _handle(req: Request) {
@@ -12,13 +12,19 @@ export class GetUserHandler extends Handler {
 
     const userRepo = new UserJsonDBRepository({ logger, db });
 
-    const result = await new GetUser({ userRepo, logger }).execute({
-      id: req.params.id,
-    });
+    try {
+      const result = await new GetUser({ userRepo, logger }).execute({
+        id: req.params.id,
+      });
 
-    return result
-      ? this.ok(UserSerializer.one(result))
-      : this.fail(HttpError.notFound('user not found'));
+      return this.ok(UserSerializer.one(result));
+    } catch (error) {
+      if (error instanceof UserNotFoundError) {
+        return this.fail(HttpError.notFound(error.message));
+      }
+
+      throw error;
+    }
   }
 }
 
