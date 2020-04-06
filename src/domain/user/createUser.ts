@@ -3,6 +3,7 @@ import { Logger } from '../../logger';
 import { User } from './user';
 import { UserRepository } from './userRepository';
 import { UseCase } from '../core/useCase';
+import { DomainError } from '../core/domainError';
 
 type CreateUserProps = {
   db: DbSession;
@@ -15,6 +16,10 @@ type CreateUserData = {
   username: string;
   password: string;
 };
+
+export class UsernameNotUniqueError extends DomainError {
+  message = 'username already taken';
+}
 
 export class CreateUser extends UseCase<CreateUserData, User> {
   private db: DbSession;
@@ -30,9 +35,16 @@ export class CreateUser extends UseCase<CreateUserData, User> {
   }
 
   public async execute(data: CreateUserData) {
+    this.logger.info('Creating new user');
+
     const { id, username, password } = data;
 
-    // TODO: unique username
+    const usernameExist = await this.userRepo.isUsernameExist(username);
+
+    if (usernameExist) {
+      throw new UsernameNotUniqueError();
+    }
+
     const user = new User({
       id, // TODO: generate id
       username,
@@ -40,6 +52,7 @@ export class CreateUser extends UseCase<CreateUserData, User> {
     });
 
     this.userRepo.save(user);
+
     this.db.save();
 
     this.logger.info('new user created', { id: user.id });

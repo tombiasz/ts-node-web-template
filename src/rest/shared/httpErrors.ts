@@ -17,24 +17,18 @@ export class HttpError extends Error {
       status,
       message,
       ...(Object.entries(context).length > 0 && { context }),
-    }
+    };
   }
 
   toString(): string {
-    return `<HttpError ${this.status}>`
+    return `HttpError ${this.status}`;
   }
 
-  static notFound(
-    message: string = 'not found',
-    context?: object,
-  ) {
+  static notFound(message: string = 'not found', context?: object) {
     return new this(404, message, context);
   }
 
-  static badRequest(
-    message: string = 'bad request',
-    context?: object,
-  ) {
+  static badRequest(message: string = 'bad request', context?: object) {
     return new this(400, message, context);
   }
 
@@ -50,5 +44,9 @@ export class HttpError extends Error {
     context?: object,
   ) {
     return new this(503, message, context);
+  }
+
+  static conflict(message: string = 'conflict', context?: object) {
+    return new this(409, message, context);
   }
 }

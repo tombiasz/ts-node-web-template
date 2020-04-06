@@ -5,4 +5,5 @@ export interface UserRepository {
   getById(id: string): User;
   save(user: User): void;
   delete(user: User): void;
+  isUsernameExist(username: string): boolean;
 }

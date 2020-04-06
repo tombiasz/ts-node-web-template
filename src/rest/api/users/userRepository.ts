@@ -11,6 +11,12 @@ type RepositoryProps = {
   logger: Logger;
 };
 
+export type UserModel = {
+  id: string;
+  username: string;
+  password: string;
+};
+
 export class UserJsonDBRepository implements UserRepository {
   private db: DbSession;
   private logger: Logger;
@@ -42,6 +48,15 @@ export class UserJsonDBRepository implements UserRepository {
   }
 
   delete(user: User): void {}
+
+  isUsernameExist(username: string): boolean {
+    const found = this.db.filter<UserModel>(
+      this.createKey(),
+      user => user.username === username,
+    );
+
+    return found ? found.length > 0 : false;
+  }
 
   private createKey(...bits: string[]) {
     return [USERS_KEY, ...bits].join('/');

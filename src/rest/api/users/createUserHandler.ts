@@ -1,8 +1,12 @@
 import { Request } from 'express';
 import { Handler, createHandler } from '../../shared/handler';
 import { UserSerializer } from './serializers';
-import { CreateUser } from '../../../domain/user/createUser';
+import {
+  CreateUser,
+  UsernameNotUniqueError,
+} from '../../../domain/user/createUser';
 import { UserJsonDBRepository } from './userRepository';
+import { HttpError } from '../../shared/httpErrors';
 
 export class CreateUserHandler extends Handler {
   protected async _handle(req: Request) {
@@ -10,15 +14,23 @@ export class CreateUserHandler extends Handler {
     const db = req.db;
     const userRepo = new UserJsonDBRepository({ logger, db });
 
-    const user = await new CreateUser({
-      logger,
-      db,
-      userRepo,
-    }).execute(req.body);
+    try {
+      const user = await new CreateUser({
+        logger,
+        db,
+        userRepo,
+      }).execute(req.body);
 
-    logger.info('new user created', { id: user.id });
+      logger.info('new user created', { id: user.id });
 
-    return this.ok(UserSerializer.one(user));
+      return this.ok(UserSerializer.one(user));
+    } catch (error) {
+      if (error instanceof UsernameNotUniqueError) {
+        return this.fail(HttpError.conflict(error.message));
+      }
+
+      throw error;
+    }
   }
 }
 

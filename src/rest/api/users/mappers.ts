@@ -1,10 +1,5 @@
 import { User } from '../../../domain/user/user';
-
-type UserModel = {
-  id: string;
-  username: string;
-  password: string;
-};
+import { UserModel } from './userRepository';
 
 const toDb = (user: User): UserModel => ({
   id: user.id,
