@@ -37,7 +37,7 @@ export class CreateUser extends UseCase<CreateUserData, User> {
   public async execute(data: CreateUserData) {
     this.logger.info('Creating new user');
 
-    const { id, username, password } = data;
+    const { username, password } = data;
 
     const usernameExist = await this.userRepo.isUsernameExist(username);
 
@@ -45,8 +45,7 @@ export class CreateUser extends UseCase<CreateUserData, User> {
       throw new UsernameNotUniqueError();
     }
 
-    const user = new User({
-      id, // TODO: generate id
+    const user = User.create({
       username,
       password, // TODO: password hashing
     });

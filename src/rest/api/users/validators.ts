@@ -9,8 +9,6 @@ export const getUserSchema = Joi.object({
 });
 
 export const createUserSchema = Joi.object({
-  id: Joi.number().required(),
-
   username: Joi.string()
     .alphanum()
     .min(3)
