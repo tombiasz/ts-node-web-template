@@ -5,7 +5,9 @@ import {
 } from '../../shared/validator';
 
 export const getUserSchema = Joi.object({
-  id: Joi.number().required(),
+  id: Joi.string()
+    .guid({ version: 'uuidv4' })
+    .required(),
 });
 
 export const createUserSchema = Joi.object({
