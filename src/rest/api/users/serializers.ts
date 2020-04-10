@@ -6,7 +6,7 @@ export type SerializedUser = {
 };
 
 const one = (user: User): SerializedUser => ({
-  id: user.id,
+  id: user.id.value,
   username: user.username,
 });
 

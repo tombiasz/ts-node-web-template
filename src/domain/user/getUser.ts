@@ -3,6 +3,7 @@ import { Logger } from '../../logger';
 import { User } from './user';
 import { UseCase } from '../core/useCase';
 import { DomainError } from '../core/domainError';
+import { UserId } from './userId';
 
 type GetUserProps = {
   userRepo: UserRepository;
@@ -29,10 +30,12 @@ export class GetUser extends UseCase<GetUserData, User> {
   }
 
   public async execute({ id }: GetUserData) {
-    this.logger.info(`Getting user ${id}`);
+    const userId = new UserId(id);
+
+    this.logger.info(`Getting user ${userId}`);
 
     try {
-      return this.userRepo.getById(id);
+      return this.userRepo.getById(userId);
     } catch (error) {
       throw new UserNotFoundError();
     }

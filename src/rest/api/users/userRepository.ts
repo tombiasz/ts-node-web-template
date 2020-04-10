@@ -3,6 +3,7 @@ import { User } from '../../../domain/user/user';
 import { UserMapper } from './mappers';
 import { DbSession } from '../../../dbSession';
 import { Logger } from '../../../logger';
+import { UserId } from '../../../domain/user/userId';
 
 const USERS_KEY = '/users';
 
@@ -31,10 +32,10 @@ export class UserJsonDBRepository implements UserRepository {
     return [];
   }
 
-  getById(id: string): User {
+  getById(id: UserId): User {
     this.logger.debug(`Getting user by id ${id}`);
 
-    const data = this.db.getData(this.createKey(id));
+    const data = this.db.getData(this.createKey(id.value));
 
     return UserMapper.toEntity(data);
   }

@@ -1,8 +1,8 @@
-import * as uuid from 'uuid';
 import { Entity } from '../core/entity';
+import { UserId } from './userId';
 
 interface UserProps {
-  id: string;
+  id: UserId;
   username: string;
   password: string;
 }
@@ -22,7 +22,7 @@ export class User extends Entity<UserProps> {
 
   public static create(props: Omit<UserProps, 'id'>): User {
     return new this({
-      id: uuid.v4(),
+      id: UserId.create(),
       ...props,
     });
   }
