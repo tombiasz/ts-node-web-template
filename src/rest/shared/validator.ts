@@ -42,6 +42,8 @@ export class ValidatorMiddleware extends Handler {
       return res.status(error.status).json(error.toJSON());
     }
 
+    req[this.path] = result.value;
+
     next();
   }
 }

@@ -15,10 +15,12 @@ export const createUserSchema = Joi.object({
     .alphanum()
     .min(3)
     .max(50)
+    .trim()
     .required(),
 
   password: Joi.string()
     .pattern(new RegExp('^[a-zA-Z0-9]{3,30}$'))
+    .trim()
     .required(),
 });
 
