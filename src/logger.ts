@@ -39,10 +39,6 @@ class AppLogger implements Logger {
   }
 
   static fromConfig(config: Config) {
-    console.log({
-      enabled: config.loggerEnabled,
-      level: config.loggerLevel,
-    });
     return new this(
       pino({
         enabled: config.loggerEnabled,
