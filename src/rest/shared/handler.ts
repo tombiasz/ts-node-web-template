@@ -101,3 +101,17 @@ export function createHandler<TProps, THandler extends Handler>(
     return (req, res, next) => handler.handle(req, res, next);
   };
 }
+
+export type HandlerFactory<THandler extends Handler> = (
+  req: Request,
+) => THandler;
+
+export function asHandler<THandler extends Handler>(
+  factory: HandlerFactory<THandler>,
+): (req: Request, res: Response, next: NextFunction) => void {
+  return (req, res, next) => {
+    const handler = factory(req);
+
+    handler.handle(req, res, next);
+  };
+}

@@ -31,7 +31,7 @@ export class CreateUser extends UseCase<CreateUserData, User> {
 
     this.db = props.db;
     this.userRepo = props.userRepo;
-    this.logger = UseCase.extendLoggerWithContext(props.logger);
+    this.logger = props.logger;
   }
 
   public async execute(data: CreateUserData) {
