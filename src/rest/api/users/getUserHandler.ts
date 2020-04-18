@@ -1,24 +1,40 @@
 import { Request } from 'express';
 import { HttpError } from '../../shared/httpErrors';
-import { Handler, createHandler } from '../../shared/handler';
+import { Handler, HandlerFactory } from '../../shared/handler';
 import { UserSerializer } from './serializers';
 import { UserJsonDBRepository } from './userRepository';
 import { GetUser, UserNotFoundError } from '../../../domain/user/getUser';
+import { Logger } from '../../../logger';
+
+type GetUserHandlerDependencies = {
+  useCase: GetUser;
+  logger: Logger;
+};
 
 export class GetUserHandler extends Handler {
-  protected async _handle(req: Request) {
-    const logger = req.logger;
-    const db = req.db;
+  private useCase: GetUser;
 
-    const userRepo = new UserJsonDBRepository({ logger, db });
+  private logger2: Logger;
+
+  constructor({ useCase, logger }: GetUserHandlerDependencies) {
+    super();
+
+    this.useCase = useCase;
+    this.logger2 = logger;
+  }
+
+  protected async _handle(req: Request) {
+    this.logger2.info('Getting user');
 
     try {
-      const result = await new GetUser({ userRepo, logger }).execute({
+      const result = await this.useCase.execute({
         id: req.params.id,
       });
 
       return this.ok(UserSerializer.one(result));
     } catch (error) {
+      this.logger2.error('Error during getting user', { error });
+
       if (error instanceof UserNotFoundError) {
         return this.fail(HttpError.notFound(error.message));
       }
@@ -28,4 +44,22 @@ export class GetUserHandler extends Handler {
   }
 }
 
-export const createGetUserHandler = createHandler(GetUserHandler);
+export const getUserHandlerFactory: HandlerFactory<GetUserHandler> = req => {
+  const logger = req.logger;
+  const db = req.db;
+
+  const userRepo = new UserJsonDBRepository({
+    logger: logger.withContext({ repo: UserJsonDBRepository.name }),
+    db,
+  });
+
+  const createUser = new GetUser({
+    logger: logger.withContext({ useCase: GetUser.name }),
+    userRepo,
+  });
+
+  return new GetUserHandler({
+    useCase: createUser,
+    logger: logger.withContext({ handler: GetUserHandler.name }),
+  });
+};

@@ -1,15 +1,15 @@
 import { Router } from 'express';
-import { createUserHandlerFactory } from './createUserHandler';
+import { asHandler } from '../../shared/handler';
 import {
   createCreateUserValidator,
   createGetUserValidator,
 } from './validators';
-import { asHandler } from '../../shared/handler';
-import { createGetUserHandler } from './getUserHandler';
+import { getUserHandlerFactory } from './getUserHandler';
+import { createUserHandlerFactory } from './createUserHandler';
 
 export function createUserRoutes(): Router {
   return Router()
-    .get('/:id', createGetUserValidator(), createGetUserHandler({}))
+    .get('/:id', createGetUserValidator(), asHandler(getUserHandlerFactory))
     .post(
       '/',
       createCreateUserValidator(),

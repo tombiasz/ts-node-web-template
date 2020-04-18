@@ -26,7 +26,7 @@ export class GetUser extends UseCase<GetUserData, User> {
     super();
 
     this.userRepo = props.userRepo;
-    this.logger = UseCase.extendLoggerWithContext(props.logger);
+    this.logger = props.logger;
   }
 
   public async execute({ id }: GetUserData) {
