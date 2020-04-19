@@ -6,7 +6,6 @@ export abstract class Handler {
   private _req: Request | null = null;
   private _res: Response | null = null;
   private _next: NextFunction | null = null;
-  private _logger: Logger | null = null;
 
   protected get req() {
     if (!this._req) {
@@ -32,14 +31,6 @@ export abstract class Handler {
     return this._next;
   }
 
-  protected get logger() {
-    if (!this._logger) {
-      throw new Error('Logger is null. Did you call `handle`?');
-    }
-
-    return this._logger;
-  }
-
   protected abstract async _handle(
     req: Request,
     res: Response,
@@ -52,22 +43,22 @@ export abstract class Handler {
     next: NextFunction,
   ): Promise<Response | void> {
     const clsName = this.constructor.name;
+    const logger = req.logger;
 
     this._req = req;
     this._res = res;
     this._next = next;
-    this._logger = Handler.extendLoggerWithContext(req.logger);
 
-    this.logger.debug(`Calling handler ${clsName}`);
+    logger.debug(`Calling handler ${clsName}`);
 
     return this._handle(req, res, next)
       .then(response => {
-        this.logger.debug(`Returning from handler ${clsName}`);
+        logger.debug(`Returning from handler ${clsName}`);
 
         return response;
       })
       .catch(error => {
-        this.logger.error(`Catching unhandled error in handler ${clsName}`, {
+        logger.error(`Catching unhandled error in handler ${clsName}`, {
           error,
         });
 

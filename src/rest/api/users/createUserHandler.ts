@@ -17,20 +17,20 @@ type CreateUserHandlerDependencies = {
 export class CreateUserHandler extends Handler {
   private useCase: CreateUser;
 
-  private logger2: Logger;
+  private logger: Logger;
 
   constructor({ useCase, logger }: CreateUserHandlerDependencies) {
     super();
 
     this.useCase = useCase;
-    this.logger2 = logger;
+    this.logger = logger;
   }
 
   protected async _handle(req: Request) {
     try {
       const user = await this.useCase.execute(req.body);
 
-      this.logger2.info('new user created', { id: user.id });
+      this.logger.info('new user created', { id: user.id });
 
       return this.ok(UserSerializer.one(user));
     } catch (error) {

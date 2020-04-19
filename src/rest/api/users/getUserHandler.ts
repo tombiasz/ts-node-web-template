@@ -14,17 +14,17 @@ type GetUserHandlerDependencies = {
 export class GetUserHandler extends Handler {
   private useCase: GetUser;
 
-  private logger2: Logger;
+  private logger: Logger;
 
   constructor({ useCase, logger }: GetUserHandlerDependencies) {
     super();
 
     this.useCase = useCase;
-    this.logger2 = logger;
+    this.logger = logger;
   }
 
   protected async _handle(req: Request) {
-    this.logger2.info('Getting user');
+    this.logger.info('Getting user');
 
     try {
       const result = await this.useCase.execute({
@@ -33,7 +33,7 @@ export class GetUserHandler extends Handler {
 
       return this.ok(UserSerializer.one(result));
     } catch (error) {
-      this.logger2.error('Error during getting user', { error });
+      this.logger.error('Error during getting user', { error });
 
       if (error instanceof UserNotFoundError) {
         return this.fail(HttpError.notFound(error.message));
