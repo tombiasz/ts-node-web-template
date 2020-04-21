@@ -1,4 +1,4 @@
-import { UserRepository } from './userRepository';
+import { IUserRepository } from './userRepository';
 import { Logger } from '../../logger';
 import { User } from './user';
 import { UseCase } from '../core/useCase';
@@ -6,7 +6,7 @@ import { DomainError } from '../core/domainError';
 import { UserId } from './userId';
 
 type GetUserProps = {
-  userRepo: UserRepository;
+  userRepo: IUserRepository;
   logger: Logger;
 };
 
@@ -19,7 +19,7 @@ export class UserNotFoundError extends DomainError {
 }
 
 export class GetUser extends UseCase<GetUserData, User> {
-  private userRepo: UserRepository;
+  private userRepo: IUserRepository;
   private logger: Logger;
 
   constructor(props: GetUserProps) {

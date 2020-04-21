@@ -1,7 +1,7 @@
 import { User } from './user';
 import { UserId } from './userId';
 
-export interface UserRepository {
+export interface IUserRepository {
   getAll(): User[];
   getById(id: UserId): User;
   save(user: User): void;

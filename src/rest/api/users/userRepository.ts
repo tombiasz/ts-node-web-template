@@ -1,4 +1,4 @@
-import { UserRepository } from '../../../domain/user/userRepository';
+import { IUserRepository } from '../../../domain/user/userRepository';
 import { User } from '../../../domain/user/user';
 import { UserMapper } from './mappers';
 import { DbSession } from '../../../dbSession';
@@ -18,7 +18,7 @@ export type UserModel = {
   password: string;
 };
 
-export class UserJsonDBRepository implements UserRepository {
+export class UserJsonDBRepository implements IUserRepository {
   private db: DbSession;
   private logger: Logger;
 
@@ -53,7 +53,7 @@ export class UserJsonDBRepository implements UserRepository {
   isUsernameExist(username: string): boolean {
     const found = this.db.filter<UserModel>(
       this.createKey(),
-      user => user.username === username,
+      (user) => user.username === username,
     );
 
     return found ? found.length > 0 : false;
