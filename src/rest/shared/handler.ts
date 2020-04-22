@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { Logger } from '../../logger';
+import { ILogger } from '../../logger';
 import { HttpError } from './httpErrors';
 
 export abstract class Handler {
@@ -52,12 +52,12 @@ export abstract class Handler {
     logger.debug(`Calling handler ${clsName}`);
 
     return this._handle(req, res, next)
-      .then(response => {
+      .then((response) => {
         logger.debug(`Returning from handler ${clsName}`);
 
         return response;
       })
-      .catch(error => {
+      .catch((error) => {
         logger.error(`Catching unhandled error in handler ${clsName}`, {
           error,
         });
@@ -74,7 +74,7 @@ export abstract class Handler {
     return this.next(error);
   }
 
-  static extendLoggerWithContext(logger: Logger) {
+  static extendLoggerWithContext(logger: ILogger) {
     return logger.withContext({
       handler: this.name,
     });
@@ -86,7 +86,7 @@ export function createHandler<TProps, THandler extends Handler>(
 ): (
   props: TProps,
 ) => (req: Request, res: Response, next: NextFunction) => void {
-  return props => {
+  return (props) => {
     const handler = new cls(props);
 
     return (req, res, next) => handler.handle(req, res, next);

@@ -2,14 +2,14 @@ import { IUserRepository } from '../../../domain/user/userRepository';
 import { User } from '../../../domain/user/user';
 import { UserMapper } from './mappers';
 import { DbSession } from '../../../dbSession';
-import { Logger } from '../../../logger';
+import { ILogger } from '../../../logger';
 import { UserId } from '../../../domain/user/userId';
 
 const USERS_KEY = '/users';
 
 type RepositoryProps = {
   db: DbSession;
-  logger: Logger;
+  logger: ILogger;
 };
 
 export type UserModel = {
@@ -20,7 +20,7 @@ export type UserModel = {
 
 export class UserJsonDBRepository implements IUserRepository {
   private db: DbSession;
-  private logger: Logger;
+  private logger: ILogger;
 
   constructor({ db, logger }: RepositoryProps) {
     this.db = db;

@@ -1,5 +1,5 @@
 import { DbSession } from '../../dbSession';
-import { Logger } from '../../logger';
+import { ILogger } from '../../logger';
 import { User } from './user';
 import { IUserRepository } from './userRepository';
 import { UseCase } from '../core/useCase';
@@ -8,7 +8,7 @@ import { DomainError } from '../core/domainError';
 type CreateUserProps = {
   db: DbSession;
   userRepo: IUserRepository;
-  logger: Logger;
+  logger: ILogger;
 };
 
 type CreateUserData = {
@@ -24,7 +24,7 @@ export class UsernameNotUniqueError extends DomainError {
 export class CreateUser extends UseCase<CreateUserData, User> {
   private db: DbSession;
   private userRepo: IUserRepository;
-  private logger: Logger;
+  private logger: ILogger;
 
   constructor(props: CreateUserProps) {
     super();

@@ -7,17 +7,17 @@ import {
 } from '../../../domain/user/createUser';
 import { UserJsonDBRepository } from './userRepository';
 import { HttpError } from '../../shared/httpErrors';
-import { Logger } from '../../../logger';
+import { ILogger } from '../../../logger';
 
 type CreateUserHandlerDependencies = {
   useCase: CreateUser;
-  logger: Logger;
+  logger: ILogger;
 };
 
 export class CreateUserHandler extends Handler {
   private useCase: CreateUser;
 
-  private logger: Logger;
+  private logger: ILogger;
 
   constructor({ useCase, logger }: CreateUserHandlerDependencies) {
     super();
@@ -43,7 +43,9 @@ export class CreateUserHandler extends Handler {
   }
 }
 
-export const createUserHandlerFactory: HandlerFactory<CreateUserHandler> = req => {
+export const createUserHandlerFactory: HandlerFactory<CreateUserHandler> = (
+  req,
+) => {
   const logger = req.logger;
   const db = req.db;
 

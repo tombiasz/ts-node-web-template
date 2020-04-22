@@ -1,5 +1,5 @@
 import express from 'express';
-import { Logger } from '../../logger';
+import { ILogger } from '../../logger';
 import {
   createErrorsHandler,
   createForceJSONPayloadHandler,
@@ -16,14 +16,14 @@ import { DbSession } from '../../dbSession';
 declare global {
   namespace Express {
     interface Request {
-      logger: Logger;
+      logger: ILogger;
       db: DbSession;
     }
   }
 }
 
 export type ServerProps = {
-  logger: Logger;
+  logger: ILogger;
   config: Config;
 };
 
@@ -62,7 +62,7 @@ export const createServer: ServerFactory = ({ logger, config }) => {
       return new Promise((resolve, reject) => {
         server = app
           .listen(port, () => resolve(port))
-          .on('error', error => reject(error));
+          .on('error', (error) => reject(error));
       });
     },
 
@@ -74,7 +74,7 @@ export const createServer: ServerFactory = ({ logger, config }) => {
       }
 
       return new Promise((resolve, reject) => {
-        server!.close(error => (error ? reject(error) : resolve()));
+        server!.close((error) => (error ? reject(error) : resolve()));
       });
     },
   };

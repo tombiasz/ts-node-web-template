@@ -4,17 +4,17 @@ import { Handler, HandlerFactory } from '../../shared/handler';
 import { UserSerializer } from './serializers';
 import { UserJsonDBRepository } from './userRepository';
 import { GetUser, UserNotFoundError } from '../../../domain/user/getUser';
-import { Logger } from '../../../logger';
+import { ILogger } from '../../../logger';
 
 type GetUserHandlerDependencies = {
   useCase: GetUser;
-  logger: Logger;
+  logger: ILogger;
 };
 
 export class GetUserHandler extends Handler {
   private useCase: GetUser;
 
-  private logger: Logger;
+  private logger: ILogger;
 
   constructor({ useCase, logger }: GetUserHandlerDependencies) {
     super();
@@ -44,7 +44,7 @@ export class GetUserHandler extends Handler {
   }
 }
 
-export const getUserHandlerFactory: HandlerFactory<GetUserHandler> = req => {
+export const getUserHandlerFactory: HandlerFactory<GetUserHandler> = (req) => {
   const logger = req.logger;
   const db = req.db;
 

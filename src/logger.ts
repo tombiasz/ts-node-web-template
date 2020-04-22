@@ -3,15 +3,15 @@ import { Config } from './config';
 
 type LogMethod = (message: string, context?: object) => void;
 
-export interface Logger {
+export interface ILogger {
   info: LogMethod;
   error: LogMethod;
   warn: LogMethod;
   debug: LogMethod;
-  withContext(context: object): Logger;
+  withContext(context: object): ILogger;
 }
 
-class AppLogger implements Logger {
+class AppLogger implements ILogger {
   private logger: pino.Logger;
 
   private constructor(logger: pino.Logger) {
