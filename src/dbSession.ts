@@ -1,6 +1,6 @@
 import { JsonDB } from 'node-json-db';
 import { Config as JsonDBConfig } from 'node-json-db/dist/lib/JsonDBConfig';
-import { Config } from './config';
+import { IConfig } from './config';
 import { ILogger } from './logger';
 
 export type DbSession = JsonDB;
@@ -9,7 +9,7 @@ type DbSessionFactory = ({
   config,
   logger,
 }: {
-  config: Config;
+  config: IConfig;
   logger: ILogger;
 }) => JsonDB;
 

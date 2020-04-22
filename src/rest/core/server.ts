@@ -8,7 +8,7 @@ import {
   createRequestLogger,
   createRequestDbSession,
 } from './handlers';
-import { Config } from '../../config';
+import { IConfig } from '../../config';
 import { Server as HttpServer } from 'http';
 import { createApiRoutes } from '../api/routes';
 import { DbSession } from '../../dbSession';
@@ -24,7 +24,7 @@ declare global {
 
 export type ServerProps = {
   logger: ILogger;
-  config: Config;
+  config: IConfig;
 };
 
 interface Server {

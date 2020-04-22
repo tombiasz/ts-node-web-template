@@ -1,4 +1,4 @@
-export interface Config {
+export interface IConfig {
   appName: string;
   appPort: number;
   databaseName: string;
@@ -11,7 +11,7 @@ const REQUIRED_KEYS: ReadonlyArray<string> = ['APP_PORT', 'DATABASE_NAME'];
 const checkRequiredKeys = (env: NodeJS.ProcessEnv): void => {
   const envKeys = Object.keys(env);
 
-  REQUIRED_KEYS.forEach(key => {
+  REQUIRED_KEYS.forEach((key) => {
     if (!envKeys.includes(key)) {
       throw new Error(`missing required config key ${key}`);
     }
@@ -22,7 +22,7 @@ const asInt = (value: string) => Number.parseInt(value, 10);
 
 const asBool = (value: string) => value === '1' || value === 'true';
 
-export function createConfig(env: NodeJS.ProcessEnv): Readonly<Config> {
+export function createConfig(env: NodeJS.ProcessEnv): Readonly<IConfig> {
   checkRequiredKeys(env);
 
   return {
