@@ -6,14 +6,16 @@ interface ITimeProvider {
   getCurrentTime: () => Date;
 }
 
-interface UserRegistrationData {
+interface UserActivationData {
   userId: UserId;
   token: ActivationToken;
   createdAt: Date;
   usedOn: Date | null;
 }
 
-export class UserRegistration extends Entity<UserRegistrationData> {
+export class UserActivation extends Entity<UserActivationData> {
+  // TODO: private constructor
+
   get token() {
     return this.props.token;
   }
@@ -30,13 +32,13 @@ export class UserRegistration extends Entity<UserRegistrationData> {
     return this.props.userId;
   }
 
-  public static create(
-    data: Pick<UserRegistrationData, 'userId'>,
+  public static createForUser(
+    userId: UserId,
     timeProvider: ITimeProvider,
-  ): UserRegistration {
+  ): UserActivation {
     return new this({
+      userId: userId,
       token: ActivationToken.create(),
-      userId: data.userId,
       createdAt: timeProvider.getCurrentTime(),
       usedOn: null,
     });
