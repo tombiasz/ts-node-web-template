@@ -1,11 +1,10 @@
 import { Request } from 'express';
-import { Handler, HandlerFactory } from '../../shared/handler';
+import { Handler } from '../../shared/handler';
 import { UserSerializer } from './serializers';
 import {
   CreateUser,
   UsernameNotUniqueError,
 } from '../../../domain/user/createUser';
-import { UserJsonDBRepository } from './userRepository';
 import { HttpError } from '../../shared/httpErrors';
 import { ILogger } from '../../../logger';
 
@@ -42,26 +41,3 @@ export class CreateUserHandler extends Handler {
     }
   }
 }
-
-export const createUserHandlerFactory: HandlerFactory<CreateUserHandler> = (
-  req,
-) => {
-  const logger = req.logger;
-  const db = req.db;
-
-  const userRepo = new UserJsonDBRepository({
-    logger: logger.withContext({ repo: UserJsonDBRepository.name }),
-    db,
-  });
-
-  const createUser = new CreateUser({
-    db,
-    logger: logger.withContext({ useCase: CreateUser.name }),
-    userRepo,
-  });
-
-  return new CreateUserHandler({
-    useCase: createUser,
-    logger: logger.withContext({ handler: CreateUserHandler.name }),
-  });
-};

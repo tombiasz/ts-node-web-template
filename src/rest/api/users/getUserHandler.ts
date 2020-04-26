@@ -1,8 +1,7 @@
 import { Request } from 'express';
 import { HttpError } from '../../shared/httpErrors';
-import { Handler, HandlerFactory } from '../../shared/handler';
+import { Handler } from '../../shared/handler';
 import { UserSerializer } from './serializers';
-import { UserJsonDBRepository } from './userRepository';
 import { GetUser, UserNotFoundError } from '../../../domain/user/getUser';
 import { ILogger } from '../../../logger';
 
@@ -43,23 +42,3 @@ export class GetUserHandler extends Handler {
     }
   }
 }
-
-export const getUserHandlerFactory: HandlerFactory<GetUserHandler> = (req) => {
-  const logger = req.logger;
-  const db = req.db;
-
-  const userRepo = new UserJsonDBRepository({
-    logger: logger.withContext({ repo: UserJsonDBRepository.name }),
-    db,
-  });
-
-  const createUser = new GetUser({
-    logger: logger.withContext({ useCase: GetUser.name }),
-    userRepo,
-  });
-
-  return new GetUserHandler({
-    useCase: createUser,
-    logger: logger.withContext({ handler: GetUserHandler.name }),
-  });
-};

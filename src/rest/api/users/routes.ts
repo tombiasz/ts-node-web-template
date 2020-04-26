@@ -4,8 +4,7 @@ import {
   createCreateUserValidator,
   createGetUserValidator,
 } from './validators';
-import { getUserHandlerFactory } from './getUserHandler';
-import { createUserHandlerFactory } from './createUserHandler';
+import { getUserHandlerFactory, createUserHandlerFactory } from './factories';
 
 export function createUserRoutes(): Router {
   return Router()
