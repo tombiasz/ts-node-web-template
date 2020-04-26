@@ -1,9 +1,9 @@
-import { IUserRepository } from './userRepository';
+import { IUserRepository } from '../../domain/user/userRepository';
 import { ILogger } from '../../logger';
-import { User } from './user';
-import { UseCase } from '../core/useCase';
-import { DomainError } from '../core/domainError';
-import { UserId } from './userId';
+import { User } from '../../domain/user/user';
+import { UseCase } from '../../domain/core/useCase';
+import { DomainError } from '../../domain/core/domainError';
+import { UserId } from '../../domain/user/userId';
 
 type GetUserProps = {
   userRepo: IUserRepository;

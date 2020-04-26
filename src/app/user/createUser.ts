@@ -1,9 +1,9 @@
 import { DbSession } from '../../dbSession';
 import { ILogger } from '../../logger';
-import { User } from './user';
-import { IUserRepository } from './userRepository';
-import { UseCase } from '../core/useCase';
-import { DomainError } from '../core/domainError';
+import { User } from '../../domain/user/user';
+import { IUserRepository } from '../../domain/user/userRepository';
+import { UseCase } from '../../domain/core/useCase';
+import { DomainError } from '../../domain/core/domainError';
 
 type CreateUserProps = {
   db: DbSession;

@@ -1,9 +1,9 @@
 import { HandlerFactory } from '../../shared/handler';
-import { CreateUser } from '../../../domain/user/createUser';
 import { UserJsonDBRepository } from './userRepository';
+import { GetUser } from '../../../app/user/getUser';
+import { CreateUser } from '../../../app/user/createUser';
 import { CreateUserHandler } from './createUserHandler';
 import { GetUserHandler } from './getUserHandler';
-import { GetUser } from '../../../domain/user/getUser';
 
 export const createUserHandlerFactory: HandlerFactory<CreateUserHandler> = (
   req,

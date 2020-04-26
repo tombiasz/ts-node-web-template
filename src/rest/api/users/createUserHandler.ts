@@ -4,7 +4,7 @@ import { UserSerializer } from './serializers';
 import {
   CreateUser,
   UsernameNotUniqueError,
-} from '../../../domain/user/createUser';
+} from '../../../app/user/createUser';
 import { HttpError } from '../../shared/httpErrors';
 import { ILogger } from '../../../logger';
 
