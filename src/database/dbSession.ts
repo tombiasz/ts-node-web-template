@@ -1,7 +1,7 @@
 import { JsonDB } from 'node-json-db';
 import { Config as JsonDBConfig } from 'node-json-db/dist/lib/JsonDBConfig';
-import { IConfig } from './config';
-import { ILogger } from './logger';
+import { IConfig } from '../config';
+import { ILogger } from '../logger';
 
 export type DbSession = JsonDB;
 

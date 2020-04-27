@@ -1,6 +1,6 @@
-import { User } from '../../../domain/user/user';
+import { User } from '../../domain/user/user';
+import { UserId } from '../../domain/user/userId';
 import { UserModel } from './userRepository';
-import { UserId } from '../../../domain/user/userId';
 
 const toDb = (user: User): UserModel => ({
   id: user.id.value,
