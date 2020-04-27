@@ -1,5 +1,4 @@
-import { User } from '../../domain/user/user';
-import { UserId } from '../../domain/user/userId';
+import { User, UserId } from '@domain/user';
 import { UserModel } from './userRepository';
 
 const toDb = (user: User): UserModel => ({

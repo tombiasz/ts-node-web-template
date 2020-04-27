@@ -1,9 +1,7 @@
-import { IUserRepository } from '../../domain/user/userRepository';
-import { User } from '../../domain/user/user';
-import { UserMapper } from './mappers';
-import { DbSession } from '../dbSession';
 import { ILogger } from '../../logger';
-import { UserId } from '../../domain/user/userId';
+import { User, UserId, IUserRepository } from '@domain/user';
+import { DbSession } from '../dbSession';
+import { UserMapper } from './mappers';
 
 const USERS_KEY = '/users';
 

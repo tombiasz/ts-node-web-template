@@ -1,6 +1,6 @@
-import { ActivationToken } from './activationToken';
 import { Entity } from '../core/entity';
 import { UserId } from '../user/userId';
+import { ActivationToken } from './activationToken';
 
 interface ITimeProvider {
   getCurrentTime: () => Date;
@@ -14,8 +14,6 @@ interface UserActivationData {
 }
 
 export class UserActivation extends Entity<UserActivationData> {
-  // TODO: private constructor
-
   get token() {
     return this.props.token;
   }
