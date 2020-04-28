@@ -2,18 +2,13 @@ import { ILogger } from '../../logger';
 import { User, UserId, IUserRepository } from '@domain/user';
 import { DbSession } from '../core/dbSession';
 import { UserMapper } from './mappers';
+import { UserModel } from './model';
 
 const USERS_KEY = '/users';
 
 type RepositoryProps = {
   db: DbSession;
   logger: ILogger;
-};
-
-export type UserModel = {
-  id: string;
-  username: string;
-  password: string;
 };
 
 export class UserJsonDbRepository implements IUserRepository {

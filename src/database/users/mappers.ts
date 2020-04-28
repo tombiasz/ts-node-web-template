@@ -1,5 +1,5 @@
 import { User, UserId } from '@domain/user';
-import { UserModel } from './userJsonDbRepository';
+import { UserModel } from './model';
 
 const toDb = (user: User): UserModel => ({
   id: user.id.value,
