@@ -1,4 +1,4 @@
-import { DbSession } from '../../database/dbSession';
+import { DbSession } from '../../database/core/dbSession';
 import { ILogger } from '../../logger';
 import { DomainError } from '@domain/core';
 import { User, IUserRepository } from '@domain/user';

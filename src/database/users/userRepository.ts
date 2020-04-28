@@ -1,6 +1,6 @@
 import { ILogger } from '../../logger';
 import { User, UserId, IUserRepository } from '@domain/user';
-import { DbSession } from '../dbSession';
+import { DbSession } from '../core/dbSession';
 import { UserMapper } from './mappers';
 
 const USERS_KEY = '/users';
