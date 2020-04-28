@@ -1,6 +1,6 @@
 import { HandlerFactory } from '../../shared/handler';
 import { UserJsonDbRepository } from '../../../database/users/userJsonDbRepository';
-import { GetUser, CreateUser } from '@app/usera';
+import { GetUser, CreateUser } from '@app/users';
 import { CreateUserHandler } from './createUserHandler';
 import { GetUserHandler } from './getUserHandler';
 

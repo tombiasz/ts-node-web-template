@@ -2,7 +2,7 @@ import { Request } from 'express';
 import { HttpError } from '../../shared/httpErrors';
 import { Handler } from '../../shared/handler';
 import { UserSerializer } from './serializers';
-import { GetUser, UserNotFoundError } from '@app/usera';
+import { GetUser, UserNotFoundError } from '@app/users';
 import { ILogger } from '../../../logger';
 
 type GetUserHandlerDependencies = {
