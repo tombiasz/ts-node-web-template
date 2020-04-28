@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
+import { createDbSession } from '@database/core';
 import { IConfig } from '../../../config';
-import { createDbSession } from '../../../database/core/dbSession';
 
 export function createRequestDbSession({ config }: { config: IConfig }) {
   return (req: Request, res: Response, next: NextFunction) => {

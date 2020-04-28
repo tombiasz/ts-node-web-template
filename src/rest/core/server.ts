@@ -11,7 +11,7 @@ import {
 import { IConfig } from '../../config';
 import { Server as HttpServer } from 'http';
 import { createApiRoutes } from '../api/routes';
-import { DbSession } from '../../database/core/dbSession';
+import { DbSession } from '@database/core';
 
 declare global {
   namespace Express {

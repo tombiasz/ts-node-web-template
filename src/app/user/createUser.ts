@@ -1,5 +1,5 @@
-import { DbSession } from '../../database/core/dbSession';
 import { ILogger } from '../../logger';
+import { DbSession } from '@database/core';
 import { DomainError } from '@domain/core';
 import { User, IUserRepository } from '@domain/user';
 import { UseCase } from '../core';
