@@ -1,10 +1,6 @@
-import { Entity } from '../core/entity';
+import { Entity, ITimeProvider } from '../core';
 import { UserId } from '../user/userId';
 import { ActivationToken } from './activationToken';
-
-interface ITimeProvider {
-  getCurrentTime: () => Date;
-}
 
 interface UserActivationData {
   userId: UserId;
