@@ -16,7 +16,7 @@ export type UserModel = {
   password: string;
 };
 
-export class UserJsonDBRepository implements IUserRepository {
+export class UserJsonDbRepository implements IUserRepository {
   private db: DbSession;
   private logger: ILogger;
 

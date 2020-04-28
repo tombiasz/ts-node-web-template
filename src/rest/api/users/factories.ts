@@ -1,5 +1,5 @@
 import { HandlerFactory } from '../../shared/handler';
-import { UserJsonDBRepository } from '../../../database/users/userRepository';
+import { UserJsonDbRepository } from '../../../database/users/userJsonDbRepository';
 import { GetUser, CreateUser } from '@app/user';
 import { CreateUserHandler } from './createUserHandler';
 import { GetUserHandler } from './getUserHandler';
@@ -10,8 +10,8 @@ export const createUserHandlerFactory: HandlerFactory<CreateUserHandler> = (
   const logger = req.logger;
   const db = req.db;
 
-  const userRepo = new UserJsonDBRepository({
-    logger: logger.withContext({ repo: UserJsonDBRepository.name }),
+  const userRepo = new UserJsonDbRepository({
+    logger: logger.withContext({ repo: UserJsonDbRepository.name }),
     db,
   });
 
@@ -31,8 +31,8 @@ export const getUserHandlerFactory: HandlerFactory<GetUserHandler> = (req) => {
   const logger = req.logger;
   const db = req.db;
 
-  const userRepo = new UserJsonDBRepository({
-    logger: logger.withContext({ repo: UserJsonDBRepository.name }),
+  const userRepo = new UserJsonDbRepository({
+    logger: logger.withContext({ repo: UserJsonDbRepository.name }),
     db,
   });
 
