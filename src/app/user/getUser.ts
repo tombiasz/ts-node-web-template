@@ -1,7 +1,7 @@
 import { ILogger } from '../../logger';
-import { UseCase } from '../../domain/core/useCase';
 import { DomainError } from '@domain/core';
 import { User, UserId, IUserRepository } from '@domain/user';
+import { UseCase } from '../core';
 
 type GetUserProps = {
   userRepo: IUserRepository;
