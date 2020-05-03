@@ -18,10 +18,13 @@ export const createUserHandlerFactory: HandlerFactory<CreateUserHandler> = (
     db,
   });
 
+  const timeProvider = new TimeProvider();
+
   const createUser = new CreateUser({
     db,
     logger: logger.withContext({ useCase: CreateUser.name }),
     userRepo,
+    timeProvider,
   });
 
   return new CreateUserHandler({

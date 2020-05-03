@@ -52,12 +52,13 @@ export class RegisterUser extends UseCase<RegisterUserData, User> {
       throw new UsernameNotUniqueError();
     }
 
-    // TODO:
-    // - User.active
-    const user = User.register({
-      username,
-      password, // TODO: password hashing
-    });
+    const user = User.register(
+      {
+        username,
+        password, // TODO: password hashing
+      },
+      this.timeProvider,
+    );
 
     const userActivation = UserActivation.createForUser(
       user.id,

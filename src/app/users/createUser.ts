@@ -1,6 +1,6 @@
 import { ILogger } from '../../logger';
 import { DbSession } from '@database/core';
-import { DomainError } from '@domain/core';
+import { DomainError, ITimeProvider } from '@domain/core';
 import { User, IUserRepository } from '@domain/user';
 import { UseCase } from '../core';
 
@@ -8,6 +8,7 @@ type CreateUserProps = {
   db: DbSession;
   userRepo: IUserRepository;
   logger: ILogger;
+  timeProvider: ITimeProvider;
 };
 
 type CreateUserData = {
@@ -24,6 +25,7 @@ export class CreateUser extends UseCase<CreateUserData, User> {
   private db: DbSession;
   private userRepo: IUserRepository;
   private logger: ILogger;
+  private timeProvider: ITimeProvider;
 
   constructor(props: CreateUserProps) {
     super();
@@ -31,6 +33,7 @@ export class CreateUser extends UseCase<CreateUserData, User> {
     this.db = props.db;
     this.userRepo = props.userRepo;
     this.logger = props.logger;
+    this.timeProvider = props.timeProvider;
   }
 
   public async execute(data: CreateUserData) {
@@ -44,10 +47,13 @@ export class CreateUser extends UseCase<CreateUserData, User> {
       throw new UsernameNotUniqueError();
     }
 
-    const user = User.register({
-      username,
-      password, // TODO: password hashing
-    });
+    const user = User.register(
+      {
+        username,
+        password, // TODO: password hashing
+      },
+      this.timeProvider,
+    );
 
     this.userRepo.save(user);
 
