@@ -7,6 +7,8 @@ import {
   UserActivation,
 } from '@domain/userActivation';
 import { UseCase } from '../core';
+// TODO: central error definiton
+import { UsernameNotUniqueError } from './createUser';
 
 type RegisterUserProps = {
   db: DbSession;
@@ -21,11 +23,6 @@ type RegisterUserData = {
   username: string;
   password: string;
 };
-
-// TODO: duplicate error name
-export class UsernameNotUniqueError extends DomainError {
-  message = 'username already taken';
-}
 
 export class RegisterUser extends UseCase<RegisterUserData, User> {
   private db: DbSession;

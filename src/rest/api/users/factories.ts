@@ -1,8 +1,11 @@
 import { HandlerFactory } from '../../shared/handler';
 import { UserJsonDbRepository } from '../../../database/users/userJsonDbRepository';
-import { GetUser, CreateUser } from '@app/users';
+import { GetUser, CreateUser, RegisterUser } from '@app/users';
 import { CreateUserHandler } from './createUserHandler';
 import { GetUserHandler } from './getUserHandler';
+import { RegisterUserHandler } from './registerUserHandler';
+import { UserActivationJsonDbRepository } from '@database/userActivation/userActivationJsonDbRepository';
+import { TimeProvider } from '@utils/timeProvider';
 
 export const createUserHandlerFactory: HandlerFactory<CreateUserHandler> = (
   req,
@@ -43,6 +46,37 @@ export const getUserHandlerFactory: HandlerFactory<GetUserHandler> = (req) => {
 
   return new GetUserHandler({
     useCase: createUser,
+    logger: logger.withContext({ handler: GetUserHandler.name }),
+  });
+};
+
+export const registerUserHandlerFactory: HandlerFactory<RegisterUserHandler> = (
+  req,
+) => {
+  const logger = req.logger;
+  const db = req.db;
+
+  const userRepo = new UserJsonDbRepository({
+    logger: logger.withContext({ repo: UserJsonDbRepository.name }),
+    db,
+  });
+  const userActivationRepo = new UserActivationJsonDbRepository({
+    logger: logger.withContext({ repo: UserActivationJsonDbRepository.name }),
+    db,
+  });
+
+  const timeProvider = new TimeProvider();
+
+  const useCase = new RegisterUser({
+    logger: logger.withContext({ useCase: RegisterUser.name }),
+    db,
+    userRepo,
+    userActivationRepo,
+    timeProvider,
+  });
+
+  return new RegisterUserHandler({
+    useCase,
     logger: logger.withContext({ handler: GetUserHandler.name }),
   });
 };
