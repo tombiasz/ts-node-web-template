@@ -23,7 +23,7 @@ export class UserActivation extends Entity<UserActivationData> {
   }
 
   get usedOn() {
-    return this.props.userId;
+    return this.props.usedOn;
   }
 
   public static createForUser(
