@@ -20,7 +20,7 @@ export class User extends Entity<UserProps> {
     return this.props.password;
   }
 
-  public static create(props: Omit<UserProps, 'id'>): User {
+  public static register(props: Omit<UserProps, 'id'>): User {
     return new this({
       id: UserId.create(),
       ...props,

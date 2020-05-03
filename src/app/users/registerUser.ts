@@ -56,9 +56,8 @@ export class RegisterUser extends UseCase<RegisterUserData, User> {
     }
 
     // TODO:
-    // - User.register
     // - User.active
-    const user = User.create({
+    const user = User.register({
       username,
       password, // TODO: password hashing
     });

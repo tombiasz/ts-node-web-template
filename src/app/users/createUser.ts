@@ -44,7 +44,7 @@ export class CreateUser extends UseCase<CreateUserData, User> {
       throw new UsernameNotUniqueError();
     }
 
-    const user = User.create({
+    const user = User.register({
       username,
       password, // TODO: password hashing
     });
