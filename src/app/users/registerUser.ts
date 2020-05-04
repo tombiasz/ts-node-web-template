@@ -65,8 +65,8 @@ export class RegisterUser extends UseCase<RegisterUserData, User> {
       this.timeProvider,
     );
 
-    this.userRepo.save(user);
-    this.userActivationRepo.save(userActivation);
+    await this.userRepo.save(user);
+    await this.userActivationRepo.save(userActivation);
 
     this.db.save();
 

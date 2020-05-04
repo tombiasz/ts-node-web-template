@@ -20,12 +20,12 @@ export class UserJsonDbRepository implements IUserRepository {
     this.logger = logger;
   }
 
-  getAll(): User[] {
+  async getAll(): Promise<User[]> {
     const records = this.db.getData(USERS_KEY);
     return [];
   }
 
-  getById(id: UserId): User {
+  async getById(id: UserId): Promise<User> {
     this.logger.debug(`Getting user by id ${id}`);
 
     const data = this.db.getData(this.createKey(id.value));
@@ -33,7 +33,7 @@ export class UserJsonDbRepository implements IUserRepository {
     return UserMapper.toEntity(data);
   }
 
-  save(user: User): void {
+  async save(user: User): Promise<void> {
     this.logger.debug(`Saving new user`);
 
     const data = UserMapper.toDb(user);
@@ -41,9 +41,9 @@ export class UserJsonDbRepository implements IUserRepository {
     this.db.push(this.createKey(data.id), data);
   }
 
-  delete(user: User): void {}
+  async delete(user: User): Promise<void> {}
 
-  isUsernameExist(username: string): boolean {
+  async isUsernameExist(username: string): Promise<boolean> {
     const found = this.db.filter<UserModel>(
       this.createKey(),
       (user) => user.username === username,

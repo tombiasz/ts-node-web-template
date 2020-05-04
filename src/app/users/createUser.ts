@@ -55,8 +55,7 @@ export class CreateUser extends UseCase<CreateUserData, User> {
       this.timeProvider,
     );
 
-    this.userRepo.save(user);
-
+    await this.userRepo.save(user);
     this.db.save();
 
     this.logger.info('new user created', { id: user.id });

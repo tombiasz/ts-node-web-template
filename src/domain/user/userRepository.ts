@@ -2,9 +2,9 @@ import { User } from './user';
 import { UserId } from './userId';
 
 export interface IUserRepository {
-  getAll(): User[];
-  getById(id: UserId): User;
-  save(user: User): void;
-  delete(user: User): void;
-  isUsernameExist(username: string): boolean;
+  getAll(): Promise<User[]>;
+  getById(id: UserId): Promise<User>;
+  save(user: User): Promise<void>;
+  delete(user: User): Promise<void>;
+  isUsernameExist(username: string): Promise<boolean>;
 }
