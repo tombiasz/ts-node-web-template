@@ -42,4 +42,16 @@ export class User extends Entity<UserProps> {
       ...props,
     });
   }
+
+  public static create(
+    props: Pick<UserProps, 'username' | 'password'>,
+    timeProvider: ITimeProvider,
+  ): User {
+    return new this({
+      id: UserId.create(),
+      createdAt: timeProvider.getCurrentTime(),
+      isActive: true,
+      ...props,
+    });
+  }
 }
