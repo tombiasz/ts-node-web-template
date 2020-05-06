@@ -26,6 +26,10 @@ export class UserActivation extends Entity<UserActivationData> {
     return this.props.usedOn;
   }
 
+  markAsUsed(timeProvider: ITimeProvider) {
+    this.props.usedOn = timeProvider.getCurrentTime();
+  }
+
   public static createForUser(
     userId: UserId,
     timeProvider: ITimeProvider,

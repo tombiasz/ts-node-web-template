@@ -31,6 +31,10 @@ export class User extends Entity<UserProps> {
     return this.props.isActive;
   }
 
+  activate() {
+    this.props.isActive = true;
+  }
+
   public static register(
     props: Pick<UserProps, 'username' | 'password'>,
     timeProvider: ITimeProvider,

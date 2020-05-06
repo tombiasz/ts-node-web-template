@@ -2,6 +2,7 @@ import { ILogger } from '../../logger';
 import {
   IUserActivationRepository,
   UserActivation,
+  ActivationToken,
 } from '@domain/userActivation';
 import { UserId } from '@domain/user';
 import { DbSession } from '../core/dbSession';
@@ -29,6 +30,15 @@ export class UserActivationJsonDbRepository
     const found = this.db.find<UserActivationModel>(
       this.createKey(),
       (record) => record.userId === id.value,
+    );
+
+    return found ? UserActivationMapper.toEntity(found) : null;
+  }
+
+  async getByToken(token: ActivationToken): Promise<UserActivation | null> {
+    const found = this.db.find<UserActivationModel>(
+      this.createKey(),
+      (record) => record.token === token.value,
     );
 
     return found ? UserActivationMapper.toEntity(found) : null;
