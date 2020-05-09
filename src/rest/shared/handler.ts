@@ -67,7 +67,7 @@ export abstract class Handler {
   }
 
   protected ok(body?: object) {
-    return body ? this.res.status(200).send(body) : this.res.status(200);
+    return body ? this.res.status(200).send(body) : this.res.status(200).end();
   }
 
   protected fail(error: HttpError) {
