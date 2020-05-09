@@ -14,6 +14,10 @@ export class TokenDoesNotExistError extends DomainError {
   message = 'token does not exist';
 }
 
+export class UserAlreadyActivatedError extends DomainError {
+  message = 'user was already activated';
+}
+
 type ActivateUserProps = {
   db: DbSession;
   userRepo: IUserRepository;
@@ -55,6 +59,10 @@ export class ActivateUser extends UseCase<ActivateUserData, void> {
     }
 
     const user = await this.userRepo.getById(userActivation.userId);
+
+    if (user.isActive) {
+      throw new UserAlreadyActivatedError();
+    }
 
     userActivation.markAsUsed(this.timeProvider);
     user.activate();
