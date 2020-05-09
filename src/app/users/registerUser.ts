@@ -1,6 +1,10 @@
 import { ILogger } from '../../logger';
 import { DbSession } from '@database/core';
-import { DomainError, ITimeProvider } from '@domain/core';
+import {
+  DomainError,
+  ITimeProvider,
+  IPasswordHashCalculator,
+} from '@domain/core';
 import { User, IUserRepository } from '@domain/user';
 import {
   IUserActivationRepository,
@@ -16,6 +20,7 @@ type RegisterUserProps = {
   userActivationRepo: IUserActivationRepository;
   timeProvider: ITimeProvider;
   logger: ILogger;
+  passwordHashCalculator: IPasswordHashCalculator;
 };
 
 type RegisterUserData = {
@@ -30,6 +35,7 @@ export class RegisterUser extends UseCase<RegisterUserData, User> {
   private userActivationRepo: IUserActivationRepository;
   private timeProvider: ITimeProvider;
   private logger: ILogger;
+  private passwordHashCalculator: IPasswordHashCalculator;
 
   constructor(props: RegisterUserProps) {
     super();
@@ -39,6 +45,7 @@ export class RegisterUser extends UseCase<RegisterUserData, User> {
     this.userActivationRepo = props.userActivationRepo;
     this.timeProvider = props.timeProvider;
     this.logger = props.logger;
+    this.passwordHashCalculator = props.passwordHashCalculator;
   }
 
   public async execute(data: RegisterUserData) {
@@ -55,7 +62,7 @@ export class RegisterUser extends UseCase<RegisterUserData, User> {
     const user = User.register(
       {
         username,
-        password, // TODO: password hashing
+        password: this.passwordHashCalculator.hashPassword(password),
       },
       this.timeProvider,
     );

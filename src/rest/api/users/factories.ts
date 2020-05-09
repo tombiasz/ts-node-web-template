@@ -6,6 +6,7 @@ import { GetUserHandler } from './getUserHandler';
 import { RegisterUserHandler } from './registerUserHandler';
 import { UserActivationJsonDbRepository } from '@database/userActivation/userActivationJsonDbRepository';
 import { TimeProvider } from '@utils/timeProvider';
+import { PasswordManager } from '@utils/passwordManager';
 
 export const createUserHandlerFactory: HandlerFactory<CreateUserHandler> = (
   req,
@@ -18,13 +19,12 @@ export const createUserHandlerFactory: HandlerFactory<CreateUserHandler> = (
     db,
   });
 
-  const timeProvider = new TimeProvider();
-
   const createUser = new CreateUser({
     db,
     logger: logger.withContext({ useCase: CreateUser.name }),
     userRepo,
-    timeProvider,
+    timeProvider: new TimeProvider(),
+    passwordHashCalculator: new PasswordManager(),
   });
 
   return new CreateUserHandler({
@@ -68,14 +68,13 @@ export const registerUserHandlerFactory: HandlerFactory<RegisterUserHandler> = (
     db,
   });
 
-  const timeProvider = new TimeProvider();
-
   const useCase = new RegisterUser({
     logger: logger.withContext({ useCase: RegisterUser.name }),
     db,
     userRepo,
     userActivationRepo,
-    timeProvider,
+    timeProvider: new TimeProvider(),
+    passwordHashCalculator: new PasswordManager(),
   });
 
   return new RegisterUserHandler({
