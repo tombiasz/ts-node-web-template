@@ -5,23 +5,20 @@ import {
 } from '../../shared/validator';
 
 export const getUserSchema = Joi.object({
-  id: Joi.string()
-    .guid({ version: 'uuidv4' })
-    .required(),
+  id: Joi.string().guid({ version: 'uuidv4' }).required(),
 });
 
 export const createUserSchema = Joi.object({
-  username: Joi.string()
-    .alphanum()
-    .min(3)
-    .max(50)
-    .trim()
-    .required(),
+  username: Joi.string().alphanum().min(3).max(50).trim().required(),
 
   password: Joi.string()
     .pattern(new RegExp('^[a-zA-Z0-9]{3,30}$'))
     .trim()
     .required(),
+});
+
+export const activateUserSchema = Joi.object({
+  token: Joi.string().guid({ version: 'uuidv4' }).required(),
 });
 
 export const createGetUserValidator = () =>
@@ -32,4 +29,9 @@ export const createGetUserValidator = () =>
 export const createCreateUserValidator = () =>
   createBodyValidatorMiddleware({
     schema: createUserSchema,
+  });
+
+export const activateUserValidator = () =>
+  createParamsValidatorMiddleware({
+    schema: activateUserSchema,
   });
