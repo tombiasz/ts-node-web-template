@@ -1,7 +1,7 @@
 import { ILogger } from '../../logger';
-import { DomainError } from '@domain/core';
 import { User, UserId, IUserRepository } from '@domain/user';
 import { UseCase } from '../core';
+import { UserNotFoundError } from './errors';
 
 type GetUserProps = {
   userRepo: IUserRepository;
@@ -11,10 +11,6 @@ type GetUserProps = {
 type GetUserData = {
   id: string;
 };
-
-export class UserNotFoundError extends DomainError {
-  message = 'user not found';
-}
 
 export class GetUser extends UseCase<GetUserData, User> {
   private userRepo: IUserRepository;

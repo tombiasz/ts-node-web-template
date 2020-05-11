@@ -1,18 +1,13 @@
 import { ILogger } from '../../logger';
 import { DbSession } from '@database/core';
-import {
-  DomainError,
-  ITimeProvider,
-  IPasswordHashCalculator,
-} from '@domain/core';
+import { ITimeProvider, IPasswordHashCalculator } from '@domain/core';
 import { User, IUserRepository } from '@domain/user';
 import {
   IUserActivationRepository,
   UserActivation,
 } from '@domain/userActivation';
 import { UseCase } from '../core';
-// TODO: central error definiton
-import { UsernameNotUniqueError } from './createUser';
+import { UsernameNotUniqueError } from './errors';
 
 type RegisterUserProps = {
   db: DbSession;

@@ -1,12 +1,9 @@
 import { ILogger } from '../../logger';
 import { DbSession } from '@database/core';
-import {
-  DomainError,
-  ITimeProvider,
-  IPasswordHashCalculator,
-} from '@domain/core';
+import { ITimeProvider, IPasswordHashCalculator } from '@domain/core';
 import { User, IUserRepository } from '@domain/user';
 import { UseCase } from '../core';
+import { UsernameNotUniqueError } from './errors';
 
 type CreateUserProps = {
   db: DbSession;
@@ -21,10 +18,6 @@ type CreateUserData = {
   username: string;
   password: string;
 };
-
-export class UsernameNotUniqueError extends DomainError {
-  message = 'username already taken';
-}
 
 export class CreateUser extends UseCase<CreateUserData, User> {
   private db: DbSession;

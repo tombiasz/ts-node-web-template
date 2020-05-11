@@ -1,7 +1,6 @@
 import { Request } from 'express';
 import { HttpError } from '../../shared/httpErrors';
 import { Handler } from '../../shared/handler';
-import { UserSerializer } from './serializers';
 import {
   ActivateUser,
   UserAlreadyActivatedError,
