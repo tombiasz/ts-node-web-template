@@ -1,12 +1,12 @@
 import { Request } from 'express';
 import { HttpError } from '../../shared/httpErrors';
 import { Handler } from '../../shared/handler';
+import { UserAlreadyActivatedError } from '@domain/user';
 import {
-  ActivateUser,
-  UserAlreadyActivatedError,
   TokenAlreadyUsedError,
   TokenNotFoundError,
-} from '@app/users';
+} from '@domain/userActivation';
+import { ActivateUser } from '@app/users';
 import { ILogger } from '../../../logger';
 
 type ActivateUserHandlerDependencies = {

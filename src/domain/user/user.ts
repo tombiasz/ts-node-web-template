@@ -1,7 +1,7 @@
 import { Entity } from '../core/entity';
 import { UserId } from './userId';
 import { ITimeProvider } from '@domain/core';
-import { UserAlreadyActivatedError } from '@app/users';
+import { UserAlreadyActivatedError } from './errors';
 
 interface UserProps {
   id: UserId;

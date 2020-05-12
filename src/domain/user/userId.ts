@@ -1,11 +1,7 @@
 import * as uuid from 'uuid';
-import { DomainError } from '../core/domainError';
+import { InvalidUserIdError } from './errors';
 
 export const USER_ID_REGEX = /^[0-9A-F]{8}-[0-9A-F]{4}-4[0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$/i;
-
-export class InvalidUserIdError extends DomainError {
-  message = 'invalid user id';
-}
 
 export class UserId {
   public readonly value: string;

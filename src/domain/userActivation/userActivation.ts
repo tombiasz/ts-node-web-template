@@ -1,7 +1,7 @@
 import { Entity, ITimeProvider } from '../core';
 import { UserId } from '../user/userId';
 import { ActivationToken } from './activationToken';
-import { TokenAlreadyUsedError } from '@app/users';
+import { TokenAlreadyUsedError } from './errors';
 
 interface UserActivationData {
   userId: UserId;

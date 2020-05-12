@@ -5,9 +5,9 @@ import { IUserRepository } from '@domain/user';
 import {
   IUserActivationRepository,
   ActivationToken,
+  TokenNotFoundError,
 } from '@domain/userActivation';
 import { UseCase } from '../core';
-import { TokenNotFoundError } from './errors';
 
 type ActivateUserProps = {
   db: DbSession;

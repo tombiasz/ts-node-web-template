@@ -1,11 +1,7 @@
 import * as uuid from 'uuid';
-import { DomainError } from '../core/domainError';
+import { InvalidActivationTokenError } from './errors';
 
 export const TOKEN_ID_REGEX = /^[0-9A-F]{8}-[0-9A-F]{4}-4[0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$/i;
-
-export class InvalidActivationTokenError extends DomainError {
-  message = 'invalid activation token';
-}
 
 export class ActivationToken {
   public readonly value: string;
