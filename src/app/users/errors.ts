@@ -1,7 +1,11 @@
 import { DomainError } from '@domain/core';
 
-export class TokenDoesNotExistError extends DomainError {
-  message = 'token does not exist';
+export class TokenNotFoundError extends DomainError {
+  message = 'token token not found';
+}
+
+export class TokenAlreadyUsedError extends DomainError {
+  message = 'token was already used';
 }
 
 export class UserAlreadyActivatedError extends DomainError {

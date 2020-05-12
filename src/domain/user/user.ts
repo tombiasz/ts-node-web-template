@@ -1,6 +1,7 @@
 import { Entity } from '../core/entity';
 import { UserId } from './userId';
 import { ITimeProvider } from '@domain/core';
+import { UserAlreadyActivatedError } from '@app/users';
 
 interface UserProps {
   id: UserId;
@@ -32,6 +33,10 @@ export class User extends Entity<UserProps> {
   }
 
   activate() {
+    if (this.isActive) {
+      throw new UserAlreadyActivatedError();
+    }
+
     this.props.isActive = true;
   }
 

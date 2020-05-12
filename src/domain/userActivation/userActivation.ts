@@ -1,6 +1,7 @@
 import { Entity, ITimeProvider } from '../core';
 import { UserId } from '../user/userId';
 import { ActivationToken } from './activationToken';
+import { TokenAlreadyUsedError } from '@app/users';
 
 interface UserActivationData {
   userId: UserId;
@@ -27,6 +28,9 @@ export class UserActivation extends Entity<UserActivationData> {
   }
 
   markAsUsed(timeProvider: ITimeProvider) {
+    if (!this.usedOn) {
+      throw new TokenAlreadyUsedError();
+    }
     this.props.usedOn = timeProvider.getCurrentTime();
   }
 

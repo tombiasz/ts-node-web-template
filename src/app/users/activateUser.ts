@@ -7,7 +7,7 @@ import {
   ActivationToken,
 } from '@domain/userActivation';
 import { UseCase } from '../core';
-import { UserAlreadyActivatedError, TokenDoesNotExistError } from './errors';
+import { TokenNotFoundError } from './errors';
 
 type ActivateUserProps = {
   db: DbSession;
@@ -46,14 +46,10 @@ export class ActivateUser extends UseCase<ActivateUserData, void> {
     );
 
     if (!userActivation) {
-      throw new TokenDoesNotExistError();
+      throw new TokenNotFoundError();
     }
 
     const user = await this.userRepo.getById(userActivation.userId);
-
-    if (user.isActive) {
-      throw new UserAlreadyActivatedError();
-    }
 
     userActivation.markAsUsed(this.timeProvider);
     user.activate();

@@ -4,7 +4,8 @@ import { Handler } from '../../shared/handler';
 import {
   ActivateUser,
   UserAlreadyActivatedError,
-  TokenDoesNotExistError,
+  TokenAlreadyUsedError,
+  TokenNotFoundError,
 } from '@app/users';
 import { ILogger } from '../../../logger';
 
@@ -35,8 +36,9 @@ export class ActivateUserHandler extends Handler {
       this.logger.error('Error during user activation', { error });
 
       if (
-        error instanceof TokenDoesNotExistError ||
-        error instanceof UserAlreadyActivatedError
+        error instanceof TokenAlreadyUsedError ||
+        error instanceof UserAlreadyActivatedError ||
+        error instanceof TokenNotFoundError
       ) {
         return this.fail(HttpError.badRequest(error.message));
       }
