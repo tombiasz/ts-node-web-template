@@ -26,15 +26,6 @@ export class UserActivationJsonDbRepository
     this.logger = logger;
   }
 
-  async getByUserId(id: UserId): Promise<UserActivation | null> {
-    const found = this.db.find<UserActivationModel>(
-      this.createKey(),
-      (record) => record.userId === id.value,
-    );
-
-    return found ? UserActivationMapper.toEntity(found) : null;
-  }
-
   async getByToken(token: ActivationToken): Promise<UserActivation | null> {
     const found = this.db.find<UserActivationModel>(
       this.createKey(),
