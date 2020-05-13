@@ -46,7 +46,7 @@ export class ActivateUser extends UseCase<ActivateUserData, void> {
     );
     const user = await this.userRepo.getById(userActivation.userId);
 
-    userActivation.markAsUsed(this.timeProvider);
+    userActivation.confirm(this.timeProvider);
     user.activate();
 
     await this.userRepo.save(user);

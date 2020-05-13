@@ -27,10 +27,11 @@ export class UserActivation extends Entity<UserActivationData> {
     return this.props.usedOn;
   }
 
-  markAsUsed(timeProvider: ITimeProvider) {
-    if (!this.usedOn) {
+  confirm(timeProvider: ITimeProvider) {
+    if (this.usedOn) {
       throw new TokenAlreadyUsedError();
     }
+
     this.props.usedOn = timeProvider.getCurrentTime();
   }
 
