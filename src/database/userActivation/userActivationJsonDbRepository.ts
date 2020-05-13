@@ -3,8 +3,8 @@ import {
   IUserActivationRepository,
   UserActivation,
   ActivationToken,
+  TokenNotFoundError,
 } from '@domain/userActivation';
-import { UserId } from '@domain/user';
 import { DbSession } from '../core/dbSession';
 import { UserActivationMapper } from './mapper';
 import { UserActivationModel } from './model';
@@ -26,13 +26,17 @@ export class UserActivationJsonDbRepository
     this.logger = logger;
   }
 
-  async getByToken(token: ActivationToken): Promise<UserActivation | null> {
+  async getByToken(token: ActivationToken): Promise<UserActivation> {
     const found = this.db.find<UserActivationModel>(
       this.createKey(),
       (record) => record.token === token.value,
     );
 
-    return found ? UserActivationMapper.toEntity(found) : null;
+    if (!found) {
+      throw new TokenNotFoundError();
+    }
+
+    return UserActivationMapper.toEntity(found);
   }
 
   async save(userActivation: UserActivation): Promise<void> {

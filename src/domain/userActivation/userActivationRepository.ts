@@ -3,6 +3,6 @@ import { UserActivation } from './userActivation';
 import { ActivationToken } from './activationToken';
 
 export interface IUserActivationRepository {
-  getByToken(token: ActivationToken): Promise<UserActivation | null>;
+  getByToken(token: ActivationToken): Promise<UserActivation>;
   save(userActivation: UserActivation): Promise<void>;
 }

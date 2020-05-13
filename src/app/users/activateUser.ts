@@ -44,11 +44,6 @@ export class ActivateUser extends UseCase<ActivateUserData, void> {
     const userActivation = await this.userActivationRepo.getByToken(
       new ActivationToken(token),
     );
-
-    if (!userActivation) {
-      throw new TokenNotFoundError();
-    }
-
     const user = await this.userRepo.getById(userActivation.userId);
 
     userActivation.markAsUsed(this.timeProvider);
