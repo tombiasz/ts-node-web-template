@@ -1,5 +1,5 @@
 import { ILogger } from '../../logger';
-import { User, UserId, IUserRepository } from '@domain/user';
+import { User, UserId, IUserRepository, UserNotFoundError } from '@domain/user';
 import { DbSession } from '../core/dbSession';
 import { UserMapper } from './mapper';
 import { UserModel } from './model';
@@ -28,9 +28,15 @@ export class UserJsonDbRepository implements IUserRepository {
   async getById(id: UserId): Promise<User> {
     this.logger.debug(`Getting user by id ${id}`);
 
-    const data = this.db.getData(this.createKey(id.value));
+    try {
+      const data = this.db.getData(this.createKey(id.value));
 
-    return UserMapper.toEntity(data);
+      return UserMapper.toEntity(data);
+    } catch (error) {
+      this.logger.warn(`Error when getting user by id ${id}`, { error });
+
+      throw new UserNotFoundError();
+    }
   }
 
   async save(user: User): Promise<void> {

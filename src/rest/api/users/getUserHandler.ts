@@ -2,24 +2,23 @@ import { Request } from 'express';
 import { HttpError } from '../../shared/httpErrors';
 import { Handler } from '../../shared/handler';
 import { UserSerializer } from './serializers';
-import { GetUser } from '@app/users';
-import { UserNotFoundError } from '@domain/user';
+import { UserNotFoundError, IUserRepository, UserId } from '@domain/user';
 import { ILogger } from '../../../logger';
 
 type GetUserHandlerDependencies = {
-  useCase: GetUser;
+  userRepo: IUserRepository;
   logger: ILogger;
 };
 
 export class GetUserHandler extends Handler {
-  private useCase: GetUser;
+  private userRepo: IUserRepository;
 
   private logger: ILogger;
 
-  constructor({ useCase, logger }: GetUserHandlerDependencies) {
+  constructor({ userRepo, logger }: GetUserHandlerDependencies) {
     super();
 
-    this.useCase = useCase;
+    this.userRepo = userRepo;
     this.logger = logger;
   }
 
@@ -27,9 +26,7 @@ export class GetUserHandler extends Handler {
     this.logger.info('Getting user');
 
     try {
-      const result = await this.useCase.execute({
-        id: req.params.id,
-      });
+      const result = await this.userRepo.getById(new UserId(req.params.id));
 
       return this.ok(UserSerializer.one(result));
     } catch (error) {

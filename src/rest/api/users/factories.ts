@@ -3,7 +3,7 @@ import { TimeProvider } from '@utils/timeProvider';
 import { PasswordManager } from '@utils/passwordManager';
 import { HandlerFactory } from '../../shared/handler';
 import { UserJsonDbRepository } from '../../../database/users/userJsonDbRepository';
-import { GetUser, CreateUser, RegisterUser, ActivateUser } from '@app/users';
+import { CreateUser, RegisterUser, ActivateUser } from '@app/users';
 import { CreateUserHandler } from './createUserHandler';
 import { GetUserHandler } from './getUserHandler';
 import { RegisterUserHandler } from './registerUserHandler';
@@ -43,13 +43,8 @@ export const getUserHandlerFactory: HandlerFactory<GetUserHandler> = (req) => {
     db,
   });
 
-  const createUser = new GetUser({
-    logger: logger.withContext({ useCase: GetUser.name }),
-    userRepo,
-  });
-
   return new GetUserHandler({
-    useCase: createUser,
+    userRepo,
     logger: logger.withContext({ handler: GetUserHandler.name }),
   });
 };
