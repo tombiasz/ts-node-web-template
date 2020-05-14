@@ -4,22 +4,20 @@ import { ITimeProvider, IPasswordHashCalculator } from '@domain/core';
 import { User, IUserRepository, UsernameNotUniqueError } from '@domain/user';
 import { UseCase } from '../core';
 
-type CreateUserProps = {
-  db: DbSession;
+export type CreateUserProps = {
   userRepo: IUserRepository;
   logger: ILogger;
   timeProvider: ITimeProvider;
   passwordHashCalculator: IPasswordHashCalculator;
 };
 
-type CreateUserData = {
+export type CreateUserData = {
   id: string;
   username: string;
   password: string;
 };
 
 export class CreateUser extends UseCase<CreateUserData, User> {
-  private db: DbSession;
   private userRepo: IUserRepository;
   private logger: ILogger;
   private timeProvider: ITimeProvider;
@@ -28,7 +26,6 @@ export class CreateUser extends UseCase<CreateUserData, User> {
   constructor(props: CreateUserProps) {
     super();
 
-    this.db = props.db;
     this.userRepo = props.userRepo;
     this.logger = props.logger;
     this.timeProvider = props.timeProvider;
@@ -55,7 +52,6 @@ export class CreateUser extends UseCase<CreateUserData, User> {
     );
 
     await this.userRepo.save(user);
-    this.db.save();
 
     this.logger.info('new user created', { id: user.id });
 

@@ -3,11 +3,18 @@ import { TimeProvider } from '@utils/timeProvider';
 import { PasswordManager } from '@utils/passwordManager';
 import { HandlerFactory } from '../../shared/handler';
 import { UserJsonDbRepository } from '../../../database/users/userJsonDbRepository';
-import { CreateUser, RegisterUser, ActivateUser } from '@app/users';
+import {
+  CreateUser,
+  RegisterUser,
+  ActivateUser,
+  CreateUserData,
+} from '@app/users';
 import { CreateUserHandler } from './createUserHandler';
 import { GetUserHandler } from './getUserHandler';
 import { RegisterUserHandler } from './registerUserHandler';
 import { ActivateUserHandler } from './activateUserHandler';
+import { UseCaseWithTransaction } from '@database/core/useCaseWithTransaction';
+import { User } from '@domain/user';
 
 export const createUserHandlerFactory: HandlerFactory<CreateUserHandler> = (
   req,
@@ -20,12 +27,14 @@ export const createUserHandlerFactory: HandlerFactory<CreateUserHandler> = (
     db,
   });
 
-  const createUser = new CreateUser({
+  const createUser = new UseCaseWithTransaction<CreateUserData, User>({
     db,
-    logger: logger.withContext({ useCase: CreateUser.name }),
-    userRepo,
-    timeProvider: new TimeProvider(),
-    passwordHashCalculator: new PasswordManager(),
+    useCase: new CreateUser({
+      logger: logger.withContext({ useCase: CreateUser.name }),
+      userRepo,
+      timeProvider: new TimeProvider(),
+      passwordHashCalculator: new PasswordManager(),
+    }),
   });
 
   return new CreateUserHandler({
