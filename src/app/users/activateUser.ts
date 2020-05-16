@@ -1,28 +1,24 @@
 import { ILogger } from '../../logger';
-import { DbSession } from '@database/core';
 import { ITimeProvider } from '@domain/core';
 import { IUserRepository } from '@domain/user';
 import {
   IUserActivationRepository,
   ActivationToken,
-  TokenNotFoundError,
 } from '@domain/userActivation';
 import { UseCase } from '../core';
 
-type ActivateUserProps = {
-  db: DbSession;
+export type ActivateUserProps = {
   userRepo: IUserRepository;
   userActivationRepo: IUserActivationRepository;
   timeProvider: ITimeProvider;
   logger: ILogger;
 };
 
-type ActivateUserData = {
+export type ActivateUserData = {
   token: string;
 };
 
 export class ActivateUser extends UseCase<ActivateUserData, void> {
-  private db: DbSession;
   private userRepo: IUserRepository;
   private userActivationRepo: IUserActivationRepository;
   private timeProvider: ITimeProvider;
@@ -31,7 +27,6 @@ export class ActivateUser extends UseCase<ActivateUserData, void> {
   constructor(props: ActivateUserProps) {
     super();
 
-    this.db = props.db;
     this.userRepo = props.userRepo;
     this.userActivationRepo = props.userActivationRepo;
     this.timeProvider = props.timeProvider;
@@ -51,8 +46,6 @@ export class ActivateUser extends UseCase<ActivateUserData, void> {
 
     await this.userRepo.save(user);
     await this.userActivationRepo.save(userActivation);
-
-    this.db.save();
 
     this.logger.info('User activated', { id: user.id });
   }

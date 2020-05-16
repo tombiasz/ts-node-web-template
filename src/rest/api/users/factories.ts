@@ -9,6 +9,7 @@ import {
   ActivateUser,
   CreateUserData,
   RegisterUserData,
+  ActivateUserData,
 } from '@app/users';
 import { CreateUserHandler } from './createUserHandler';
 import { GetUserHandler } from './getUserHandler';
@@ -106,16 +107,18 @@ export const activateUserHandlerFactory: HandlerFactory<ActivateUserHandler> = (
     db,
   });
 
-  const useCase = new ActivateUser({
-    logger: logger.withContext({ useCase: RegisterUser.name }),
+  const activateUser = new UseCaseWithTransaction<ActivateUserData, void>({
     db,
-    userRepo,
-    userActivationRepo,
-    timeProvider: new TimeProvider(),
+    useCase: new ActivateUser({
+      logger: logger.withContext({ useCase: ActivateUser.name }),
+      userRepo,
+      userActivationRepo,
+      timeProvider: new TimeProvider(),
+    }),
   });
 
   return new ActivateUserHandler({
-    useCase,
+    useCase: activateUser,
     logger: logger.withContext({ handler: GetUserHandler.name }),
   });
 };

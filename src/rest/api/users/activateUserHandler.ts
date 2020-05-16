@@ -6,16 +6,17 @@ import {
   TokenAlreadyUsedError,
   TokenNotFoundError,
 } from '@domain/userActivation';
-import { ActivateUser } from '@app/users';
+import { ActivateUserData } from '@app/users';
 import { ILogger } from '../../../logger';
+import { UseCase } from '@app/core';
 
 type ActivateUserHandlerDependencies = {
-  useCase: ActivateUser;
+  useCase: UseCase<ActivateUserData, void>;
   logger: ILogger;
 };
 
 export class ActivateUserHandler extends Handler {
-  private useCase: ActivateUser;
+  private useCase: UseCase<ActivateUserData, void>;
   private logger: ILogger;
 
   constructor({ useCase, logger }: ActivateUserHandlerDependencies) {
