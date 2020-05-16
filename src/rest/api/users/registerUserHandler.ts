@@ -1,18 +1,19 @@
 import { Request } from 'express';
 import { Handler } from '../../shared/handler';
 import { UserSerializer } from './serializers';
-import { RegisterUser } from '@app/users';
-import { UsernameNotUniqueError } from '@domain/user';
+import { RegisterUserData } from '@app/users';
+import { UsernameNotUniqueError, User } from '@domain/user';
 import { HttpError } from '../../shared/httpErrors';
 import { ILogger } from '../../../logger';
+import { UseCase } from '@app/core';
 
 type RegisterUserHandlerDependencies = {
-  useCase: RegisterUser;
+  useCase: UseCase<RegisterUserData, User>;
   logger: ILogger;
 };
 
 export class RegisterUserHandler extends Handler {
-  private useCase: RegisterUser;
+  private useCase: UseCase<RegisterUserData, User>;
 
   private logger: ILogger;
 

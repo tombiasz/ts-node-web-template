@@ -8,8 +8,7 @@ import {
 } from '@domain/userActivation';
 import { UseCase } from '../core';
 
-type RegisterUserProps = {
-  db: DbSession;
+export type RegisterUserProps = {
   userRepo: IUserRepository;
   userActivationRepo: IUserActivationRepository;
   timeProvider: ITimeProvider;
@@ -17,14 +16,13 @@ type RegisterUserProps = {
   passwordHashCalculator: IPasswordHashCalculator;
 };
 
-type RegisterUserData = {
+export type RegisterUserData = {
   id: string;
   username: string;
   password: string;
 };
 
 export class RegisterUser extends UseCase<RegisterUserData, User> {
-  private db: DbSession;
   private userRepo: IUserRepository;
   private userActivationRepo: IUserActivationRepository;
   private timeProvider: ITimeProvider;
@@ -34,7 +32,6 @@ export class RegisterUser extends UseCase<RegisterUserData, User> {
   constructor(props: RegisterUserProps) {
     super();
 
-    this.db = props.db;
     this.userRepo = props.userRepo;
     this.userActivationRepo = props.userActivationRepo;
     this.timeProvider = props.timeProvider;
@@ -68,8 +65,6 @@ export class RegisterUser extends UseCase<RegisterUserData, User> {
 
     await this.userRepo.save(user);
     await this.userActivationRepo.save(userActivation);
-
-    this.db.save();
 
     this.logger.info('new user created', { id: user.id });
 

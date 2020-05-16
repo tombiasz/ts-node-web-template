@@ -8,6 +8,7 @@ import {
   RegisterUser,
   ActivateUser,
   CreateUserData,
+  RegisterUserData,
 } from '@app/users';
 import { CreateUserHandler } from './createUserHandler';
 import { GetUserHandler } from './getUserHandler';
@@ -73,17 +74,19 @@ export const registerUserHandlerFactory: HandlerFactory<RegisterUserHandler> = (
     db,
   });
 
-  const useCase = new RegisterUser({
-    logger: logger.withContext({ useCase: RegisterUser.name }),
+  const registerUser = new UseCaseWithTransaction<RegisterUserData, User>({
     db,
-    userRepo,
-    userActivationRepo,
-    timeProvider: new TimeProvider(),
-    passwordHashCalculator: new PasswordManager(),
+    useCase: new RegisterUser({
+      logger: logger.withContext({ useCase: RegisterUser.name }),
+      userRepo,
+      userActivationRepo,
+      timeProvider: new TimeProvider(),
+      passwordHashCalculator: new PasswordManager(),
+    }),
   });
 
   return new RegisterUserHandler({
-    useCase,
+    useCase: registerUser,
     logger: logger.withContext({ handler: GetUserHandler.name }),
   });
 };
