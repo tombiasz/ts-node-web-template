@@ -1,5 +1,5 @@
 import pino from 'pino';
-import { IConfig } from './config';
+import { config } from './config';
 
 type LogMethod = (message: string, context?: object) => void;
 
@@ -38,7 +38,7 @@ class AppLogger implements ILogger {
     return new AppLogger(this.logger.child(context));
   }
 
-  static fromConfig(config: IConfig) {
+  static create() {
     return new this(
       pino({
         enabled: config.loggerEnabled,
@@ -48,5 +48,4 @@ class AppLogger implements ILogger {
   }
 }
 
-export const createLogger = ({ config }: { config: IConfig }) =>
-  AppLogger.fromConfig(config);
+export const createLogger = () => AppLogger.create();

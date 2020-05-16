@@ -1,4 +1,3 @@
-import { createConfig } from './config';
 import { createLogger } from './logger';
 import { createServer } from './rest';
 
@@ -7,9 +6,8 @@ enum Signal {
   SIGTERM = 'SIGTERM',
 }
 
-const config = createConfig(process.env);
-const logger = createLogger({ config });
-const server = createServer({ logger, config });
+const logger = createLogger();
+const server = createServer({ logger });
 
 const shutdown = async (signal: Signal): Promise<void> => {
   try {
@@ -32,8 +30,8 @@ process.on(Signal.SIGINT, () => shutdown(Signal.SIGINT));
 
 server
   .start()
-  .then(port => logger.info('Server running', { port }))
-  .catch(error => {
+  .then((port) => logger.info('Server running', { port }))
+  .catch((error) => {
     logger.error('Error occurred starting server', { error });
 
     process.exit(1);

@@ -1,19 +1,13 @@
 import { JsonDB } from 'node-json-db';
 import { Config as JsonDBConfig } from 'node-json-db/dist/lib/JsonDBConfig';
-import { IConfig } from '../../config';
+import { config } from '../../config';
 import { ILogger } from '../../logger';
 
 export type DbSession = JsonDB;
 
-type DbSessionFactory = ({
-  config,
-  logger,
-}: {
-  config: IConfig;
-  logger: ILogger;
-}) => JsonDB;
+type DbSessionFactory = ({ logger }: { logger: ILogger }) => JsonDB;
 
-export const createDbSession: DbSessionFactory = ({ config, logger }) => {
+export const createDbSession: DbSessionFactory = ({ logger }) => {
   const saveOnPush = false;
   const humanReadable = false;
   const pathSeparator = '/';

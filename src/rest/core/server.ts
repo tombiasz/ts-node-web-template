@@ -1,4 +1,5 @@
 import express from 'express';
+import { config } from '../../config';
 import { ILogger } from '../../logger';
 import {
   createErrorsHandler,
@@ -8,7 +9,6 @@ import {
   createRequestLogger,
   createRequestDbSession,
 } from './handlers';
-import { IConfig } from '../../config';
 import { Server as HttpServer } from 'http';
 import { createApiRoutes } from '../api/routes';
 import { DbSession } from '@database/core';
@@ -24,7 +24,6 @@ declare global {
 
 export type ServerProps = {
   logger: ILogger;
-  config: IConfig;
 };
 
 interface Server {
@@ -34,7 +33,7 @@ interface Server {
 
 type ServerFactory = (context: ServerProps) => Server;
 
-export const createServer: ServerFactory = ({ logger, config }) => {
+export const createServer: ServerFactory = ({ logger }) => {
   let server: HttpServer | null = null;
   let isShuttingDown = false;
 
@@ -42,7 +41,7 @@ export const createServer: ServerFactory = ({ logger, config }) => {
     .disable('x-powered-by')
     .use(createForceJSONPayloadHandler())
     .use(createRequestLogger({ logger }))
-    .use(createRequestDbSession({ config }))
+    .use(createRequestDbSession())
     .use('/api', createApiRoutes())
     .use(
       '/health',
