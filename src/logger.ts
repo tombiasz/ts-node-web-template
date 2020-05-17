@@ -48,4 +48,4 @@ class AppLogger implements ILogger {
   }
 }
 
-export const createLogger = () => AppLogger.create();
+export const logger = AppLogger.create();

@@ -1,4 +1,4 @@
-import { createLogger } from './logger';
+import { logger } from './logger';
 import { createServer } from './rest';
 
 enum Signal {
@@ -6,8 +6,7 @@ enum Signal {
   SIGTERM = 'SIGTERM',
 }
 
-const logger = createLogger();
-const server = createServer({ logger });
+const server = createServer();
 
 const shutdown = async (signal: Signal): Promise<void> => {
   try {

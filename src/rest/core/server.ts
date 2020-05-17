@@ -22,25 +22,21 @@ declare global {
   }
 }
 
-export type ServerProps = {
-  logger: ILogger;
-};
-
 interface Server {
   start: () => Promise<number>;
   stop: () => Promise<void>;
 }
 
-type ServerFactory = (context: ServerProps) => Server;
+type ServerFactory = () => Server;
 
-export const createServer: ServerFactory = ({ logger }) => {
+export const createServer: ServerFactory = () => {
   let server: HttpServer | null = null;
   let isShuttingDown = false;
 
   const app = express()
     .disable('x-powered-by')
     .use(createForceJSONPayloadHandler())
-    .use(createRequestLogger({ logger }))
+    .use(createRequestLogger())
     .use(createRequestDbSession())
     .use('/api', createApiRoutes())
     .use(
