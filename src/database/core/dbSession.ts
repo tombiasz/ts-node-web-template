@@ -1,5 +1,6 @@
 import { JsonDB } from 'node-json-db';
 import { Config as JsonDBConfig } from 'node-json-db/dist/lib/JsonDBConfig';
+import { config } from 'src/config';
 
 export type DbSession = JsonDB;
 
@@ -14,3 +15,5 @@ export const createDbSession: DbSessionFactory = ({ databaseName }) => {
     new JsonDBConfig(databaseName, saveOnPush, humanReadable, pathSeparator),
   );
 };
+
+export const db = createDbSession({ databaseName: config.databaseName });
