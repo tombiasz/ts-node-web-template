@@ -7,7 +7,6 @@ import {
   createHealthCheckHandler,
   createRouteNotFoundHandler,
   createRequestLogger,
-  createRequestDbSession,
 } from './handlers';
 import { Server as HttpServer } from 'http';
 import { createApiRoutes } from '../api/routes';
@@ -37,7 +36,6 @@ export const createServer: ServerFactory = () => {
     .disable('x-powered-by')
     .use(createForceJSONPayloadHandler())
     .use(createRequestLogger())
-    .use(createRequestDbSession())
     .use('/api', createApiRoutes())
     .use(
       '/health',

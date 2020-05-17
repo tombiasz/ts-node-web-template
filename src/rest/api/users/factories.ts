@@ -17,12 +17,15 @@ import { RegisterUserHandler } from './registerUserHandler';
 import { ActivateUserHandler } from './activateUserHandler';
 import { UseCaseWithTransaction } from '@database/core/useCaseWithTransaction';
 import { User } from '@domain/user';
+import { createDbSession } from '@database/core';
+import { config } from '../../../config';
 
 export const createUserHandlerFactory: HandlerFactory<CreateUserHandler> = (
   req,
 ) => {
   const logger = req.logger;
-  const db = req.db;
+
+  const db = createDbSession({ databaseName: config.databaseName });
 
   const userRepo = new UserJsonDbRepository({
     logger: logger.withContext({ repo: UserJsonDbRepository.name }),
@@ -47,7 +50,8 @@ export const createUserHandlerFactory: HandlerFactory<CreateUserHandler> = (
 
 export const getUserHandlerFactory: HandlerFactory<GetUserHandler> = (req) => {
   const logger = req.logger;
-  const db = req.db;
+
+  const db = createDbSession({ databaseName: config.databaseName });
 
   const userRepo = new UserJsonDbRepository({
     logger: logger.withContext({ repo: UserJsonDbRepository.name }),
@@ -64,7 +68,8 @@ export const registerUserHandlerFactory: HandlerFactory<RegisterUserHandler> = (
   req,
 ) => {
   const logger = req.logger;
-  const db = req.db;
+
+  const db = createDbSession({ databaseName: config.databaseName });
 
   const userRepo = new UserJsonDbRepository({
     logger: logger.withContext({ repo: UserJsonDbRepository.name }),
@@ -96,7 +101,8 @@ export const activateUserHandlerFactory: HandlerFactory<ActivateUserHandler> = (
   req,
 ) => {
   const logger = req.logger;
-  const db = req.db;
+
+  const db = createDbSession({ databaseName: config.databaseName });
 
   const userRepo = new UserJsonDbRepository({
     logger: logger.withContext({ repo: UserJsonDbRepository.name }),
