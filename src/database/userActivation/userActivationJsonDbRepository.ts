@@ -5,7 +5,7 @@ import {
   ActivationToken,
   TokenNotFoundError,
 } from '@domain/userActivation';
-import { DbSession } from '../core/dbSession';
+import { DbSession, db } from '../core/dbSession';
 import { UserActivationMapper } from './mapper';
 import { UserActivationModel } from './model';
 
@@ -51,3 +51,13 @@ export class UserActivationJsonDbRepository
     return [USER_ACTIVATIONS_KEY, ...bits].join('/');
   }
 }
+
+export const createUserActivationRepository = ({
+  logger,
+}: {
+  logger: ILogger;
+}) =>
+  new UserActivationJsonDbRepository({
+    logger: logger.withContext({ repo: UserActivationJsonDbRepository.name }),
+    db,
+  });

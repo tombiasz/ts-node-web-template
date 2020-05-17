@@ -1,8 +1,8 @@
-import { UserActivationJsonDbRepository } from '@database/userActivation/userActivationJsonDbRepository';
 import { TimeProvider } from '@utils/timeProvider';
 import { PasswordManager } from '@utils/passwordManager';
 import { HandlerFactory } from '../../shared/handler';
-import { UserJsonDbRepository } from '../../../database/users/userJsonDbRepository';
+import { createUserRepository } from '@database/users';
+import { createUserActivationRepository } from '@database/userActivation';
 import {
   CreateUser,
   RegisterUser,
@@ -17,26 +17,18 @@ import { RegisterUserHandler } from './registerUserHandler';
 import { ActivateUserHandler } from './activateUserHandler';
 import { UseCaseWithTransaction } from '@database/core/useCaseWithTransaction';
 import { User } from '@domain/user';
-import { createDbSession } from '@database/core';
-import { config } from '../../../config';
+import { db } from '@database/core';
 
 export const createUserHandlerFactory: HandlerFactory<CreateUserHandler> = (
   req,
 ) => {
   const logger = req.logger;
 
-  const db = createDbSession({ databaseName: config.databaseName });
-
-  const userRepo = new UserJsonDbRepository({
-    logger: logger.withContext({ repo: UserJsonDbRepository.name }),
-    db,
-  });
-
   const createUser = new UseCaseWithTransaction<CreateUserData, User>({
     db,
     useCase: new CreateUser({
       logger: logger.withContext({ useCase: CreateUser.name }),
-      userRepo,
+      userRepo: createUserRepository({ logger }),
       timeProvider: new TimeProvider(),
       passwordHashCalculator: new PasswordManager(),
     }),
@@ -51,15 +43,8 @@ export const createUserHandlerFactory: HandlerFactory<CreateUserHandler> = (
 export const getUserHandlerFactory: HandlerFactory<GetUserHandler> = (req) => {
   const logger = req.logger;
 
-  const db = createDbSession({ databaseName: config.databaseName });
-
-  const userRepo = new UserJsonDbRepository({
-    logger: logger.withContext({ repo: UserJsonDbRepository.name }),
-    db,
-  });
-
   return new GetUserHandler({
-    userRepo,
+    userRepo: createUserRepository({ logger }),
     logger: logger.withContext({ handler: GetUserHandler.name }),
   });
 };
@@ -69,23 +54,12 @@ export const registerUserHandlerFactory: HandlerFactory<RegisterUserHandler> = (
 ) => {
   const logger = req.logger;
 
-  const db = createDbSession({ databaseName: config.databaseName });
-
-  const userRepo = new UserJsonDbRepository({
-    logger: logger.withContext({ repo: UserJsonDbRepository.name }),
-    db,
-  });
-  const userActivationRepo = new UserActivationJsonDbRepository({
-    logger: logger.withContext({ repo: UserActivationJsonDbRepository.name }),
-    db,
-  });
-
   const registerUser = new UseCaseWithTransaction<RegisterUserData, User>({
     db,
     useCase: new RegisterUser({
       logger: logger.withContext({ useCase: RegisterUser.name }),
-      userRepo,
-      userActivationRepo,
+      userRepo: createUserRepository({ logger }),
+      userActivationRepo: createUserActivationRepository({ logger }),
       timeProvider: new TimeProvider(),
       passwordHashCalculator: new PasswordManager(),
     }),
@@ -102,23 +76,12 @@ export const activateUserHandlerFactory: HandlerFactory<ActivateUserHandler> = (
 ) => {
   const logger = req.logger;
 
-  const db = createDbSession({ databaseName: config.databaseName });
-
-  const userRepo = new UserJsonDbRepository({
-    logger: logger.withContext({ repo: UserJsonDbRepository.name }),
-    db,
-  });
-  const userActivationRepo = new UserActivationJsonDbRepository({
-    logger: logger.withContext({ repo: UserActivationJsonDbRepository.name }),
-    db,
-  });
-
   const activateUser = new UseCaseWithTransaction<ActivateUserData, void>({
     db,
     useCase: new ActivateUser({
       logger: logger.withContext({ useCase: ActivateUser.name }),
-      userRepo,
-      userActivationRepo,
+      userRepo: createUserRepository({ logger }),
+      userActivationRepo: createUserActivationRepository({ logger }),
       timeProvider: new TimeProvider(),
     }),
   });

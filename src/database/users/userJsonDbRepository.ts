@@ -1,6 +1,6 @@
 import { ILogger } from '../../logger';
 import { User, UserId, IUserRepository, UserNotFoundError } from '@domain/user';
-import { DbSession } from '../core/dbSession';
+import { DbSession, db } from '../core/dbSession';
 import { UserMapper } from './mapper';
 import { UserModel } from './model';
 
@@ -62,3 +62,9 @@ export class UserJsonDbRepository implements IUserRepository {
     return [USERS_KEY, ...bits].join('/');
   }
 }
+
+export const createUserRepository = ({ logger }: { logger: ILogger }) =>
+  new UserJsonDbRepository({
+    db,
+    logger: logger.withContext({ repo: UserJsonDbRepository.name }),
+  });
