@@ -15,3 +15,11 @@ export class UserNotFoundError extends DomainError {
 export class InvalidUserIdError extends DomainError {
   message = 'invalid user id';
 }
+
+export class UserNotActivated extends DomainError {
+  message = 'user not activated';
+}
+
+export class InvalidUsernameOrPassword extends DomainError {
+  message = 'invalid username or password';
+}

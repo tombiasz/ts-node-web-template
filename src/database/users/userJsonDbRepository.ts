@@ -39,6 +39,15 @@ export class UserJsonDbRepository implements IUserRepository {
     }
   }
 
+  async findByUsername(username: string): Promise<User | null> {
+    const data = this.db.filter<UserModel>(
+      this.createKey(),
+      (user) => user.username === username,
+    );
+
+    return data ? UserMapper.toEntity(data[0]) : null;
+  }
+
   async save(user: User): Promise<void> {
     this.logger.debug(`Saving new user`);
 
