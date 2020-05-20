@@ -53,7 +53,7 @@ export class Authenticate extends UseCase<AuthenticateData, User> {
       throw new UserNotActivated();
     }
 
-    this.logger.info('User authenticated', { id: user.id });
+    this.logger.info('User authenticated', { id: user.id.value });
 
     return user;
   }

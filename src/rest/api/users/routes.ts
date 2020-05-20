@@ -3,12 +3,15 @@ import { asHandler } from '../../shared/handler';
 import {
   createCreateUserValidator,
   createGetUserValidator,
+  createActivateUserValidator,
+  createAuthenticateValidator,
 } from './validators';
 import {
   getUserHandlerFactory,
   createUserHandlerFactory,
   registerUserHandlerFactory,
   activateUserHandlerFactory,
+  authenticateHandlerFactory,
 } from './factories';
 
 export function createUserRoutes(): Router {
@@ -22,7 +25,12 @@ export function createUserRoutes(): Router {
     )
     .post(
       '/activate/:token',
-      createCreateUserValidator(),
+      createActivateUserValidator(),
       asHandler(activateUserHandlerFactory),
+    )
+    .post(
+      '/auth',
+      createAuthenticateValidator(),
+      asHandler(authenticateHandlerFactory),
     );
 }

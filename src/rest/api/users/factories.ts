@@ -10,6 +10,7 @@ import {
   CreateUserData,
   RegisterUserData,
   ActivateUserData,
+  Authenticate,
 } from '@app/users';
 import { CreateUserHandler } from './createUserHandler';
 import { GetUserHandler } from './getUserHandler';
@@ -18,6 +19,7 @@ import { ActivateUserHandler } from './activateUserHandler';
 import { UseCaseWithTransaction } from '@database/core/useCaseWithTransaction';
 import { User } from '@domain/user';
 import { db } from '@database/core';
+import { AuthenticateHandler } from './authenticateHandler';
 
 export const createUserHandlerFactory: HandlerFactory<CreateUserHandler> = (
   req,
@@ -67,7 +69,7 @@ export const registerUserHandlerFactory: HandlerFactory<RegisterUserHandler> = (
 
   return new RegisterUserHandler({
     useCase: registerUser,
-    logger: logger.withContext({ handler: GetUserHandler.name }),
+    logger: logger.withContext({ handler: RegisterUserHandler.name }),
   });
 };
 
@@ -88,6 +90,26 @@ export const activateUserHandlerFactory: HandlerFactory<ActivateUserHandler> = (
 
   return new ActivateUserHandler({
     useCase: activateUser,
-    logger: logger.withContext({ handler: GetUserHandler.name }),
+    logger: logger.withContext({ handler: ActivateUserHandler.name }),
+  });
+};
+
+export const authenticateHandlerFactory: HandlerFactory<AuthenticateHandler> = (
+  req,
+) => {
+  const logger = req.logger;
+
+  const useCase = new UseCaseWithTransaction<CreateUserData, User>({
+    db,
+    useCase: new Authenticate({
+      logger: logger.withContext({ useCase: Authenticate.name }),
+      userRepo: createUserRepository({ logger }),
+      passwordHashVerifier: new PasswordManager(),
+    }),
+  });
+
+  return new AuthenticateHandler({
+    useCase,
+    logger: logger.withContext({ handler: AuthenticateHandler.name }),
   });
 };

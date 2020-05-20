@@ -49,4 +49,8 @@ export class HttpError extends Error {
   static conflict(message: string = 'conflict', context?: object) {
     return new this(409, message, context);
   }
+
+  static unauthorized(message: string = 'unauthorized', context?: object) {
+    return new this(401, message, context);
+  }
 }
