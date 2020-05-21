@@ -53,7 +53,7 @@ export class RegisterUser extends UseCase<RegisterUserData, User> {
     const user = User.register(
       {
         username,
-        password: this.passwordHashCalculator.hashPassword(password),
+        password: await this.passwordHashCalculator.hashPassword(password),
       },
       this.timeProvider,
     );

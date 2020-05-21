@@ -1,15 +1,18 @@
-import * as crypto from 'crypto';
+import bcrypt from 'bcrypt';
 import { IPasswordHashCalculator, IPasswordHashVerifier } from '@domain/core';
+
+const BCRYPT_ROUNDS = 15;
 
 export class PasswordManager
   implements IPasswordHashCalculator, IPasswordHashVerifier {
-  public hashPassword(password: string): string {
-    // use bcrypt or similar
-    return crypto.createHash('sha256').update(password).digest('hex');
+  public async hashPassword(password: string): Promise<string> {
+    return bcrypt.hash(password, BCRYPT_ROUNDS);
   }
 
-  public verifyHashedPassword(hash: string, password: string): boolean {
-    // use binary compare
-    return hash === this.hashPassword(password);
+  public async verifyHashedPassword(
+    hash: string,
+    password: string,
+  ): Promise<boolean> {
+    return bcrypt.compare(password, hash);
   }
 }

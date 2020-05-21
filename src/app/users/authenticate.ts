@@ -41,7 +41,7 @@ export class Authenticate extends UseCase<AuthenticateData, User> {
       throw new InvalidUsernameOrPassword();
     }
 
-    const passwordVerified = this.passwordHashVerifier.verifyHashedPassword(
+    const passwordVerified = await this.passwordHashVerifier.verifyHashedPassword(
       user.password,
       password,
     );

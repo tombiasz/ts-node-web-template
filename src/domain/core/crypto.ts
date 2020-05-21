@@ -1,7 +1,7 @@
 export interface IPasswordHashCalculator {
-  hashPassword(password: string): string;
+  hashPassword(password: string): Promise<string>;
 }
 
 export interface IPasswordHashVerifier {
-  verifyHashedPassword(hash: string, password: string): boolean;
+  verifyHashedPassword(hash: string, password: string): Promise<boolean>;
 }

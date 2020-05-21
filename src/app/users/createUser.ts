@@ -46,7 +46,7 @@ export class CreateUser extends UseCase<CreateUserData, User> {
     const user = User.create(
       {
         username,
-        password: this.passwordHashCalculator.hashPassword(password),
+        password: await this.passwordHashCalculator.hashPassword(password),
       },
       this.timeProvider,
     );
