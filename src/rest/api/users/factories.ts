@@ -20,6 +20,7 @@ import { UseCaseWithTransaction } from '@database/core/useCaseWithTransaction';
 import { User } from '@domain/user';
 import { db } from '@database/core';
 import { AuthenticateHandler } from './authenticateHandler';
+import { JwtTokenProvider } from 'src/rest/shared/auth';
 
 export const createUserHandlerFactory: HandlerFactory<CreateUserHandler> = (
   req,
@@ -111,5 +112,6 @@ export const authenticateHandlerFactory: HandlerFactory<AuthenticateHandler> = (
   return new AuthenticateHandler({
     useCase,
     logger: logger.withContext({ handler: AuthenticateHandler.name }),
+    tokenCalculator: new JwtTokenProvider(),
   });
 };

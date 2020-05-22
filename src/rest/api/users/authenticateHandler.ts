@@ -10,22 +10,29 @@ import {
 import { HttpError } from '../../shared/httpErrors';
 import { ILogger } from '../../../logger';
 import { UseCase } from '@app/core';
+import { IAuthTokenCalculator } from 'src/rest/shared/auth';
 
 type AuthenticateHandlerDependencies = {
   useCase: UseCase<AuthenticateData, User>;
   logger: ILogger;
+  tokenCalculator: IAuthTokenCalculator;
 };
 
 export class AuthenticateHandler extends Handler {
   private useCase: UseCase<AuthenticateData, User>;
-
   private logger: ILogger;
+  private tokenCalculator: IAuthTokenCalculator;
 
-  constructor({ useCase, logger }: AuthenticateHandlerDependencies) {
+  constructor({
+    useCase,
+    logger,
+    tokenCalculator,
+  }: AuthenticateHandlerDependencies) {
     super();
 
     this.useCase = useCase;
     this.logger = logger;
+    this.tokenCalculator = tokenCalculator;
   }
 
   protected async _handle(req: Request) {
@@ -34,7 +41,9 @@ export class AuthenticateHandler extends Handler {
 
       this.logger.info('user authenticated', { id: user.id.value });
 
-      return this.ok(UserSerializer.one(user));
+      const token = await this.tokenCalculator.generateToken(user);
+
+      return this.ok({ token });
     } catch (error) {
       if (
         error instanceof InvalidUsernameOrPassword ||
