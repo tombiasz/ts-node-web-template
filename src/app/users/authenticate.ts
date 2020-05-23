@@ -19,7 +19,15 @@ export type AuthenticateData = {
   password: string;
 };
 
-export class Authenticate extends UseCase<AuthenticateData, User> {
+export type AuthenticationResult = {
+  userId: string;
+  username: string;
+};
+
+export class Authenticate extends UseCase<
+  AuthenticateData,
+  AuthenticationResult
+> {
   private userRepo: IUserRepository;
   private logger: ILogger;
   private passwordHashVerifier: IPasswordHashVerifier;
@@ -55,6 +63,9 @@ export class Authenticate extends UseCase<AuthenticateData, User> {
 
     this.logger.info('User authenticated', { id: user.id.value });
 
-    return user;
+    return {
+      userId: user.id.value,
+      username: user.username,
+    };
   }
 }

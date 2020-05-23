@@ -11,6 +11,7 @@ import {
   RegisterUserData,
   ActivateUserData,
   Authenticate,
+  AuthenticationResult,
 } from '@app/users';
 import { CreateUserHandler } from './createUserHandler';
 import { GetUserHandler } from './getUserHandler';
@@ -100,7 +101,10 @@ export const authenticateHandlerFactory: HandlerFactory<AuthenticateHandler> = (
 ) => {
   const logger = req.logger;
 
-  const useCase = new UseCaseWithTransaction<CreateUserData, User>({
+  const useCase = new UseCaseWithTransaction<
+    CreateUserData,
+    AuthenticationResult
+  >({
     db,
     useCase: new Authenticate({
       logger: logger.withContext({ useCase: Authenticate.name }),

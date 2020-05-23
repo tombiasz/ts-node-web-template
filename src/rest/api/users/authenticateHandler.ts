@@ -1,25 +1,20 @@
 import { Request } from 'express';
 import { Handler } from '../../shared/handler';
-import { UserSerializer } from './serializers';
-import { AuthenticateData } from '@app/users';
-import {
-  User,
-  InvalidUsernameOrPassword,
-  UserNotActivated,
-} from '@domain/user';
+import { AuthenticateData, AuthenticationResult } from '@app/users';
+import { InvalidUsernameOrPassword, UserNotActivated } from '@domain/user';
 import { HttpError } from '../../shared/httpErrors';
 import { ILogger } from '../../../logger';
 import { UseCase } from '@app/core';
 import { IAuthTokenCalculator } from 'src/rest/shared/auth';
 
 type AuthenticateHandlerDependencies = {
-  useCase: UseCase<AuthenticateData, User>;
+  useCase: UseCase<AuthenticateData, AuthenticationResult>;
   logger: ILogger;
   tokenCalculator: IAuthTokenCalculator;
 };
 
 export class AuthenticateHandler extends Handler {
-  private useCase: UseCase<AuthenticateData, User>;
+  private useCase: UseCase<AuthenticateData, AuthenticationResult>;
   private logger: ILogger;
   private tokenCalculator: IAuthTokenCalculator;
 
@@ -37,11 +32,11 @@ export class AuthenticateHandler extends Handler {
 
   protected async _handle(req: Request) {
     try {
-      const user = await this.useCase.execute(req.body);
+      const auth = await this.useCase.execute(req.body);
 
-      this.logger.info('user authenticated', { id: user.id.value });
+      this.logger.info('user authenticated', { id: auth.userId });
 
-      const token = await this.tokenCalculator.generateToken(user);
+      const token = await this.tokenCalculator.generateToken(auth);
 
       return this.ok({ token });
     } catch (error) {

@@ -5,12 +5,18 @@ type Config = {
   loggerEnabled: boolean;
   loggerLevel: string;
   passwordBcryptRounds: number;
+  jwtSecret: string;
+  jwtAlgorithm: string;
+  jwtExpiresIn: string;
 };
 
 const REQUIRED_KEYS: ReadonlyArray<string> = [
   'APP_PORT',
   'DATABASE_NAME',
   'PASSWORD_BCRYPT_ROUNDS',
+  'JWT_SECRET',
+  'JWT_ALGORITHM',
+  'JWT_EXPIRES_IN',
 ];
 
 const checkRequiredKeys = (env: NodeJS.ProcessEnv): void => {
@@ -37,6 +43,9 @@ const createConfig = (env: NodeJS.ProcessEnv): Readonly<Config> => {
     loggerEnabled: asBool(env.LOGGER_ENABLED as string),
     loggerLevel: env.LOGGER_LEVEL || 'info',
     passwordBcryptRounds: asInt(env.PASSWORD_BCRYPT_ROUNDS as string),
+    jwtSecret: env.JWT_SECRET as string,
+    jwtAlgorithm: env.JWT_ALGORITHM as string,
+    jwtExpiresIn: env.JWT_EXPIRES_IN as string,
   });
 };
 
