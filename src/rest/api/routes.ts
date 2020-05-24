@@ -13,13 +13,19 @@ import {
   activateUserHandlerFactory,
   authenticateHandlerFactory,
 } from './users/factories';
+import { authMiddlewareFactory } from './authorizationMiddleware';
 
 export function createApiRoutes(): Router | Router[] {
   return [
     Router().use(
       '/users',
       Router()
-        .get('/:id', createGetUserValidator(), asHandler(getUserHandlerFactory))
+        .get(
+          '/:id',
+          asHandler(authMiddlewareFactory),
+          createGetUserValidator(),
+          asHandler(getUserHandlerFactory),
+        )
         .post(
           '/',
           createCreateUserValidator(),
