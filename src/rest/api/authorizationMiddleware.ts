@@ -2,7 +2,8 @@ import { Request } from 'express';
 import { HttpError } from '../shared/httpErrors';
 import { Handler, HandlerFactory } from '../shared/handler';
 import { ILogger } from '../../logger';
-import { IAuthTokenVerifier, JwtTokenProvider } from '../shared/auth';
+import { IAuthTokenVerifier } from '../core/auth';
+import { JwtTokenProvider } from '../shared/jwtTokenProvider';
 
 type GetUserHandlerDependencies = {
   logger: ILogger;

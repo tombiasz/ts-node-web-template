@@ -21,7 +21,7 @@ import { UseCaseWithTransaction } from '@database/core/useCaseWithTransaction';
 import { User } from '@domain/user';
 import { db } from '@database/core';
 import { AuthenticateHandler } from './authenticateHandler';
-import { JwtTokenProvider } from 'src/rest/shared/auth';
+import { JwtTokenProvider } from 'src/rest/shared/jwtTokenProvider';
 
 export const createUserHandlerFactory: HandlerFactory<CreateUserHandler> = (
   req,

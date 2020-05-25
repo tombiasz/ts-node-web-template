@@ -5,7 +5,7 @@ import { InvalidUsernameOrPassword, UserNotActivated } from '@domain/user';
 import { HttpError } from '../../shared/httpErrors';
 import { ILogger } from '../../../logger';
 import { UseCase } from '@app/core';
-import { IAuthTokenCalculator } from 'src/rest/shared/auth';
+import { IAuthTokenCalculator } from 'src/rest/core/auth';
 
 type AuthenticateHandlerDependencies = {
   useCase: UseCase<AuthenticateData, AuthenticationResult>;
