@@ -9,12 +9,6 @@ import {
   FailureTokenVerificationResult,
 } from '../core/auth';
 
-// TODO:
-// - fix naming
-// - separate authorization interfaces from implementation
-// - rethink catalog structure in api/
-// - rethink the use of generic Result object
-
 export class JwtTokenProvider
   implements IAuthTokenCalculator, IAuthTokenVerifier {
   async generateToken(payload: TokenPayload): Promise<string> {
@@ -29,7 +23,12 @@ export class JwtTokenProvider
     try {
       const payload = await jwt.verify(token, config.jwtSecret);
 
-      return new SuccessfulTokenVerificationResult(payload as TokenPayload);
+      const { userId, username } = payload as TokenPayload;
+
+      return new SuccessfulTokenVerificationResult({
+        userId,
+        username,
+      });
     } catch (error) {
       return new FailureTokenVerificationResult(error.message);
     }

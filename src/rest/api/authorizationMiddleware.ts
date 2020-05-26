@@ -42,7 +42,15 @@ export class AuthorizationMiddleware extends Handler {
       return this.fail(HttpError.unauthorized(result.error));
     }
 
-    // TODO: attach userId to request
+    req.getAuthorizedUser = () => {
+      if (!result.authorizedUser) {
+        throw new Error(
+          'getAuthorizedUser() tries to operate on empty authorizedUser object! This should not happen',
+        );
+      }
+
+      return result.authorizedUser;
+    };
 
     return this.next();
   }

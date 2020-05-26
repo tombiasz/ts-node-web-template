@@ -7,16 +7,19 @@ import {
   createHealthCheckHandler,
   createRouteNotFoundHandler,
   createRequestLogger,
+  createDefaultGetAuthorizedUser,
 } from './handlers';
 import { Server as HttpServer } from 'http';
 import { createApiRoutes } from '../api/routes';
 import { DbSession } from '@database/core';
+import { AuthorizedUser } from './auth';
 
 declare global {
   namespace Express {
     interface Request {
       logger: ILogger;
       db: DbSession;
+      getAuthorizedUser(): AuthorizedUser;
     }
   }
 }
@@ -36,6 +39,7 @@ export const createServer: ServerFactory = () => {
     .disable('x-powered-by')
     .use(createForceJSONPayloadHandler())
     .use(createRequestLogger())
+    .use(createDefaultGetAuthorizedUser())
     .use('/api', createApiRoutes())
     .use(
       '/health',

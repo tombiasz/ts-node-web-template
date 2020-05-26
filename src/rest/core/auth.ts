@@ -1,3 +1,10 @@
+export type AuthorizedUser = {
+  userId: string;
+  username: string;
+};
+
+export type TokenPayload = AuthorizedUser;
+
 export interface IAuthTokenCalculator {
   generateToken(payload: TokenPayload): Promise<string>;
 }
@@ -6,17 +13,12 @@ export interface IAuthTokenVerifier {
   verifyToken(token: string): Promise<TokenVerificationResult>;
 }
 
-export type TokenPayload = {
-  userId: string;
-  username: string;
-};
-
 export class SuccessfulTokenVerificationResult {
   public readonly isSuccess = true;
-  public readonly payload: TokenPayload;
+  public readonly authorizedUser: AuthorizedUser;
 
-  constructor(payload: TokenPayload) {
-    this.payload = payload;
+  constructor(authorizedUser: AuthorizedUser) {
+    this.authorizedUser = authorizedUser;
   }
 }
 
