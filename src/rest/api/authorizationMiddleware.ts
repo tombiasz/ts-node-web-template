@@ -48,7 +48,7 @@ export class AuthorizationMiddleware extends Handler {
   }
 }
 
-export const authMiddlewareFactory: HandlerFactory<AuthorizationMiddleware> = (
+export const authorizationMiddlewareFactory: HandlerFactory<AuthorizationMiddleware> = (
   req,
 ) => {
   const logger = req.logger;

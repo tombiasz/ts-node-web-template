@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { asHandler } from '../shared/handler';
+import { asHandler, asMiddleware } from '../shared/handler';
 import {
   createCreateUserValidator,
   createGetUserValidator,
@@ -13,7 +13,7 @@ import {
   activateUserHandlerFactory,
   authenticateHandlerFactory,
 } from './users/factories';
-import { authMiddlewareFactory } from './authorizationMiddleware';
+import { authorizationMiddlewareFactory } from './authorizationMiddleware';
 
 export function createApiRoutes(): Router | Router[] {
   return [
@@ -22,7 +22,7 @@ export function createApiRoutes(): Router | Router[] {
       Router()
         .get(
           '/:id',
-          asHandler(authMiddlewareFactory),
+          asMiddleware(authorizationMiddlewareFactory),
           createGetUserValidator(),
           asHandler(getUserHandlerFactory),
         )

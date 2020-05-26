@@ -106,3 +106,5 @@ export function asHandler<THandler extends Handler>(
     handler.handle(req, res, next);
   };
 }
+
+export const asMiddleware = asHandler;
