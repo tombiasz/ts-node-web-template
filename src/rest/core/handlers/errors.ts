@@ -20,12 +20,14 @@ export function createErrorsHandler() {
         return res.status(_error.status).json(_error);
       }
 
+      logger.error(`Unhandled error`, error);
+
       const _error = HttpError.internalServerError();
-      logger.error(`Unhandled error ${_error}`, _error.toJSON());
       return res.status(_error.status).json(_error);
     } catch (err) {
+      logger.error(`Error when handling errors`, error);
+
       const _error = HttpError.internalServerError();
-      logger.error(`Error when handling errors ${_error}`, _error.toJSON());
       return res.status(_error.status).json(_error);
     }
   };
