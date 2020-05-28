@@ -2,11 +2,13 @@ import { Entity } from '../core/entity';
 import { UserId } from './userId';
 import { ITimeProvider } from '@domain/core';
 import { UserAlreadyActivatedError } from './errors';
+import { UserRole } from './userRole';
 
 interface UserProps {
   id: UserId;
   username: string;
   password: string;
+  role: UserRole;
   isActive: boolean;
   createdAt: Date;
 }
@@ -32,6 +34,10 @@ export class User extends Entity<UserProps> {
     return this.props.isActive;
   }
 
+  get role() {
+    return this.props.role;
+  }
+
   activate() {
     if (this.isActive) {
       throw new UserAlreadyActivatedError();
@@ -48,6 +54,7 @@ export class User extends Entity<UserProps> {
       id: UserId.create(),
       createdAt: timeProvider.getCurrentTime(),
       isActive: false,
+      role: UserRole.BUYER,
       ...props,
     });
   }
@@ -60,6 +67,7 @@ export class User extends Entity<UserProps> {
       id: UserId.create(),
       createdAt: timeProvider.getCurrentTime(),
       isActive: true,
+      role: UserRole.BUYER,
       ...props,
     });
   }

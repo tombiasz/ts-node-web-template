@@ -1,4 +1,4 @@
-import { User, UserId } from '@domain/user';
+import { User, UserId, UserRole } from '@domain/user';
 import { UserModel } from './model';
 
 const toDb = (user: User): UserModel => ({
@@ -7,6 +7,7 @@ const toDb = (user: User): UserModel => ({
   password: user.password,
   createdAt: user.createdAt,
   isActive: user.isActive,
+  role: user.role,
 });
 
 const toEntity = (dto: UserModel): User =>
@@ -16,6 +17,7 @@ const toEntity = (dto: UserModel): User =>
     password: dto.password,
     createdAt: dto.createdAt,
     isActive: dto.isActive,
+    role: UserRole[dto.role as keyof typeof UserRole],
   });
 
 export const UserMapper = {

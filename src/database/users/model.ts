@@ -4,4 +4,5 @@ export type UserModel = {
   password: string;
   createdAt: Date;
   isActive: boolean;
+  role: string;
 };
