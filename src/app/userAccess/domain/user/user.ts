@@ -1,6 +1,6 @@
-import { Entity } from '../core/entity';
+import { Entity } from '../../core/entity';
 import { UserId } from './userId';
-import { ITimeProvider } from '@domain/core';
+import { ITimeProvider } from '@app/userAccess/core';
 import { UserAlreadyActivatedError } from './errors';
 import { UserRole } from './userRole';
 

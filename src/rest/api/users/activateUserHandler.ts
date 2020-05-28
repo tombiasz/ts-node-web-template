@@ -1,12 +1,12 @@
 import { Request } from 'express';
 import { HttpError } from '../../shared/httpErrors';
 import { Handler } from '../../shared/handler';
-import { UserAlreadyActivatedError } from '@domain/user';
+import { UserAlreadyActivatedError } from '@app/userAccess/domain/user';
 import {
   TokenAlreadyUsedError,
   TokenNotFoundError,
-} from '@domain/userActivation';
-import { ActivateUserData } from '@app/users';
+} from '@app/userAccess/domain/userActivation';
+import { ActivateUserData } from '@app/userAccess/useCases';
 import { ILogger } from '../../../logger';
 import { UseCase } from '@app/core';
 

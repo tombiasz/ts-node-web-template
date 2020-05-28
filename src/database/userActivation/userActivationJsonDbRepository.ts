@@ -4,7 +4,7 @@ import {
   UserActivation,
   ActivationToken,
   TokenNotFoundError,
-} from '@domain/userActivation';
+} from '@app/userAccess/domain/userActivation';
 import { DbSession, db } from '../core/dbSession';
 import { UserActivationMapper } from './mapper';
 import { UserActivationModel } from './model';

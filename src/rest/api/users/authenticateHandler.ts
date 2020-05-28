@@ -1,7 +1,13 @@
 import { Request } from 'express';
 import { Handler } from '../../shared/handler';
-import { AuthenticateData, AuthenticationResult } from '@app/users';
-import { InvalidUsernameOrPassword, UserNotActivated } from '@domain/user';
+import {
+  AuthenticateData,
+  AuthenticationResult,
+} from '@app/userAccess/useCases';
+import {
+  InvalidUsernameOrPassword,
+  UserNotActivated,
+} from '@app/userAccess/domain/user';
 import { HttpError } from '../../shared/httpErrors';
 import { ILogger } from '../../../logger';
 import { UseCase } from '@app/core';

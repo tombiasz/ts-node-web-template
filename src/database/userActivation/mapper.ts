@@ -1,5 +1,8 @@
-import { UserId } from '@domain/user';
-import { UserActivation, ActivationToken } from '@domain/userActivation';
+import { UserId } from '@app/userAccess/domain/user';
+import {
+  UserActivation,
+  ActivationToken,
+} from '@app/userAccess/domain/userActivation';
 import { UserActivationModel } from './model';
 
 const toDb = (entity: UserActivation): UserActivationModel => ({

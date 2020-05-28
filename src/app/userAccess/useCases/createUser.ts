@@ -1,8 +1,11 @@
-import { ILogger } from '../../logger';
-import { DbSession } from '@database/core';
-import { ITimeProvider, IPasswordHashCalculator } from '@domain/core';
-import { User, IUserRepository, UsernameNotUniqueError } from '@domain/user';
-import { UseCase } from '../core';
+import { ILogger } from '../../../logger';
+import { ITimeProvider, IPasswordHashCalculator } from '@app/userAccess/core';
+import {
+  User,
+  IUserRepository,
+  UsernameNotUniqueError,
+} from '@app/userAccess/domain/user';
+import { UseCase } from '@app/core';
 
 export type CreateUserProps = {
   userRepo: IUserRepository;

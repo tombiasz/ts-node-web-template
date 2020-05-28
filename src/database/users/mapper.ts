@@ -1,4 +1,4 @@
-import { User, UserId, UserRole } from '@domain/user';
+import { User, UserId, UserRole } from '@app/userAccess/domain/user';
 import { UserModel } from './model';
 
 const toDb = (user: User): UserModel => ({

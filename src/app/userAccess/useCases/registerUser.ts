@@ -1,12 +1,15 @@
-import { ILogger } from '../../logger';
-import { DbSession } from '@database/core';
-import { ITimeProvider, IPasswordHashCalculator } from '@domain/core';
-import { User, IUserRepository, UsernameNotUniqueError } from '@domain/user';
+import { ILogger } from '../../../logger';
+import { ITimeProvider, IPasswordHashCalculator } from '@app/userAccess/core';
+import {
+  User,
+  IUserRepository,
+  UsernameNotUniqueError,
+} from '@app/userAccess/domain/user';
 import {
   IUserActivationRepository,
   UserActivation,
-} from '@domain/userActivation';
-import { UseCase } from '../core';
+} from '@app/userAccess/domain/userActivation';
+import { UseCase } from '@app/core';
 
 export type RegisterUserProps = {
   userRepo: IUserRepository;

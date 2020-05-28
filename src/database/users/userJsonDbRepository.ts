@@ -1,5 +1,10 @@
 import { ILogger } from '../../logger';
-import { User, UserId, IUserRepository, UserNotFoundError } from '@domain/user';
+import {
+  User,
+  UserId,
+  IUserRepository,
+  UserNotFoundError,
+} from '@app/userAccess/domain/user';
 import { DbSession, db } from '../core/dbSession';
 import { UserMapper } from './mapper';
 import { UserModel } from './model';

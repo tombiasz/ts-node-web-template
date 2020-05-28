@@ -1,6 +1,9 @@
 import bcrypt from 'bcrypt';
 import { config } from 'src/config';
-import { IPasswordHashCalculator, IPasswordHashVerifier } from '@domain/core';
+import {
+  IPasswordHashCalculator,
+  IPasswordHashVerifier,
+} from '@app/userAccess/core';
 
 export class PasswordManager
   implements IPasswordHashCalculator, IPasswordHashVerifier {

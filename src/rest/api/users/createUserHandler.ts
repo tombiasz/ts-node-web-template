@@ -1,8 +1,8 @@
 import { Request } from 'express';
 import { Handler } from '../../shared/handler';
 import { UserSerializer } from './serializers';
-import { CreateUserData } from '@app/users';
-import { UsernameNotUniqueError, User } from '@domain/user';
+import { CreateUserData } from '@app/userAccess/useCases';
+import { UsernameNotUniqueError, User } from '@app/userAccess/domain/user';
 import { HttpError } from '../../shared/httpErrors';
 import { ILogger } from '../../../logger';
 import { UseCase } from '@app/core';

@@ -12,13 +12,13 @@ import {
   ActivateUserData,
   Authenticate,
   AuthenticationResult,
-} from '@app/users';
+} from '@app/userAccess/useCases';
 import { CreateUserHandler } from './createUserHandler';
 import { GetUserHandler } from './getUserHandler';
 import { RegisterUserHandler } from './registerUserHandler';
 import { ActivateUserHandler } from './activateUserHandler';
 import { UseCaseWithTransaction } from '@database/core/useCaseWithTransaction';
-import { User } from '@domain/user';
+import { User } from '@app/userAccess/domain/user';
 import { db } from '@database/core';
 import { AuthenticateHandler } from './authenticateHandler';
 import { JwtTokenProvider } from 'src/rest/shared/jwtTokenProvider';

@@ -1,4 +1,4 @@
-import { DomainError } from '@domain/core';
+import { DomainError } from '@app/userAccess/core';
 
 export class UserAlreadyActivatedError extends DomainError {
   message = 'user was already activated';

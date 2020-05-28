@@ -1,4 +1,4 @@
-import { ITimeProvider } from '@domain/core';
+import { ITimeProvider } from '@app/userAccess/core';
 
 export class TimeProvider implements ITimeProvider {
   getCurrentTime() {

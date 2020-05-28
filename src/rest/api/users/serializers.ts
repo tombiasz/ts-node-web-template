@@ -1,4 +1,4 @@
-import { User } from '@domain/user';
+import { User } from '@app/userAccess/domain/user';
 
 export type SerializedUser = {
   id: string;

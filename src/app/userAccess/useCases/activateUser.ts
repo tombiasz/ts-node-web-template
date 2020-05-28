@@ -1,11 +1,11 @@
-import { ILogger } from '../../logger';
-import { ITimeProvider } from '@domain/core';
-import { IUserRepository } from '@domain/user';
+import { ILogger } from '../../../logger';
+import { ITimeProvider } from '@app/userAccess/core';
+import { IUserRepository } from '@app/userAccess/domain/user';
 import {
   IUserActivationRepository,
   ActivationToken,
-} from '@domain/userActivation';
-import { UseCase } from '../core';
+} from '@app/userAccess/domain/userActivation';
+import { UseCase } from '@app/core';
 
 export type ActivateUserProps = {
   userRepo: IUserRepository;

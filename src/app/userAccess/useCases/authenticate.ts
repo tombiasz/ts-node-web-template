@@ -1,12 +1,11 @@
-import { ILogger } from '../../logger';
-import { IPasswordHashVerifier } from '@domain/core';
+import { ILogger } from '../../../logger';
+import { IPasswordHashVerifier } from '@app/userAccess/core';
 import {
   IUserRepository,
   UserNotActivated,
   InvalidUsernameOrPassword,
-  User,
-} from '@domain/user';
-import { UseCase } from '../core';
+} from '@app/userAccess/domain/user';
+import { UseCase } from '@app/core';
 
 export type AuthenticateDependencies = {
   userRepo: IUserRepository;
