@@ -1,4 +1,4 @@
-import { DomainError } from '@app/userAccess/core';
+import { DomainError } from '@app/core';
 
 export class TokenNotFoundError extends DomainError {
   message = 'token token not found';
