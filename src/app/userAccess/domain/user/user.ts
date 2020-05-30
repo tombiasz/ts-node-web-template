@@ -1,4 +1,4 @@
-import { Entity } from '../../core/entity';
+import { Entity } from '@app/core/entity';
 import { UserId } from './userId';
 import { ITimeProvider } from '@app/userAccess/core';
 import { UserAlreadyActivatedError } from './errors';

@@ -1,4 +1,5 @@
-import { Entity, ITimeProvider } from '../../core';
+import { Entity } from '@app/core';
+import { ITimeProvider } from '../../core';
 import { UserId } from '../user/userId';
 import { ActivationToken } from './activationToken';
 import { TokenAlreadyUsedError } from './errors';
