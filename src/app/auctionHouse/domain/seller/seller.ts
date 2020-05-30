@@ -1,4 +1,4 @@
-import { Entity } from '@app/userAccess/core';
+import { Entity } from '@app/core';
 import { SellerId } from './sellerId';
 
 interface SellerProps {
