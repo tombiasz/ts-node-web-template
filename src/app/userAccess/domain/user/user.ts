@@ -51,7 +51,7 @@ export class User extends Entity<UserProps> {
     timeProvider: ITimeProvider,
   ): User {
     return new this({
-      id: UserId.create(),
+      id: UserId.generate(),
       createdAt: timeProvider.getCurrentTime(),
       isActive: false,
       role: UserRole.BUYER,
@@ -64,7 +64,7 @@ export class User extends Entity<UserProps> {
     timeProvider: ITimeProvider,
   ): User {
     return new this({
-      id: UserId.create(),
+      id: UserId.generate(),
       createdAt: timeProvider.getCurrentTime(),
       isActive: true,
       role: UserRole.BUYER,

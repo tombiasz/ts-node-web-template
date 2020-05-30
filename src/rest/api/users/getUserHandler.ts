@@ -13,7 +13,7 @@ type GetUserHandlerDependencies = {
   userRepo: IUserRepository;
   logger: ILogger;
 };
-
+``;
 export class GetUserHandler extends Handler {
   private userRepo: IUserRepository;
 
