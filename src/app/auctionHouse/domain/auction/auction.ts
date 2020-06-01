@@ -8,6 +8,7 @@ interface AuctionProps {
   sellerId: SellerId;
   title: string;
   description: string;
+  startingPrice: number;
   createdAt: Date;
 }
 
