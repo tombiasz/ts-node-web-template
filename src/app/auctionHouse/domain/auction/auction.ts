@@ -38,8 +38,8 @@ export class Auction extends Entity<AuctionProps> {
     return this.props.state;
   }
 
-  static create(
-    props: Omit<AuctionProps, 'id' | 'state'>,
+  static register(
+    props: Omit<AuctionProps, 'id' | 'state' | 'createdAt'>,
     timeProvider: ITimeProvider,
   ): Auction {
     return new Auction({

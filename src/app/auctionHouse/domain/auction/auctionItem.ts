@@ -10,20 +10,21 @@ interface AuctionItemProps {
   title: string;
   description: string;
   images: AuctionItemImage[];
-  featuredImage: AuctionItemImage;
+  featuredImage: AuctionItemImage | null;
 }
 
 export class AuctionItem {
   public readonly title: string;
   public readonly description: string;
   private _images: AuctionItemImage[];
-  private _featuredImage?: AuctionItemImage;
+  private _featuredImage: AuctionItemImage | null = null;
 
   constructor(props: AuctionItemProps) {
     this.title = props.title;
     this.description = props.description;
     this._images = props.images;
-    this._featuredImage = props.featuredImage;
+
+    this.setFeaturedImage(props.featuredImage || props.images[0]);
   }
 
   get images(): Readonly<AuctionItemImage[]> {
