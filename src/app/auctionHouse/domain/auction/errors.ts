@@ -12,3 +12,7 @@ export class InvalidAuctionItemImageError extends DomainError {
 export class MaxNumberOfImagesReachedError extends DomainError {
   message = 'maximum number of images reached';
 }
+
+export class AuctionCannotBeWithdrawnError extends DomainError {
+  message = 'auction cannot be withdrawn';
+}

@@ -3,14 +3,13 @@ import { AuctionId } from './auctionId';
 import { SellerId } from '../seller/sellerId';
 import { ITimeProvider } from '@app/userAccess/core';
 import { AuctionItem } from './auctionItem';
-
-enum AuctionState {
-  AWAITING_VERIFICATION = 'AWAITING_VERIFICATION',
-  PREVIEW = 'PREVIEW',
-  ONGOING = 'ONGOING',
-  SOLD = 'SOLD',
-  WITHDRAWN = 'WITHDRAWN',
-}
+import { AuctionCannotBeWithdrawnError } from './errors';
+import {
+  AuctionState,
+  AwaitingVerificationSate,
+  PreviewSate,
+  WithdrawnState,
+} from './auctionState';
 
 interface AuctionProps {
   id: AuctionId;
@@ -22,6 +21,14 @@ interface AuctionProps {
 }
 
 export class Auction extends Entity<AuctionProps> {
+  private _state: AuctionState;
+
+  constructor(props: AuctionProps) {
+    super(props);
+
+    this._state = props.state;
+  }
+
   get id() {
     return this.props.id;
   }
@@ -35,7 +42,25 @@ export class Auction extends Entity<AuctionProps> {
   }
 
   get state() {
-    return this.props.state;
+    return this._state;
+  }
+
+  canBeWithdrawn(): boolean {
+    return (
+      this.state instanceof AwaitingVerificationSate ||
+      this.state instanceof PreviewSate
+    );
+  }
+
+  withdraw(reason: string, timeProvider: ITimeProvider): void {
+    if (!this.canBeWithdrawn()) {
+      throw new AuctionCannotBeWithdrawnError();
+    }
+
+    this._state = new WithdrawnState({
+      reason,
+      withdrawnAt: timeProvider.getCurrentTime(),
+    });
   }
 
   static register(
@@ -45,7 +70,7 @@ export class Auction extends Entity<AuctionProps> {
     return new Auction({
       ...props,
       id: AuctionId.generate(),
-      state: AuctionState.AWAITING_VERIFICATION,
+      state: new AwaitingVerificationSate(),
       createdAt: timeProvider.getCurrentTime(),
     });
   }
