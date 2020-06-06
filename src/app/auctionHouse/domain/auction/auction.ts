@@ -67,11 +67,13 @@ export class Auction extends Entity<AuctionProps> {
     props: Omit<AuctionProps, 'id' | 'state' | 'createdAt'>,
     timeProvider: ITimeProvider,
   ): Auction {
+    const now = timeProvider.getCurrentTime();
+
     return new Auction({
       ...props,
       id: AuctionId.generate(),
-      state: new AwaitingVerificationSate(),
-      createdAt: timeProvider.getCurrentTime(),
+      state: new AwaitingVerificationSate({ addedAt: now }),
+      createdAt: now,
     });
   }
 }

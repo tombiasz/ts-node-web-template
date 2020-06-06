@@ -10,8 +10,17 @@ export interface AuctionState {
   readonly status: AuctionStatus;
 }
 
+type AwaitingVerificationStateProps = {
+  addedAt: Date;
+};
+
 export class AwaitingVerificationSate implements AuctionState {
   public readonly status = AuctionStatus.AWAITING_VERIFICATION;
+  public readonly addedAt: Date;
+
+  constructor(props: AwaitingVerificationStateProps) {
+    this.addedAt = props.addedAt;
+  }
 }
 
 export class PreviewSate implements AuctionState {
