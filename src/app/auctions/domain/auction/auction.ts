@@ -45,6 +45,14 @@ export class Auction extends Entity<AuctionProps> {
     return this._state;
   }
 
+  get auctionItem() {
+    return this.props.auctionItem;
+  }
+
+  get startingPrice() {
+    return this.props.startingPrice;
+  }
+
   canBeWithdrawn(): boolean {
     return (
       this.state instanceof AwaitingVerificationSate ||
