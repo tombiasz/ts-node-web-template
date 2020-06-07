@@ -1,12 +1,12 @@
 import { ILogger } from '../../../logger';
 import { ITimeProvider } from '@app/userAccess/core';
-import { SellerId } from '@app/auctionHouse/domain/seller';
+import { SellerId } from '@app/auctions/domain/seller';
 import {
   Auction,
   IAuctionRepository,
   AuctionItem,
   AuctionItemImage,
-} from '@app/auctionHouse/domain/auction';
+} from '@app/auctions/domain/auction';
 import { UseCase } from '@app/core';
 
 export type RegisterAuctionDependencies = {
