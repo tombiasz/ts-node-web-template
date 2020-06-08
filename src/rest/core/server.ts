@@ -37,8 +37,8 @@ export const createServer: ServerFactory = () => {
 
   const app = express()
     .disable('x-powered-by')
-    .use(createForceJSONPayloadHandler())
     .use(createRequestLogger())
+    .use(createForceJSONPayloadHandler())
     .use(createDefaultGetAuthorizedUser())
     .use('/api', createApiRoutes())
     .use(
