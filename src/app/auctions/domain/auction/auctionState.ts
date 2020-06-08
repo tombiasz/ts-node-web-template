@@ -1,4 +1,4 @@
-enum AuctionStatus {
+export enum AuctionStatus {
   AWAITING_VERIFICATION = 'AWAITING_VERIFICATION',
   PREVIEW = 'PREVIEW',
   ONGOING = 'ONGOING',
