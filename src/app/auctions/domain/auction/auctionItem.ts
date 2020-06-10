@@ -9,6 +9,8 @@ const MAX_IMAGES = 6;
 interface AuctionItemProps {
   title: string;
   description: string;
+  // TODO: rethink AuctionItemImageCollection which will encapsulate
+  // whole collection logic: min, max no of images, featured image setting etc
   images: AuctionItemImage[];
   featuredImage: AuctionItemImage | null;
 }

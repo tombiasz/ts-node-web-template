@@ -26,11 +26,11 @@ export class RegisterAuctionHandler extends Handler {
 
   protected async _handle(req: Request) {
     try {
-      const user = await this.useCase.execute(req.body);
+      const auction = await this.useCase.execute(req.body);
 
-      this.logger.info('new auction created', { id: user.id });
+      this.logger.info('new auction created', { id: auction.id.value });
 
-      return this.ok(AuctionSerializer.one(user));
+      return this.ok(AuctionSerializer.one(auction));
     } catch (error) {
       if (error instanceof AuctionNotFoundError) {
         return this.fail(HttpError.notFound(error.message));
