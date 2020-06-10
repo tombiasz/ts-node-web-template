@@ -14,9 +14,17 @@ import {
   authenticateHandlerFactory,
 } from './users/factories';
 import { authorizationMiddlewareFactory } from './authorizationMiddleware';
+import { checkSellerUserRoleFactory } from './checkRoleMiddleware';
+import { registerAuctionHandlerFactory } from './auctions/factories';
+import { UserRole } from '@app/userAccess/domain/user';
 
 export function createApiRoutes(): Router | Router[] {
   return [
+    Router().post(
+      '/auth',
+      createAuthenticateValidator(),
+      asHandler(authenticateHandlerFactory),
+    ),
     Router().use(
       '/users',
       Router()
@@ -42,10 +50,15 @@ export function createApiRoutes(): Router | Router[] {
           asHandler(activateUserHandlerFactory),
         ),
     ),
-    Router().post(
-      '/auth',
-      createAuthenticateValidator(),
-      asHandler(authenticateHandlerFactory),
+    Router().use(
+      '/auctions/seller/auction',
+      Router().post(
+        '/',
+        asMiddleware(authorizationMiddlewareFactory),
+        asMiddleware(checkSellerUserRoleFactory),
+        // TODO: add validator
+        asHandler(registerAuctionHandlerFactory),
+      ),
     ),
   ];
 }
