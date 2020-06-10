@@ -5,7 +5,7 @@ import { ILogger } from '../../logger';
 import { IAuthTokenVerifier } from '../core/auth';
 import { JwtTokenProvider } from '../shared/jwtTokenProvider';
 
-type GetUserHandlerDependencies = {
+type AuthorizationMiddlewareDependencies = {
   logger: ILogger;
   tokenVerifier: IAuthTokenVerifier;
 };
@@ -14,7 +14,7 @@ export class AuthorizationMiddleware extends Handler {
   private logger: ILogger;
   private tokenVerifier: IAuthTokenVerifier;
 
-  constructor({ logger, tokenVerifier }: GetUserHandlerDependencies) {
+  constructor({ logger, tokenVerifier }: AuthorizationMiddlewareDependencies) {
     super();
 
     this.logger = logger;
