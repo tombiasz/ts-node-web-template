@@ -1,6 +1,7 @@
 export type AuthorizedUser = {
   userId: string;
   username: string;
+  role: string;
 };
 
 export type TokenPayload = AuthorizedUser;

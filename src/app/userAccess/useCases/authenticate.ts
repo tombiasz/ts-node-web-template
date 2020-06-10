@@ -21,6 +21,7 @@ export type AuthenticateData = {
 export type AuthenticationResult = {
   userId: string;
   username: string;
+  role: string;
 };
 
 export class Authenticate extends UseCase<
@@ -65,6 +66,7 @@ export class Authenticate extends UseCase<
     return {
       userId: user.id.value,
       username: user.username,
+      role: user.role,
     };
   }
 }

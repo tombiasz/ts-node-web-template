@@ -23,11 +23,12 @@ export class JwtTokenProvider
     try {
       const payload = await jwt.verify(token, config.jwtSecret);
 
-      const { userId, username } = payload as TokenPayload;
+      const { userId, username, role } = payload as TokenPayload;
 
       return new SuccessfulTokenVerificationResult({
         userId,
         username,
+        role,
       });
     } catch (error) {
       return new FailureTokenVerificationResult(error.message);
