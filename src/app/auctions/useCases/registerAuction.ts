@@ -1,6 +1,5 @@
 import { ILogger } from '../../../logger';
 import { ITimeProvider } from '@app/userAccess/core';
-import { SellerId } from '@app/auctions/domain/seller';
 import {
   Auction,
   IAuctionRepository,
@@ -8,8 +7,10 @@ import {
   AuctionItemImage,
 } from '@app/auctions/domain/auction';
 import { UseCase } from '@app/core';
+import { ISellerContext } from '../domain/seller/sellerContext';
 
 export type RegisterAuctionDependencies = {
+  sellerContext: ISellerContext;
   auctionRepo: IAuctionRepository;
   logger: ILogger;
   timeProvider: ITimeProvider;
@@ -21,7 +22,6 @@ type ImageData = {
 };
 
 export type RegisterAuctionData = {
-  sellerId: string;
   title: string;
   description: string;
   startingPrice: number;
@@ -30,6 +30,7 @@ export type RegisterAuctionData = {
 };
 
 export class RegisterAuction extends UseCase<RegisterAuctionData, Auction> {
+  private sellerContext: ISellerContext;
   private auctionRepo: IAuctionRepository;
   private logger: ILogger;
   private timeProvider: ITimeProvider;
@@ -37,6 +38,7 @@ export class RegisterAuction extends UseCase<RegisterAuctionData, Auction> {
   constructor(props: RegisterAuctionDependencies) {
     super();
 
+    this.sellerContext = props.sellerContext;
     this.auctionRepo = props.auctionRepo;
     this.logger = props.logger;
     this.timeProvider = props.timeProvider;
@@ -47,7 +49,7 @@ export class RegisterAuction extends UseCase<RegisterAuctionData, Auction> {
 
     const auction = Auction.register(
       {
-        sellerId: SellerId.create(data.sellerId),
+        sellerId: this.sellerContext.sellerId,
         auctionItem: new AuctionItem({
           title: data.title,
           description: data.description,

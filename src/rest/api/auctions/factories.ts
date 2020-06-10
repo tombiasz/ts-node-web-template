@@ -6,15 +6,18 @@ import { RegisterAuctionHandler } from './registerAuctionHandler';
 import { UseCaseWithTransaction } from '@database/core/useCaseWithTransaction';
 import { db } from '@database/core';
 import { Auction } from '@app/auctions/domain/auction';
+import { SellerContext } from './sellerContext';
 
 export const registerAuctionHandlerFactory: HandlerFactory<RegisterAuctionHandler> = (
   req,
 ) => {
   const logger = req.logger;
+  const authUser = req.getAuthorizedUser();
 
   const useCase = new UseCaseWithTransaction<RegisterAuctionData, Auction>({
     db,
     useCase: new RegisterAuction({
+      sellerContext: new SellerContext(authUser),
       auctionRepo: createAuctionsRepository({ logger }),
       logger: logger.withContext({ useCase: RegisterAuction.name }),
       timeProvider: new TimeProvider(),
