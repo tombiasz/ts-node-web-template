@@ -4,8 +4,6 @@ import {
   MaxNumberOfImagesReachedError,
 } from './errors';
 
-const MAX_IMAGES = 6;
-
 interface AuctionItemProps {
   title: string;
   description: string;
@@ -16,6 +14,8 @@ interface AuctionItemProps {
 }
 
 export class AuctionItem {
+  public static readonly MAX_IMAGES = 6;
+
   public readonly title: string;
   public readonly description: string;
   private _images: AuctionItemImage[];
@@ -47,7 +47,7 @@ export class AuctionItem {
   }
 
   canAddImage(): boolean {
-    return this._images.length >= MAX_IMAGES;
+    return this._images.length >= AuctionItem.MAX_IMAGES;
   }
 
   addImage(image: AuctionItemImage): void {

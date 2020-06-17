@@ -1,5 +1,6 @@
 import Joi = require('@hapi/joi');
 import { createBodyValidatorMiddleware } from '../../shared/validator';
+import { AuctionItem } from '@app/auctions/domain/auction';
 
 export const createAuctionSchema = Joi.object({
   title: Joi.string().min(10).max(120).trim().required(),
@@ -13,7 +14,7 @@ export const createAuctionSchema = Joi.object({
       }),
     )
     .min(1)
-    .max(6)
+    .max(AuctionItem.MAX_IMAGES)
     .required(),
   featuredImage: Joi.string().min(1).max(100).trim().optional(),
 });
