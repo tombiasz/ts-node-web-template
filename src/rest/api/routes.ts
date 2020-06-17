@@ -16,7 +16,7 @@ import {
 import { authorizationMiddlewareFactory } from './authorizationMiddleware';
 import { checkSellerUserRoleFactory } from './checkRoleMiddleware';
 import { registerAuctionHandlerFactory } from './auctions/factories';
-import { UserRole } from '@app/userAccess/domain/user';
+import { createCreateAuctionValidator } from './auctions/validators';
 
 export function createApiRoutes(): Router | Router[] {
   return [
@@ -56,7 +56,7 @@ export function createApiRoutes(): Router | Router[] {
         '/',
         asMiddleware(authorizationMiddlewareFactory),
         asMiddleware(checkSellerUserRoleFactory),
-        // TODO: add validator
+        createCreateAuctionValidator(),
         asHandler(registerAuctionHandlerFactory),
       ),
     ),
