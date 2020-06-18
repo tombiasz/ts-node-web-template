@@ -3,13 +3,19 @@ import { AuctionId } from './auctionId';
 import { SellerId } from '../seller/sellerId';
 import { ITimeProvider } from '@app/userAccess/core';
 import { AuctionItem } from './auctionItem';
-import { AuctionCannotBeWithdrawnError } from './errors';
+import {
+  AuctionCannotBeWithdrawnError,
+  AuctionCanBeVerifiedWhenInAwaitingVerificationState,
+} from './errors';
 import {
   AuctionState,
   AwaitingVerificationSate,
   PreviewSate,
   WithdrawnState,
+  VerifiedSate,
 } from './auctionState';
+import { AdminId } from '../admin';
+import { time } from 'console';
 
 interface AuctionProps {
   id: AuctionId;
@@ -68,6 +74,21 @@ export class Auction extends Entity<AuctionProps> {
     this._state = new WithdrawnState({
       reason,
       withdrawnAt: timeProvider.getCurrentTime(),
+    });
+  }
+
+  isAwaitingVerification(): boolean {
+    return this.state instanceof AwaitingVerificationSate;
+  }
+
+  verify(adminId: AdminId, timeProvider: ITimeProvider): void {
+    if (!this.isAwaitingVerification()) {
+      throw new AuctionCanBeVerifiedWhenInAwaitingVerificationState();
+    }
+
+    this._state = new VerifiedSate({
+      verifiedBy: adminId,
+      verifiedAt: timeProvider.getCurrentTime(),
     });
   }
 

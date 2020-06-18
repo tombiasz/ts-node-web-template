@@ -21,3 +21,7 @@ export class AuctionCannotBeWithdrawnError extends DomainError {
 export class AuctionNotFoundError extends DomainError {
   message = 'auction not found';
 }
+
+export class AuctionCanBeVerifiedWhenInAwaitingVerificationState extends DomainError {
+  message = 'auction can only be verified when in awaiting verification state';
+}

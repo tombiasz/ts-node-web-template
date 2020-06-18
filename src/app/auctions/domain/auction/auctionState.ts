@@ -1,5 +1,8 @@
+import { Admin, AdminId } from '../admin';
+
 export enum AuctionStatus {
   AWAITING_VERIFICATION = 'AWAITING_VERIFICATION',
+  VERIFIED = 'VERIFIED',
   PREVIEW = 'PREVIEW',
   ONGOING = 'ONGOING',
   SOLD = 'SOLD',
@@ -20,6 +23,22 @@ export class AwaitingVerificationSate implements AuctionState {
 
   constructor(props: AwaitingVerificationStateProps) {
     this.addedAt = props.addedAt;
+  }
+}
+
+type VerifiedStateProps = {
+  verifiedBy: AdminId;
+  verifiedAt: Date;
+};
+
+export class VerifiedSate implements AuctionState {
+  public readonly status = AuctionStatus.VERIFIED;
+  public readonly verifiedBy: AdminId;
+  public readonly verifiedAt: Date;
+
+  constructor(props: VerifiedStateProps) {
+    this.verifiedAt = props.verifiedAt;
+    this.verifiedBy = props.verifiedBy;
   }
 }
 
