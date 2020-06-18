@@ -17,6 +17,10 @@ export class AuctionCannotBeWithdrawnError extends DomainError {
   message = 'auction cannot be withdrawn';
 }
 
+export class AuctionCanBeWithdrawnOnlyByOwner extends DomainError {
+  message = 'auction can be withdrawn only by owner';
+}
+
 // TODO: would be nice to have general not found error
 export class AuctionNotFoundError extends DomainError {
   message = 'auction not found';

@@ -27,6 +27,7 @@ const toDb = (auction: Auction): AuctionModel => {
       status: AuctionStatus.WITHDRAWN,
       reason: auction.state.reason,
       withdrawnAt: auction.state.withdrawnAt,
+      withdrawnBy: auction.state.withdrawnBy.value,
     };
   } else if (auction.state instanceof PreviewSate) {
     state = {
@@ -107,6 +108,7 @@ const toEntity = (dto: AuctionModel): Auction => {
       state = new WithdrawnState({
         reason: dto.state.reason!,
         withdrawnAt: dto.state.withdrawnAt!,
+        withdrawnBy: new SellerId(dto.state.withdrawnBy!),
       });
       break;
     case AuctionStatus.SOLD:

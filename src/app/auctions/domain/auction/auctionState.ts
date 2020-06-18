@@ -1,4 +1,5 @@
 import { Admin, AdminId } from '../admin';
+import { SellerId } from '../seller';
 
 export enum AuctionStatus {
   AWAITING_VERIFICATION = 'AWAITING_VERIFICATION',
@@ -57,15 +58,18 @@ export class SoldState implements AuctionState {
 type WithdrawnStateProps = {
   reason: string;
   withdrawnAt: Date;
+  withdrawnBy: SellerId;
 };
 
 export class WithdrawnState implements AuctionState {
   public readonly status = AuctionStatus.WITHDRAWN;
   public readonly reason: string;
   public readonly withdrawnAt: Date;
+  public readonly withdrawnBy: SellerId;
 
   constructor(props: WithdrawnStateProps) {
     this.reason = props.reason;
     this.withdrawnAt = props.withdrawnAt;
+    this.withdrawnBy = props.withdrawnBy;
   }
 }

@@ -6,6 +6,7 @@ import { AuctionItem } from './auctionItem';
 import {
   AuctionCannotBeWithdrawnError,
   AuctionCanBeVerifiedWhenInAwaitingVerificationState,
+  AuctionCanBeWithdrawnOnlyByOwner,
 } from './errors';
 import {
   AuctionState,
@@ -66,7 +67,16 @@ export class Auction extends Entity<AuctionProps> {
     );
   }
 
-  withdraw(reason: string, timeProvider: ITimeProvider): void {
+  withdraw(
+    sellerId: SellerId,
+    reason: string,
+    timeProvider: ITimeProvider,
+  ): void {
+    // TODO: introduce value object equal
+    if (this.sellerId.value !== sellerId.value) {
+      throw new AuctionCanBeWithdrawnOnlyByOwner();
+    }
+
     if (!this.canBeWithdrawn()) {
       throw new AuctionCannotBeWithdrawnError();
     }
@@ -74,6 +84,7 @@ export class Auction extends Entity<AuctionProps> {
     this._state = new WithdrawnState({
       reason,
       withdrawnAt: timeProvider.getCurrentTime(),
+      withdrawnBy: sellerId,
     });
   }
 

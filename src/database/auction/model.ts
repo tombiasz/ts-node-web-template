@@ -15,6 +15,7 @@ type WithdrawnStateModel = {
   status: AuctionStatus.WITHDRAWN;
   reason: string;
   withdrawnAt: Date;
+  withdrawnBy: string;
 };
 
 type OngoingStateModel = {
