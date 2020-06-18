@@ -3,5 +3,5 @@ import { AuctionId } from './auctionId';
 
 export interface IAuctionRepository {
   save(auction: Auction): Promise<void>;
-  getById(auctionId: AuctionId, sellerId: AuctionId): Promise<Auction>;
+  getById(auctionId: AuctionId): Promise<Auction>;
 }

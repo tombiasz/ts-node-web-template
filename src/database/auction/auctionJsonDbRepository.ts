@@ -25,10 +25,9 @@ export class AuctionJsonDbRepository implements IAuctionRepository {
     this.logger = logger;
   }
 
-  async getById(auctionId: AuctionId, sellerId: SellerId): Promise<Auction> {
+  async getById(auctionId: AuctionId): Promise<Auction> {
     this.logger.debug('Getting auction', {
       auctionId: auctionId.value,
-      sellerId: sellerId.value,
     });
 
     try {
@@ -40,7 +39,6 @@ export class AuctionJsonDbRepository implements IAuctionRepository {
       this.logger.warn('Error when getting auction', {
         error,
         auctionId: auctionId.value,
-        sellerId: sellerId.value,
       });
 
       throw new AuctionNotFoundError();

@@ -35,7 +35,7 @@ export class WithdrawAuction extends UseCase<WithdrawAuctionData, void> {
       sellerId: sellerId.value,
     });
 
-    const auction = await this.auctionRepo.getById(auctionId, sellerId);
+    const auction = await this.auctionRepo.getById(auctionId);
 
     auction.withdraw(reason, this.timeProvider);
 
