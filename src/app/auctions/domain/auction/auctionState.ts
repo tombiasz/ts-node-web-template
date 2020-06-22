@@ -1,5 +1,5 @@
 import { Admin, AdminId } from '../admin';
-import { SellerId } from '../seller';
+import { SellerId, Seller } from '../seller';
 
 export enum AuctionStatus {
   AWAITING_VERIFICATION = 'AWAITING_VERIFICATION',
@@ -43,8 +43,20 @@ export class VerifiedSate implements AuctionState {
   }
 }
 
+type PreviewStateProps = {
+  previewAt: Date;
+  previewBy: SellerId;
+};
+
 export class PreviewSate implements AuctionState {
   public readonly status = AuctionStatus.PREVIEW;
+  public readonly previewAt: Date;
+  public readonly previewBy: SellerId;
+
+  constructor(props: PreviewStateProps) {
+    this.previewAt = props.previewAt;
+    this.previewBy = props.previewBy;
+  }
 }
 
 export class OngoingState implements AuctionState {

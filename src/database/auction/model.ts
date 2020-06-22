@@ -28,6 +28,8 @@ type SoldStateModel = {
 
 type PreviewStateModel = {
   status: AuctionStatus.PREVIEW;
+  previewAt: Date;
+  previewBy: string;
 };
 
 export type AuctionStateModel =

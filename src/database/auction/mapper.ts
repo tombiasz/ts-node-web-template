@@ -32,6 +32,8 @@ const toDb = (auction: Auction): AuctionModel => {
   } else if (auction.state instanceof PreviewSate) {
     state = {
       status: AuctionStatus.PREVIEW,
+      previewBy: auction.state.previewBy.value,
+      previewAt: auction.state.previewAt,
     };
   } else if (auction.state instanceof OngoingState) {
     state = {
@@ -99,7 +101,10 @@ const toEntity = (dto: AuctionModel): Auction => {
       });
       break;
     case AuctionStatus.PREVIEW:
-      state = new PreviewSate();
+      state = new PreviewSate({
+        previewAt: dto.state.previewAt!,
+        previewBy: new SellerId(dto.state.previewBy!),
+      });
       break;
     case AuctionStatus.ONGOING:
       state = new OngoingState();

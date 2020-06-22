@@ -29,3 +29,11 @@ export class AuctionNotFoundError extends DomainError {
 export class AuctionCanBeVerifiedWhenInAwaitingVerificationState extends DomainError {
   message = 'auction can only be verified when in awaiting verification state';
 }
+
+export class OnlyVerifiedAuctionCanBePreview extends DomainError {
+  message = 'auction must be verified before placed in preview';
+}
+
+export class AuctionCanBePreviewOnlyByOwner extends DomainError {
+  message = 'auction can be preview only by owner';
+}

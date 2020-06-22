@@ -7,6 +7,8 @@ import {
   AuctionCannotBeWithdrawnError,
   AuctionCanBeVerifiedWhenInAwaitingVerificationState,
   AuctionCanBeWithdrawnOnlyByOwner,
+  OnlyVerifiedAuctionCanBePreview,
+  AuctionCanBePreviewOnlyByOwner,
 } from './errors';
 import {
   AuctionState,
@@ -90,6 +92,25 @@ export class Auction extends Entity<AuctionProps> {
 
   isAwaitingVerification(): boolean {
     return this.state instanceof AwaitingVerificationSate;
+  }
+
+  canBePreview(): boolean {
+    return this.state instanceof VerifiedSate;
+  }
+
+  preview(sellerId: SellerId, timeProvider: ITimeProvider): void {
+    if (!this.canBePreview()) {
+      throw new OnlyVerifiedAuctionCanBePreview();
+    }
+
+    if (this.sellerId.value !== sellerId.value) {
+      throw new AuctionCanBePreviewOnlyByOwner();
+    }
+
+    this._state = new PreviewSate({
+      previewAt: timeProvider.getCurrentTime(),
+      previewBy: sellerId,
+    });
   }
 
   verify(adminId: AdminId, timeProvider: ITimeProvider): void {
