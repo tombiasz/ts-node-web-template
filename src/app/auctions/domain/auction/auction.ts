@@ -16,7 +16,6 @@ import {
   VerifiedSate,
 } from './auctionState';
 import { AdminId } from '../admin';
-import { time } from 'console';
 
 interface AuctionProps {
   id: AuctionId;
@@ -63,6 +62,7 @@ export class Auction extends Entity<AuctionProps> {
   canBeWithdrawn(): boolean {
     return (
       this.state instanceof AwaitingVerificationSate ||
+      this.state instanceof VerifiedSate ||
       this.state instanceof PreviewSate
     );
   }
