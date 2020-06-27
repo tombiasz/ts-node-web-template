@@ -15,8 +15,15 @@ import {
 } from './users/factories';
 import { authorizationMiddlewareFactory } from './authorizationMiddleware';
 import { checkSellerUserRoleFactory } from './checkRoleMiddleware';
-import { registerAuctionHandlerFactory } from './auctions/factories';
-import { createCreateAuctionValidator } from './auctions/validators';
+import {
+  registerAuctionHandlerFactory,
+  withdrawAuctionHandlerFactory,
+} from './auctions/factories';
+import {
+  createCreateAuctionValidator,
+  createWithdrawnAuctionValidator,
+  createAuctionIdValidator,
+} from './auctions/validators';
 
 export function createApiRoutes(): Router | Router[] {
   return [
@@ -58,6 +65,17 @@ export function createApiRoutes(): Router | Router[] {
         asMiddleware(checkSellerUserRoleFactory),
         createCreateAuctionValidator(),
         asHandler(registerAuctionHandlerFactory),
+      ),
+      Router().use(
+        '/:auctionId',
+        createAuctionIdValidator(),
+        Router({ mergeParams: true }).delete(
+          '/',
+          asMiddleware(authorizationMiddlewareFactory),
+          asMiddleware(checkSellerUserRoleFactory),
+          createWithdrawnAuctionValidator(),
+          asHandler(withdrawAuctionHandlerFactory),
+        ),
       ),
     ),
   ];
