@@ -13,7 +13,6 @@ export type WithdrawAuctionDependencies = {
 };
 
 export type WithdrawAuctionData = {
-  sellerId: SellerId;
   auctionId: AuctionId;
   reason: string;
 };
