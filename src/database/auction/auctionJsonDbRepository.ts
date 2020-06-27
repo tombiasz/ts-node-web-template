@@ -25,20 +25,17 @@ export class AuctionJsonDbRepository implements IAuctionRepository {
     this.logger = logger;
   }
 
-  async getById(auctionId: AuctionId): Promise<Auction> {
-    this.logger.debug('Getting auction', {
-      auctionId: auctionId.value,
-    });
+  async getById(id: AuctionId): Promise<Auction> {
+    this.logger.debug('Getting auction', { id: id.value });
 
     try {
-      // TODO: implement me
-      // TODO: remove sellerId argument
+      const data = this.db.getData(this.createKey(id.value));
 
-      return {} as Auction;
+      return AuctionMapper.toEntity(data);
     } catch (error) {
       this.logger.warn('Error when getting auction', {
         error,
-        auctionId: auctionId.value,
+        id: id.value,
       });
 
       throw new AuctionNotFoundError();
