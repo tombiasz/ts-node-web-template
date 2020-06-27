@@ -1,5 +1,8 @@
 import Joi = require('@hapi/joi');
-import { createBodyValidatorMiddleware } from '../../shared/validator';
+import {
+  createBodyValidatorMiddleware,
+  createParamsValidatorMiddleware,
+} from '../../shared/validator';
 import { AuctionItem } from '@app/auctions/domain/auction';
 
 export const createAuctionSchema = Joi.object({
@@ -19,7 +22,25 @@ export const createAuctionSchema = Joi.object({
   featuredImage: Joi.string().min(1).max(100).trim().optional(),
 });
 
+export const auctionIdSchema = Joi.object({
+  auctionId: Joi.string().guid({ version: 'uuidv4' }).required(),
+});
+
+export const withdrawAuctionSchema = Joi.object({
+  reason: Joi.string().min(3).max(140).trim().required(),
+});
+
 export const createCreateAuctionValidator = () =>
   createBodyValidatorMiddleware({
     schema: createAuctionSchema,
+  });
+
+export const createAuctionIdValidator = () =>
+  createParamsValidatorMiddleware({
+    schema: auctionIdSchema,
+  });
+
+export const createWithdrawnAuctionValidator = () =>
+  createBodyValidatorMiddleware({
+    schema: withdrawAuctionSchema,
   });
