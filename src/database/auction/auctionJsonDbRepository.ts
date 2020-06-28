@@ -42,7 +42,7 @@ export class AuctionJsonDbRepository implements IAuctionRepository {
   }
 
   async save(auction: Auction): Promise<void> {
-    this.logger.debug(`Saving new auction ${auction.id.value}`);
+    this.logger.debug(`Saving auction ${auction.id.value}`);
 
     const data = AuctionMapper.toDb(auction);
 
