@@ -45,6 +45,12 @@ const toDb = (auction: Auction): AuctionModel => {
     state = {
       status: AuctionStatus.SOLD,
     };
+  } else if (auction.state instanceof VerifiedSate) {
+    state = {
+      status: AuctionStatus.VERIFIED,
+      verifiedAt: auction.state.verifiedAt,
+      verifiedBy: auction.state.verifiedBy.value,
+    };
   } else {
     throw new TypeError(
       `Unknown auction state status ${auction.state.constructor.name}`,

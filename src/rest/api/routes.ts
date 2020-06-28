@@ -18,6 +18,7 @@ import { checkSellerUserRoleFactory } from './checkRoleMiddleware';
 import {
   registerAuctionHandlerFactory,
   withdrawAuctionHandlerFactory,
+  previewAuctionHandlerFactory,
 } from './auctions/factories';
 import {
   createCreateAuctionValidator,
@@ -69,13 +70,20 @@ export function createApiRoutes(): Router | Router[] {
       Router().use(
         '/:auctionId',
         createAuctionIdValidator(),
-        Router({ mergeParams: true }).delete(
-          '/',
-          asMiddleware(authorizationMiddlewareFactory),
-          asMiddleware(checkSellerUserRoleFactory),
-          createWithdrawnAuctionValidator(),
-          asHandler(withdrawAuctionHandlerFactory),
-        ),
+        Router({ mergeParams: true })
+          .delete(
+            '/',
+            asMiddleware(authorizationMiddlewareFactory),
+            asMiddleware(checkSellerUserRoleFactory),
+            createWithdrawnAuctionValidator(),
+            asHandler(withdrawAuctionHandlerFactory),
+          )
+          .post(
+            '/preview',
+            asMiddleware(authorizationMiddlewareFactory),
+            asMiddleware(checkSellerUserRoleFactory),
+            asHandler(previewAuctionHandlerFactory),
+          ),
       ),
     ),
   ];
