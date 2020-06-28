@@ -10,9 +10,11 @@ import {
   WithdrawnState,
   SoldState,
   AuctionState,
+  VerifiedSate,
 } from '@app/auctions/domain/auction';
 import { AuctionModel, AuctionStateModel } from './model';
 import { SellerId } from '@app/auctions/domain/seller';
+import { AdminId } from '@app/auctions/domain/admin';
 
 const toDb = (auction: Auction): AuctionModel => {
   let state: AuctionStateModel;
@@ -118,6 +120,12 @@ const toEntity = (dto: AuctionModel): Auction => {
       break;
     case AuctionStatus.SOLD:
       state = new SoldState();
+      break;
+    case AuctionStatus.VERIFIED:
+      state = new VerifiedSate({
+        verifiedAt: dto.state.verifiedAt!,
+        verifiedBy: new AdminId(dto.state.verifiedBy!),
+      });
       break;
     default:
       throw new TypeError(`Unknown auction state for auction id ${dto.id}`);
