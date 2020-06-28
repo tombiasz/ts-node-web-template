@@ -6,6 +6,8 @@ import {
   RegisterAuctionData,
   WithdrawAuction,
   WithdrawAuctionData,
+  PreviewAuctionData,
+  PreviewAuction,
 } from '@app/auctions/useCases';
 import { RegisterAuctionHandler } from './registerAuctionHandler';
 import { UseCaseWithTransaction } from '@database/core/useCaseWithTransaction';
@@ -13,6 +15,7 @@ import { db } from '@database/core';
 import { Auction } from '@app/auctions/domain/auction';
 import { SellerContext } from './sellerContext';
 import { WithdrawAuctionHandler } from './withdrawAuctionHandler';
+import { PreviewAuctionHandler } from './previewAuctionHandler';
 
 export const registerAuctionHandlerFactory: HandlerFactory<RegisterAuctionHandler> = (
   req,
@@ -53,6 +56,28 @@ export const withdrawAuctionHandlerFactory: HandlerFactory<WithdrawAuctionHandle
   });
 
   return new WithdrawAuctionHandler({
+    useCase,
+    logger: logger.withContext({ handler: RegisterAuctionHandler.name }),
+  });
+};
+
+export const previewAuctionHandlerFactory: HandlerFactory<PreviewAuctionHandler> = (
+  req,
+) => {
+  const logger = req.logger;
+  const authUser = req.getAuthorizedUser();
+
+  const useCase = new UseCaseWithTransaction<PreviewAuctionData, void>({
+    db,
+    useCase: new PreviewAuction({
+      sellerContext: new SellerContext(authUser),
+      auctionRepo: createAuctionsRepository({ logger }),
+      logger: logger.withContext({ useCase: PreviewAuction.name }),
+      timeProvider: new TimeProvider(),
+    }),
+  });
+
+  return new PreviewAuctionHandler({
     useCase,
     logger: logger.withContext({ handler: RegisterAuctionHandler.name }),
   });
