@@ -5,7 +5,6 @@ import {
   IAuctionRepository,
   AuctionNotFoundError,
 } from '@app/auctions/domain/auction';
-import { SellerId } from '@app/auctions/domain/seller';
 import { DbSession, db } from '../core/dbSession';
 import { AuctionMapper } from './mapper';
 
@@ -33,7 +32,7 @@ export class AuctionJsonDbRepository implements IAuctionRepository {
 
       return AuctionMapper.toEntity(data);
     } catch (error) {
-      this.logger.warn('Error when getting auction', {
+      this.logger.error('Error when getting auction', {
         error,
         id: id.value,
       });
