@@ -51,3 +51,7 @@ export const checkRoleMiddlewareFactory: (
 export const checkSellerUserRoleFactory: HandlerFactory<CheckRoleMiddleware> = checkRoleMiddlewareFactory(
   UserRole.SELLER,
 );
+
+export const checkAdminUserRoleFactory: HandlerFactory<CheckRoleMiddleware> = checkRoleMiddlewareFactory(
+  UserRole.ADMIN,
+);
