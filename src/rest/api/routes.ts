@@ -14,11 +14,15 @@ import {
   authenticateHandlerFactory,
 } from './users/factories';
 import { authorizationMiddlewareFactory } from './authorizationMiddleware';
-import { checkSellerUserRoleFactory } from './checkRoleMiddleware';
+import {
+  checkSellerUserRoleFactory,
+  checkAdminUserRoleFactory,
+} from './checkRoleMiddleware';
 import {
   registerAuctionHandlerFactory,
   withdrawAuctionHandlerFactory,
   previewAuctionHandlerFactory,
+  verifyAuctionHandlerFactory,
 } from './auctions/factories';
 import {
   createCreateAuctionValidator,
@@ -59,31 +63,47 @@ export function createApiRoutes(): Router | Router[] {
         ),
     ),
     Router().use(
-      '/auctions/seller/auction',
-      Router().post(
-        '/',
-        asMiddleware(authorizationMiddlewareFactory),
-        asMiddleware(checkSellerUserRoleFactory),
-        createCreateAuctionValidator(),
-        asHandler(registerAuctionHandlerFactory),
+      '/auctions',
+      Router().use(
+        '/seller/auction',
+        Router().post(
+          '/',
+          asMiddleware(authorizationMiddlewareFactory),
+          asMiddleware(checkSellerUserRoleFactory),
+          createCreateAuctionValidator(),
+          asHandler(registerAuctionHandlerFactory),
+        ),
+        Router().use(
+          '/:auctionId',
+          createAuctionIdValidator(),
+          Router({ mergeParams: true })
+            .delete(
+              '/',
+              asMiddleware(authorizationMiddlewareFactory),
+              asMiddleware(checkSellerUserRoleFactory),
+              createWithdrawnAuctionValidator(),
+              asHandler(withdrawAuctionHandlerFactory),
+            )
+            .post(
+              '/preview',
+              asMiddleware(authorizationMiddlewareFactory),
+              asMiddleware(checkSellerUserRoleFactory),
+              asHandler(previewAuctionHandlerFactory),
+            ),
+        ),
       ),
       Router().use(
-        '/:auctionId',
-        createAuctionIdValidator(),
-        Router({ mergeParams: true })
-          .delete(
-            '/',
+        '/admin/auction',
+        Router().use(
+          '/:auctionId',
+          createAuctionIdValidator(),
+          Router({ mergeParams: true }).post(
+            '/verify',
             asMiddleware(authorizationMiddlewareFactory),
-            asMiddleware(checkSellerUserRoleFactory),
-            createWithdrawnAuctionValidator(),
-            asHandler(withdrawAuctionHandlerFactory),
-          )
-          .post(
-            '/preview',
-            asMiddleware(authorizationMiddlewareFactory),
-            asMiddleware(checkSellerUserRoleFactory),
-            asHandler(previewAuctionHandlerFactory),
+            asMiddleware(checkAdminUserRoleFactory),
+            asHandler(verifyAuctionHandlerFactory),
           ),
+        ),
       ),
     ),
   ];
