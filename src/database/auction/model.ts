@@ -32,12 +32,19 @@ type PreviewStateModel = {
   previewBy: string;
 };
 
+type VerifiedStateModel = {
+  status: AuctionStatus.VERIFIED;
+  verifiedAt: Date;
+  verifiedBy: string;
+};
+
 export type AuctionStateModel =
   | AwaitingVerificationStateModel
   | WithdrawnStateModel
   | OngoingStateModel
   | SoldStateModel
-  | PreviewStateModel;
+  | PreviewStateModel
+  | VerifiedStateModel;
 
 export type AuctionModel = {
   id: string;
